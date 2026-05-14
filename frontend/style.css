@@ -9,11 +9,45 @@
 	background-color:#97c2c5;
 }
 
+/*probablemente asi no quede el brand del sidebar
+ * pq es muy feo */
+#sidebar-brand {
+	font-size: 44px;
+	font-weight: bold;
+}
+
+#sidebar-contents {
+	margin-top: 2.5rem;
+	margin-bottom: 2.5rem;
+	margin-left: 0.5rem;
+	margin-right: 0.5rem;
+}
+
+@media screen and (min-width: 992px){
+	#sidebar-brand {
+		font-size: 45px;
+	}
+
+	#sidebar-contents {
+		margin-top:3.5rem;	
+		margin-bottom:3.5rem;	
+	}
+}
+
+#sidebar-form {
+	margin-top: 3rem;
+	margin-left: 0rem;
+	margin-right: 0rem;
+}
+
 #navbar {
 	padding-left: 0.2rem;
 	padding-right: 0.2rem;
 	padding-top: 0.4rem;
 	padding-bottom: 0.4rem;
+}
+
+.opensansfont {
 	font-family: 'Open Sans', sans-serif;
 }
 
