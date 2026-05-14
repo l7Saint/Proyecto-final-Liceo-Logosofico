@@ -1,0 +1,75 @@
+<!DOCTYPE HTML>
+<html> 
+	<head> 
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+	</head> 
+	<title>Urbanaut</title>
+	<style>
+
+#menu_lateral {
+	background-color:#97c2c5;
+}
+#menu_lateral_contenido {
+	width: 75%;
+	margin-top: 11%;
+	margin-bottom: 11%;
+}
+#logo {
+	height: 65%;
+	width: 65%;
+}
+#fondo_pagina {
+	background-color:#cccccc;
+}
+.debug {
+	background-color: #ff0000;
+	border: 2px solid black;
+}
+.texto_menu {
+	font-size: 25px;
+	font-weight: bold;
+	color: #171720;
+}
+.label-boton {
+	width: 75%;
+	height: 50%;
+	margin: 20%
+}
+	</style>
+	<body class="min-vh-100 d-flex"> 
+		<!-- min-vh-100 es = minimum size: 100% del viewport, llenando toda la pantalla-->
+		<div id="page" class="container-fluid min-vh-100">
+			<div id="main-row" class="row min-vh-100">
+				<!-- Hacer responsive xra celus
+				(Eliminar #fondo_pagina cuando se entra desde un celu) -->
+				<div id="menu_lateral" class="col-3">
+					<!-- Investigar pq mx-auto en la clase para centrarlo
+					y q es flexbox-->
+					<div id="menu_lateral_contenido" class="min-vh-100 d-flex flex-column mx-auto text-center">
+						<!-- Crear 2 divs, uno que quede encima con el logo
+						de la pagina y otro abajo que quede con los botones -->
+						<div class="mx-auto" style="margin-bottom: 40%">
+							<img id="logo" src="/home/santi/documents/liceo/frontend/logo.png">
+						</div>
+						<!-- align-items-center realmente centra horizontalmente los botones -->
+						<div class="align-items-center d-flex flex-column mx-auto">
+							<label class="texto_menu" style="margin-bottom:10%">textodeejemplo</label>
+							<!--boton1-->
+							<input id="boton1" class="boton" type="button" hidden>
+							<label class="mb-2 debug label-boton" for="boton1">boton1</label>
+							<!--boton2-->
+							<input id="boton2" class="boton" type="button" hidden>
+							<label class="mb-2 debug label-boton" for="boton2">boton2</label>
+							<!--boton3-->
+							<input id="boton3" class="boton" type="button" hidden>
+							<label class="mb-2 debug label-boton" for="boton3">boton3</label>
+						</div>
+					</div>
+				</div>
+				<div id="fondo_pagina" class="col-9">
+				</div>
+			</div>
+		</div>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+	</body> 
+</html> 
