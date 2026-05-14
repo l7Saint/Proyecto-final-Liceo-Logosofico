@@ -1,15 +1,4 @@
 <!DOCTYPE html>
-<!-- 
-Lista de TODOS:
-	O> Poner los links y nombres correspondientes al navbar.
-	V> Solucionar los problemas de responsiveness al navbar.
-	Capaz se podria poner un boton para las pantallas chiquitas
-	que despliegue los botones del navbar.
-	O> Solucionar los problemas de reponsiveness al contenido de la
-	pagina. Capaz se podria hacer que por debajo de cierto tamano del
-	viewport que colapse la sidebar y se pueda desplegar aparte con un
-	boton.
--->
 <html>
 	<head> 
 		<title>Urbanaut</title>
@@ -35,25 +24,25 @@ Lista de TODOS:
 						<a id="brand" class="navbar-brand" href="#">Urbanaut</a>
 					</div>
 					<div class="collapse navbar-collapse justify-content-end text-end" id="navbar-content">
-						<!-- me-auto era margen derecho automatico (???)-->
+						<!-- Links de la navbar -->
 						<ul class="navbar-nav">	
 							<li class="nav-item item-navbar">
-								<a class="nav-link" style="padding:0.25rem 0.5rem 0.25rem 0.5rem;" href="#">
-									<button class="button-navbar btn btn-light rounded">Home</button>
+								<a class="nav-link link-navbar" href="#">
+									<button class="button-navbar btn btn-light rounded">Inicio</button>
 								</a>
 							</li>
 							<li class="nav-item item-navbar">
-								<a class="nav-link" style="padding:0.25rem 0.5rem 0.25rem 0.5rem;" href="#">
+								<a class="nav-link link-navbar" href="#">
 									<button class="button-navbar btn btn-light rounded">Mi Cuenta</button>
 								</a>
 							</li>
 							<li class="nav-item item-navbar">
-								<a class="nav-link" style="padding:0.25rem 0.5rem 0.25rem 0.5rem;" href="#">
+								<a class="nav-link link-navbar" href="#">
 									<button class="button-navbar btn btn-light rounded">Nosotros</button>
 								</a>
 							</li>
 							<li class="nav-item item-navbar">
-								<a class="nav-link" style="padding:0.25rem 0.5rem 0.25rem 0.5rem;" href="#">
+								<a class="nav-link link-navbar" href="#">
 									<button class="button-navbar btn btn-light rounded">Login</button>
 								</a>
 							</li>
@@ -64,7 +53,8 @@ Lista de TODOS:
 			<!--row principal, el que dicta la estructura de la pagina-->
 			<div id="main-row" class="row flex-grow-1">
 				<!--barra lateral izquierda-->
-				<div id="sidebar" class="sidebar d-flex align-items-center col-3 min-vh-100">
+				<!--la columna ocupa toda la pantalla cuando se mira desde celular-->
+				<div id="sidebar" class="sidebar d-flex align-items-center col-12 col-lg-3 min-vh-100">
 					<div id="sidebar-contents" class="sidebar-contents d-flex alignt-items-center mx-auto text-center">
 						<!-- contenido de la barra lateral izquierda -->
 					</div>

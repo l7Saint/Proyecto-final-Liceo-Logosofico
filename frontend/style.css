@@ -69,3 +69,13 @@
 .button-navbar {
 	font-size: 1.1rem;
 }
+
+/* Un elemnto de la clase .link-navbar
+ * que este adentro de otro de la clase
+ * .navbar-nav, esto hace que gane
+ * la specificity de css y los estilos
+ * se apliquen
+ */
+.navbar-nav .link-navbar {
+	padding:0.25rem 0.5rem 0.25rem 0.5rem;
+}
