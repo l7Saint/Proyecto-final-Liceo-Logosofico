@@ -1,0 +1,10 @@
+# No permite que el usuario root se loggue por ssh
+PermitRootLogin no
+
+# Activa el loggeo por llave publica
+PubkeyAuthentication yes
+
+# Desactiva el loggeo por contraseña
+PasswordAuthentication no
+
+

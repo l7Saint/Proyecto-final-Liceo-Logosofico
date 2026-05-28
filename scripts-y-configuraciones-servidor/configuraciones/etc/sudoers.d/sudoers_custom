@@ -1,0 +1,15 @@
+#### NUESTRA CONFIGURACION
+
+#administradores del sistema operativo
+Cmnd_Alias ADMINSO = /usr/bin/dnf,/usr/bin/systemctl,/usr/bin/journalctl
+
+#administradores del firewall
+Cmnd_Alias ADMINFWD = /usr/bin/firewall-cmd
+
+#### Por ahora falta los administradores de 
+#### base de datos y apache.
+
+%admin_so ALL=(ALL) ADMINSO
+%admin_fwd ALL=(ALL) ADMINFWD
+#### FIN NUESTRA CONFIGURACION
+

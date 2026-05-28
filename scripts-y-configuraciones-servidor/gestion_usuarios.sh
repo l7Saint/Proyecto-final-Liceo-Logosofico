@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 #|===============================|#
 #| Script de Gestion de Usuarios |#
@@ -68,7 +68,6 @@ existe(){
 	cat "${archivo}" | grep -qe "^${nombre}"
 	return $?
 }
-
 
 ingresarSiNo(){
 	clear
@@ -161,6 +160,7 @@ useraddEjecutar() {
 	e_argumentogruposSecundariosUsuario="${5}"	
 	e_argumentofechaExpiracionUsuario="${6}"	
 	e_argumentocontrasenaUsuario="${7}"	
+
 	cmd="useradd --create-home "
 	cmd+="--home-dir ${e_homeUsuario} "
 	cmd+="--shell ${e_terminalUsuario} "
@@ -169,6 +169,7 @@ useraddEjecutar() {
 	cmd+="${e_fechaExpiracionUsuario}"
 	cmd+="${e_argumentocontrasenaUsuario}"
 	cmd+="${e_nombreUsuario}"
+
 	if ! error=$(${cmd} 2>&1); then
 		echo "Hubo un error inesperado creando el usuario. No se creo ningun usuario." 
 		echo "Codigo de error de useradd: $?"
@@ -196,16 +197,20 @@ anadirUsuario(){
 		ingresarInput 'el nombre del usuario' 'confirmar' 'obligatorio'
 		nombreUsuario="${returnv}"
 	done
+
 	ingresarInput 'la terminal del usuario' 'confirmar' '/bin/bash'
 	terminalUsuario="${returnv}"	
+
 	ingresarInput 'la carpeta Home del usuario' 'confirmar' "/home/${nombreUsuario}"
 	homeUsuario="${returnv}"	
+
 	# si no elige ningun grupo principal, se toma el grupo del mismo nombre del usuario
 	ingresarInput 'grupo principal del usuario' 'confirmar' "${nombreUsuario}"
 	grupoPrincipalUsuario="${returnv}"
 	if [[ "${grupoPrincipalUsuario}" != "${nombreUsuario}" ]]; then
 		argumentogrupoPrincipalUsuario="--gid ${grupoPrincipalUsuario}"
 	fi
+
 	ingresarInput 'grupos secundarios del usuario' 'confirmar' 'VACIO'
 	gruposSecundariosUsuario="${returnv}"
 	if [[ "${gruposSecundariosUsuario}" == 'VACIO' ]]; then
@@ -213,6 +218,7 @@ anadirUsuario(){
 	else
 		argumentogruposSecundariosUsuario="-G${gruposSecundariosUsuario} "
 	fi
+
 	ingresarInput 'fecha de expiracion del usuario (formato: YYYY-MM-DD)' 'confirmar' 'VACIO'
 	fechaExpiracionUsuario="${returnv}"
 	if [[ "${fechaExpiracionUsuario}" == 'VACIO' ]]; then
@@ -220,6 +226,7 @@ anadirUsuario(){
 	else
 		argumentofechaExpiracionUsuario="--expiredate ${fechaExpiracionUsuario} "
 	fi
+
 	ingresarInput 'contrasena inicial del usuario' 'confirmar' 'VACIO'
 	contrasenaUsuario="${returnv}"
 	if [[ "${contrasenaUsuario}" == 'VACIO' ]]; then
@@ -241,8 +248,8 @@ modificarUsuario(){
 	nombreUsuario="${returnv}"
 	salirModificarUsuario=0
 	while [[ ${salirModificarUsuarios} == 0 ]]; do
-		echo "Usuario a modificar: ${nombreUsuario}"
 		imprimirMenu "${MENUMODIFICARUSUARIOS}"
+		echo "Usuario a modificar: ${nombreUsuario}"
 		read -p "=> " input
 		case "${input}" in 
 			1)
@@ -297,6 +304,7 @@ modificarUsuario(){
 eliminarUsuario(){
 	ingreseInput 'usuario a ELIMINAR' 'confirmar' 'obligatorio'
 	nombreUsuario="${returnv}"
+
 	if $(ingresarSiNo "Esta completamente seguro de eliminar al usuario ${nombreUsuario}?"); then
 		ejecutarComando "userdel ${nombreUsuario}"	
 	else
@@ -328,10 +336,12 @@ groupaddEjecutar(){
 	e_gidGrupo="${1}"
 	e_argumentousuarioInicialesGrupo="${2}"
 	e_nombreGrupo="${3}"
+	
 	cmd="groupadd "
 	cmd+="--gid ${e_gidGrupo}"
 	cmd+="${e_argumentousuarioInicialesGrupo}"
 	cmd+="${e_nombreGrupo}"
+
 	if ! error=$(${cmd} 2>&1); then
 		echo "Hubo un error inesperado creando el grupo. No se creo ningun grupo." 
 		echo "Codigo de error de groupadd: $?"
@@ -348,15 +358,19 @@ groupaddEjecutar(){
 anadirGrupo(){
 	ingresarInput 'gid del grupo' 'confirmar' 'obligatorio'	
 	gidGrupo="${returnv}"
+
 	ingresarInput 'nombre del grupo' 'confirmar' 'obligatorio'	
 	nombreGrupo="${returnv}"
+
 	ingresarInput 'usuarios iniciales del grupo' 'confirmar' 'VACIO'	
 	usuariosInicialesGrupo="${returnv}"
+
 	if [[ "${usuariosInicialesGrupo}" == "VACIO" ]]; then
 		argumentousuariosInicialesGrupo=""
 	else
 		argumentousuariosInicialesGrupo="--users ${usuariosInicialesGrupo}"
 	fi
+
 	groupaddEjecutar "${gidGrupo}" "${usuariosInicialesGrupo}" "${argumentousuariosInicialesGrupo}"
 }
 
@@ -400,11 +414,12 @@ main() {
 		case "${input}" in 
 			1) administrarUsuarios ;;
 			2) administrarGrupos ;;
-			3) if [ -z "${EDITOR}" ]; then
-				ingresarInput 'editor de terminal a usar' 'confirmar' 'vi'
-				EDITOR="${returnv}"
-			fi
-			visudo ;;
+			3) 
+				if [ -z "${EDITOR}" ]; then
+					ingresarInput 'editor de terminal a usar' 'confirmar' 'vi'
+					EDITOR="${returnv}"
+				fi
+				visudo ;;
 			0) salirMenuPrincipal=1 ;;
 			*) ;;
 		esac
@@ -412,5 +427,6 @@ main() {
 	done
 	exit
 }
-main
 
+#Ejecutar Funcion Main
+main
