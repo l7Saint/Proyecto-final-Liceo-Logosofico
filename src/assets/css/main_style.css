@@ -1,0 +1,93 @@
+/*Esto es para crear variables de css,
+  basicamente, desde aca puedo cambiar el padding
+  general de los elementos adentro del navbar, o los
+  colores*/
+:root { 
+	/*colores*/
+	--color-fondo: #88B6C2;
+	--color-navbar: #32545C;
+	--color-boton-navbar: #1B3237;
+	--color-titulos: #32545c;
+	--color-subtitulos: #497C88;
+	--color-texto: #21434D;
+
+	--padding-navbar: 1rem;
+}
+
+body{
+	background-color:var(--color-fondo);
+	padding-bottom: 20px;
+	font-size: 19px;
+	font-family: 'Open Sans', sans-serif;
+}
+
+#barraNavbar {
+	width: 100%;
+	background-color: var(--color-navbar);
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	/*fuerza a que la navbar se superponga sobre todos los elementos*/
+	z-index: 1050;
+}
+
+#marcaNavbar{
+	color: white;
+	font-size: 30px;
+	font-family:Verdana, Geneva, Tahoma, sans-serif;
+	font-weight: bold;
+	/*aca uso la variable, si despues le pongo "--padding-navbar: 3rem;"
+	  se va a ver afectado en todos los "var(--padding-navbar);"*/
+	margin-left: var(--padding-navbar);
+	margin-right: var(--padding-navbar);
+}
+
+#botonesNavbar{
+	margin-left: var(--padding-navbar);
+	margin-right: var(--padding-navbar);
+	gap: 0.4rem;
+}
+
+/*aca sobreescribo 2 atributos de una de las clases de bootstrap*/
+.btn {
+	background-color: var(--color-boton-navbar); 
+	color: white;
+}
+
+#botonHamburguesa {
+	margin-left: var(--padding-navbar);
+	margin-right: var(--padding-navbar);
+}
+
+.titulos{
+	/*font-family:Verdana, Geneva, Tahoma, sans-serif;*/
+	font-weight: bold;
+	color: var(--color-titulos);
+}
+
+.subTitulos{
+	/*font-family:Verdana, Geneva, Tahoma, sans-serif;*/
+	color : var(--color-subtitulos);
+}
+
+.texto{
+	/*font-family:Verdana, Geneva, Tahoma, sans-serif;*/
+	color: var(--color-texto);
+}
+
+#contenido {
+	text-align: center;
+	margin-top: 0.5rem;	
+}
+
+@media (min-width: 992px) { 
+	#contenido {
+		text-align: left;
+	} 
+
+	/*aca cambio el padding del navbar
+	  para las pantallas grandes ( > o = 992px ) */
+	:root { 
+		--padding-navbar: 2.4rem;
+	}
+}
