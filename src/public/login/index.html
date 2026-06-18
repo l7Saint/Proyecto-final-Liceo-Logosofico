@@ -3,506 +3,604 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Crear cuenta</title>
-    <style>
-      body {
-        background-color: #285357;
-        cursor: default;
-      }
-
-      .tarjeta {
-        inset: 0;
-        margin: auto;
-        margin-top: 80px;
-        margin-bottom: 80px;
-        margin-left: 120px;
-        margin-right: 120px;
-        background-color: #f2f1f1;
-        border-radius: 15px;
-      }
-
-      .titulo {
-        color: #285357;
-        padding-left: 15px;
-        padding-top: 15px;
-        font-family: Garamond, serif;
-        font-weight: bolder;
-      }
-
-      label {
-        color: #67878a;
-        padding-left: 15px;
-        padding-top: 15px;
-        font-weight: bolder;
-        text-shadow: 2px 2px 5px#BCCCCD;
-      }
-
-      .datos {
-        margin-left: 15px;
-        border-radius: 5px;
-        border-color: #d9d9d9;
-        border: 2px 2px solid;
-        cursor: text;
-        width: 820px;
-      }
-
-      .horario {
-        color: #67878a;
-        padding-left: 15px;
-        padding-top: 15px;
-        font-weight: bolder;
-        text-decoration: underline;
-        text-shadow: 2px 2px 5px#BCCCCD;
-      }
-
-      .dias {
-        color: black;
-        padding-left: 2px;
-        font-family: Tahoma, Verdana, sans-serif;
-        font-weight: light;
-        font-size: small;
-      }
-
-      .comenzar {
-        color: #285357;
-        font-weight: bolder;
-        font-family: "Times New Roman", Times, serif;
-        margin-bottom: 10px;
-        cursor: pointer;
-        background-color: #67878a;
-        text-shadow: 2px 2px 5px#BCCCCD;
-        border-radius: 10px;
-        border: 2px 2px solid;
-        border-color: #67878a;
-        padding: 5px 380px;
-      }
-
-      .comenzar:hover {
-        background-color: #455c5e;
-      }
-
-      input {
-        margin-left: 15px;
-        cursor: pointer;
-      }
-
-      /* .imgAnexo {
-        border-radius: 3px;
-        width: 350px;
-        margin-left: 400px;
-        top: 200px;
-      }
-
-      .imgAnexo:hover {
-        box-shadow: 0 0 2px 1px #67878a;
-      }
-        */
-    </style>
+    <title>Document</title>
+    <!-- bootstrap cdn -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+      crossorigin="anonymous"
+    ></script>
+    <!-- cdn de google para la fuente de Open Sans -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap"
+      rel="stylesheet"
+    />
   </head>
+  <style>
+    /*Esto es para crear variables de css,
+  basicamente, desde aca puedo cambiar el padding
+  general de los elementos adentro del navbar, o los
+  colores*/
+    :root {
+      /*colores*/
+      --color-fondo: #88b6c2;
+      --color-navbar: #32545c;
+      --color-boton-navbar: #1b3237;
+      --color-titulos: #32545c;
+      --color-subtitulos: #497c88;
+      --color-texto: #21434d;
+
+      --padding-navbar: 1rem;
+    }
+
+    body {
+      background-color: var(--color-fondo);
+      padding-bottom: 20px;
+      font-size: 19px;
+      font-family: "Open Sans", sans-serif;
+    }
+
+    #barraNavbar {
+      width: 100%;
+      background-color: var(--color-navbar);
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      /*fuerza a que la navbar se superponga sobre todos los elementos*/
+      z-index: 1050;
+    }
+
+    #marcaNavbar {
+      color: white;
+      font-size: 30px;
+      font-family: Verdana, Geneva, Tahoma, sans-serif;
+      font-weight: bold;
+      /*aca uso la variable, si despues le pongo "--padding-navbar: 3rem;"
+	  se va a ver afectado en todos los "var(--padding-navbar);"*/
+      margin-left: var(--padding-navbar);
+      margin-right: var(--padding-navbar);
+    }
+
+    #botonesNavbar {
+      margin-left: var(--padding-navbar);
+      margin-right: var(--padding-navbar);
+      gap: 0.4rem;
+    }
+
+    /*aca sobreescribo 2 atributos de una de las clases de bootstrap*/
+    .btn {
+      background-color: var(--color-boton-navbar);
+      color: white;
+    }
+
+    #botonHamburguesa {
+      margin-left: var(--padding-navbar);
+      margin-right: var(--padding-navbar);
+    }
+
+    .titulos {
+      /*font-family:Verdana, Geneva, Tahoma, sans-serif;*/
+      font-weight: bold;
+      color: var(--color-titulos);
+    }
+
+    .subTitulos {
+      /*font-family:Verdana, Geneva, Tahoma, sans-serif;*/
+      color: var(--color-subtitulos);
+    }
+
+    .texto {
+      /*font-family:Verdana, Geneva, Tahoma, sans-serif;*/
+      color: var(--color-texto);
+    }
+
+    #contenido {
+      text-align: center;
+      margin-top: 0.5rem;
+    }
+
+    @media (min-width: 992px) {
+      #contenido {
+        text-align: left;
+      }
+
+      /*aca cambio el padding del navbar
+	  para las pantallas grandes ( > o = 992px ) */
+      :root {
+        --padding-navbar: 2.4rem;
+      }
+    }
+
+    #cajaCrearCuenta {
+      background-color: whitesmoke;
+      border-radius: 15px;
+      padding: 1rem;
+    }
+
+    .textoInput {
+      color: #67878a;
+      font-weight: lighter;
+      font-family: "Open Sans", sans-serif;
+    }
+
+    .datos {
+      border-radius: 5px;
+      border-color: #d9d9d9;
+      border: 2px 2px solid;
+      cursor: text;
+      width: 50%;
+    }
+  </style>
   <body>
-    <div class="tarjeta">
-      <!--IMAGEN
-     <img class="imgAnexo" src="img/bachillerato.jpeg" />-->
+    <div
+      id="contenedorPrincipal"
+      class="d-flex container-fluid align-items-center"
+    >
+      <div id="contenido" class="container-lg">
+        <div id="cajaCrearCuenta">
+          <h1 class="titulos">Crear Cuenta</h1>
+          <label class="textoInput" for="nombre">Nombre</label>
+          <br />
+          <input type="text" id="nombre" name="nombre" class="datos" />
+          <br />
+          <br />
+          <label class="textoInput" for="apellido" class="apellido"
+            >Apellido</label
+          >
+          <br />
+          <input type="text" id="apellido" name="apellido" class="datos" />
+          <br />
+          <br />
+          <label class="textoInput" for="email" class="email">Email</label>
+          <br />
+          <input type="email" id="email" name="email" class="datos" />
+          <br />
+          <br />
+          <label class="textoInput" for="contraseña">Constraseña</label>
+          <br />
+          <input
+            type="password"
+            id="contraseña"
+            name="contraseña"
+            class="datos"
+          />
+          <br />
+          <br />
+          <label for="marca_modelo" class="textoInput">Marca/Modelo Auto</label>
+          <br />
+          <input
+            type="text"
+            id="marca_modelo"
+            name="marca_modelo"
+            class="datos"
+          />
+          <br />
+          <br />
+          <p class="textoInput">Horarios</p>
+          <!--LUNES-->
+          <input
+            type="checkbox"
+            id="lunes"
+            name="lunes"
+            value="1"
+            onclick="DespliegaHorarios()"
+          />
+          <label for="lunes" class="dias">Lunes</label>
+          <ul id="ul-lunes" hidden>
+            <li>
+              <label for="1" class="dias">8:00 AM a 8:40 AM</label>
+              <input type="checkbox" id="1" />
+              <br />
+            </li>
+            <li>
+              <label for="2" class="dias">8:40 AM a 9:20 AM</label>
+              <input type="checkbox" id="2" />
+              <br />
+            </li>
+            <li>
+              <label for="3" class="dias">9:25 AM a 10:05 AM</label>
+              <input type="checkbox" id="3" />
+              <br />
+            </li>
+            <li>
+              <label for="4" class="dias">10:15 AM a 10:55 AM</label>
+              <input type="checkbox" id="4" />
+              <br />
+            </li>
+            <li>
+              <label for="5" class="dias">11:00 AM a 11:40 AM</label>
+              <input type="checkbox" id="5" />
+              <br />
+            </li>
+            <li>
+              <label for="6" class="dias">11:45 AM a 12:25 PM</label>
+              <input type="checkbox" id="6" />
+              <br />
+            </li>
+            <li>
+              <label for="7" class="dias">12:25 PM a 13:05 PM</label>
+              <input type="checkbox" id="7" />
+              <br />
+            </li>
+            <li>
+              <label for="8" class="dias">13:05 PM a 13:45 PM</label>
+              <input type="checkbox" id="8" />
+              <br />
+            </li>
+            <li>
+              <label for="9" class="dias">13:50 PM a 14:30 PM</label>
+              <input type="checkbox" id="9" />
+              <br />
+            </li>
+            <li>
+              <label for="10" class="dias">14:30 PM a 15:10 PM</label>
+              <input type="checkbox" id="11" />
+              <br />
+            </li>
+            <li>
+              <label for="11" class="dias">15:15 PM a 15:55 PM</label>
+              <input type="checkbox" id="11" />
+              <br />
+            </li>
+            <li>
+              <label for="12" class="dias">15:55 PM a 16:35 PM</label>
+              <input type="checkbox" id="12" />
+              <br />
+            </li>
+          </ul>
+          <br />
 
-      <!-- INGRESO DE DATOS-->
-      <h1 class="titulo">Crear cuenta</h1>
-      <label for="nombre" class="nombre">Nombre</label>
-      <br />
-      <input type="text" id="nombre" name="nombre" class="datos" />
-      <br />
-      <br />
-      <label for="apellido" class="apellido">Apellido</label>
-      <br />
-      <input type="text" id="apellido" name="apellido" class="datos" />
-      <br />
-      <br />
-      <label for="email" class="email">Email</label>
-      <br />
-      <input type="email" id="email" name="email" class="datos" />
-      <br />
-      <br />
-      <label for="contraseña">Constraseña</label>
-      <br />
-      <input type="password" id="contraseña" name="contraseña" class="datos" />
-      <br />
-      <br />
-      <label for="marca_modelo" class="">Marca/Modelo Auto</label>
-      <br />
-      <input type="text" id="marca_modelo" name="marca_modelo" class="datos" />
-      <br />
-      <p class="horario">Horarios</p>
+          <!--MARTES-->
+          <input
+            type="checkbox"
+            id="martes"
+            name="martes"
+            onclick="DespliegaHorarios()"
+          />
+          <label for="martes" class="dias">Martes</label>
+          <ul id="ul-martes" hidden>
+            <li>
+              <label for="1" class="dias">8:00 AM a 8:40 AM</label>
+              <input type="checkbox" id="1" />
+              <br />
+            </li>
+            <li>
+              <label for="2" class="dias">8:40 AM a 9:20 AM</label>
+              <input type="checkbox" id="2" />
+              <br />
+            </li>
+            <li>
+              <label for="3" class="dias">9:25 AM a 10:05 AM</label>
+              <input type="checkbox" id="3" />
+              <br />
+            </li>
+            <li>
+              <label for="4" class="dias">10:15 AM a 10:55 AM</label>
+              <input type="checkbox" id="4" />
+              <br />
+            </li>
+            <li>
+              <label for="5" class="dias">11:00 AM a 11:40 AM</label>
+              <input type="checkbox" id="5" />
+              <br />
+            </li>
+            <li>
+              <label for="6" class="dias">11:45 AM a 12:25 PM</label>
+              <input type="checkbox" id="6" />
+              <br />
+            </li>
+            <li>
+              <label for="7" class="dias">12:25 PM a 13:05 PM</label>
+              <input type="checkbox" id="7" />
+              <br />
+            </li>
+            <li>
+              <label for="8" class="dias">13:05 PM a 13:45 PM</label>
+              <input type="checkbox" id="8" />
+              <br />
+            </li>
+            <li>
+              <label for="9" class="dias">13:50 PM a 14:30 PM</label>
+              <input type="checkbox" id="9" />
+              <br />
+            </li>
+            <li>
+              <label for="10" class="dias">14:30 PM a 15:10 PM</label>
+              <input type="checkbox" id="11" />
+              <br />
+            </li>
+            <li>
+              <label for="11" class="dias">15:15 PM a 15:55 PM</label>
+              <input type="checkbox" id="11" />
+              <br />
+            </li>
+            <li>
+              <label for="12" class="dias">15:55 PM a 16:35 PM</label>
+              <input type="checkbox" id="12" />
+              <br />
+            </li>
+          </ul>
+          <br />
 
-      <!--LUNES-->
-      <input
-        type="checkbox"
-        id="lunes"
-        name="lunes"
-        value="1"
-        onclick="DespliegaHorarios()"
-      />
-      <label for="lunes" class="dias">Lunes</label>
-      <ul id="ul-lunes" hidden>
-        <li>
-          <label for="1" class="dias">8:00 AM a 8:40 AM</label>
-          <input type="checkbox" id="1" />
+          <!--MIÉRCOLES-->
+          <input
+            type="checkbox"
+            id="miercoles"
+            name="miercoles"
+            onclick="DespliegaHorarios()"
+          />
+          <label for="miercoles" class="dias">Miércoles</label>
+          <ul id="ul-miercoles" hidden>
+            <li>
+              <label for="1" class="dias">8:00 AM a 8:40 AM</label>
+              <input type="checkbox" id="1" />
+              <br />
+            </li>
+            <li>
+              <label for="2" class="dias">8:40 AM a 9:20 AM</label>
+              <input type="checkbox" id="2" />
+              <br />
+            </li>
+            <li>
+              <label for="3" class="dias">9:25 AM a 10:05 AM</label>
+              <input type="checkbox" id="3" />
+              <br />
+            </li>
+            <li>
+              <label for="4" class="dias">10:15 AM a 10:55 AM</label>
+              <input type="checkbox" id="4" />
+              <br />
+            </li>
+            <li>
+              <label for="5" class="dias">11:00 AM a 11:40 AM</label>
+              <input type="checkbox" id="5" />
+              <br />
+            </li>
+            <li>
+              <label for="6" class="dias">11:45 AM a 12:25 PM</label>
+              <input type="checkbox" id="6" />
+              <br />
+            </li>
+            <li>
+              <label for="7" class="dias">12:25 PM a 13:05 PM</label>
+              <input type="checkbox" id="7" />
+              <br />
+            </li>
+            <li>
+              <label for="8" class="dias">13:05 PM a 13:45 PM</label>
+              <input type="checkbox" id="8" />
+              <br />
+            </li>
+            <li>
+              <label for="9" class="dias">13:50 PM a 14:30 PM</label>
+              <input type="checkbox" id="9" />
+              <br />
+            </li>
+            <li>
+              <label for="10" class="dias">14:30 PM a 15:10 PM</label>
+              <input type="checkbox" id="11" />
+              <br />
+            </li>
+            <li>
+              <label for="11" class="dias">15:15 PM a 15:55 PM</label>
+              <input type="checkbox" id="11" />
+              <br />
+            </li>
+            <li>
+              <label for="12" class="dias">15:55 PM a 16:35 PM</label>
+              <input type="checkbox" id="12" />
+              <br />
+            </li>
+          </ul>
           <br />
-        </li>
-        <li>
-          <label for="2" class="dias">8:40 AM a 9:20 AM</label>
-          <input type="checkbox" id="2" />
-          <br />
-        </li>
-        <li>
-          <label for="3" class="dias">9:25 AM a 10:05 AM</label>
-          <input type="checkbox" id="3" />
-          <br />
-        </li>
-        <li>
-          <label for="4" class="dias">10:15 AM a 10:55 AM</label>
-          <input type="checkbox" id="4" />
-          <br />
-        </li>
-        <li>
-          <label for="5" class="dias">11:00 AM a 11:40 AM</label>
-          <input type="checkbox" id="5" />
-          <br />
-        </li>
-        <li>
-          <label for="6" class="dias">11:45 AM a 12:25 PM</label>
-          <input type="checkbox" id="6" />
-          <br />
-        </li>
-        <li>
-          <label for="7" class="dias">12:25 PM a 13:05 PM</label>
-          <input type="checkbox" id="7" />
-          <br />
-        </li>
-        <li>
-          <label for="8" class="dias">13:05 PM a 13:45 PM</label>
-          <input type="checkbox" id="8" />
-          <br />
-        </li>
-        <li>
-          <label for="9" class="dias">13:50 PM a 14:30 PM</label>
-          <input type="checkbox" id="9" />
-          <br />
-        </li>
-        <li>
-          <label for="10" class="dias">14:30 PM a 15:10 PM</label>
-          <input type="checkbox" id="11" />
-          <br />
-        </li>
-        <li>
-          <label for="11" class="dias">15:15 PM a 15:55 PM</label>
-          <input type="checkbox" id="11" />
-          <br />
-        </li>
-        <li>
-          <label for="12" class="dias">15:55 PM a 16:35 PM</label>
-          <input type="checkbox" id="12" />
-          <br />
-        </li>
-      </ul>
-      <br />
 
-      <!--MARTES-->
-      <input
-        type="checkbox"
-        id="martes"
-        name="martes"
-        onclick="DespliegaHorarios()"
-      />
-      <label for="martes" class="dias">Martes</label>
-      <ul id="ul-martes" hidden>
-        <li>
-          <label for="1" class="dias">8:00 AM a 8:40 AM</label>
-          <input type="checkbox" id="1" />
+          <!--JUEVES-->
+          <input
+            type="checkbox"
+            id="jueves"
+            name="jueves"
+            onclick="DespliegaHorarios()"
+          />
+          <label for="jueves" class="dias">Jueves</label>
+          <ul id="ul-jueves" hidden>
+            <li>
+              <label for="1" class="dias">8:00 AM a 8:40 AM</label>
+              <input type="checkbox" id="1" />
+              <br />
+            </li>
+            <li>
+              <label for="2" class="dias">8:40 AM a 9:20 AM</label>
+              <input type="checkbox" id="2" />
+              <br />
+            </li>
+            <li>
+              <label for="3" class="dias">9:25 AM a 10:05 AM</label>
+              <input type="checkbox" id="3" />
+              <br />
+            </li>
+            <li>
+              <label for="4" class="dias">10:15 AM a 10:55 AM</label>
+              <input type="checkbox" id="4" />
+              <br />
+            </li>
+            <li>
+              <label for="5" class="dias">11:00 AM a 11:40 AM</label>
+              <input type="checkbox" id="5" />
+              <br />
+            </li>
+            <li>
+              <label for="6" class="dias">11:45 AM a 12:25 PM</label>
+              <input type="checkbox" id="6" />
+              <br />
+            </li>
+            <li>
+              <label for="7" class="dias">12:25 PM a 13:05 PM</label>
+              <input type="checkbox" id="7" />
+              <br />
+            </li>
+            <li>
+              <label for="8" class="dias">13:05 PM a 13:45 PM</label>
+              <input type="checkbox" id="8" />
+              <br />
+            </li>
+            <li>
+              <label for="9" class="dias">13:50 PM a 14:30 PM</label>
+              <input type="checkbox" id="9" />
+              <br />
+            </li>
+            <li>
+              <label for="10" class="dias">14:30 PM a 15:10 PM</label>
+              <input type="checkbox" id="11" />
+              <br />
+            </li>
+            <li>
+              <label for="11" class="dias">15:15 PM a 15:55 PM</label>
+              <input type="checkbox" id="11" />
+              <br />
+            </li>
+            <li>
+              <label for="12" class="dias">15:55 PM a 16:35 PM</label>
+              <input type="checkbox" id="12" />
+              <br />
+            </li>
+          </ul>
           <br />
-        </li>
-        <li>
-          <label for="2" class="dias">8:40 AM a 9:20 AM</label>
-          <input type="checkbox" id="2" />
-          <br />
-        </li>
-        <li>
-          <label for="3" class="dias">9:25 AM a 10:05 AM</label>
-          <input type="checkbox" id="3" />
-          <br />
-        </li>
-        <li>
-          <label for="4" class="dias">10:15 AM a 10:55 AM</label>
-          <input type="checkbox" id="4" />
-          <br />
-        </li>
-        <li>
-          <label for="5" class="dias">11:00 AM a 11:40 AM</label>
-          <input type="checkbox" id="5" />
-          <br />
-        </li>
-        <li>
-          <label for="6" class="dias">11:45 AM a 12:25 PM</label>
-          <input type="checkbox" id="6" />
-          <br />
-        </li>
-        <li>
-          <label for="7" class="dias">12:25 PM a 13:05 PM</label>
-          <input type="checkbox" id="7" />
-          <br />
-        </li>
-        <li>
-          <label for="8" class="dias">13:05 PM a 13:45 PM</label>
-          <input type="checkbox" id="8" />
-          <br />
-        </li>
-        <li>
-          <label for="9" class="dias">13:50 PM a 14:30 PM</label>
-          <input type="checkbox" id="9" />
-          <br />
-        </li>
-        <li>
-          <label for="10" class="dias">14:30 PM a 15:10 PM</label>
-          <input type="checkbox" id="11" />
-          <br />
-        </li>
-        <li>
-          <label for="11" class="dias">15:15 PM a 15:55 PM</label>
-          <input type="checkbox" id="11" />
-          <br />
-        </li>
-        <li>
-          <label for="12" class="dias">15:55 PM a 16:35 PM</label>
-          <input type="checkbox" id="12" />
-          <br />
-        </li>
-      </ul>
-      <br />
 
-      <!--MIÉRCOLES-->
-      <input
-        type="checkbox"
-        id="miercoles"
-        name="miercoles"
-        onclick="DespliegaHorarios()"
-      />
-      <label for="miercoles" class="dias">Miércoles</label>
-      <ul id="ul-miercoles" hidden>
-        <li>
-          <label for="1" class="dias">8:00 AM a 8:40 AM</label>
-          <input type="checkbox" id="1" />
+          <!--VIERNES-->
+          <input
+            type="checkbox"
+            id="viernes"
+            name="viernes"
+            onclick="DespliegaHorarios()"
+          />
+          <label for="viernes" class="dias">Viernes</label>
+          <ul id="ul-viernes" hidden>
+            <li>
+              <label for="1" class="dias">8:00 AM a 8:40 AM</label>
+              <input type="checkbox" id="1" />
+              <br />
+            </li>
+            <li>
+              <label for="2" class="dias">8:40 AM a 9:20 AM</label>
+              <input type="checkbox" id="2" />
+              <br />
+            </li>
+            <li>
+              <label for="3" class="dias">9:25 AM a 10:05 AM</label>
+              <input type="checkbox" id="3" />
+              <br />
+            </li>
+            <li>
+              <label for="4" class="dias">10:15 AM a 10:55 AM</label>
+              <input type="checkbox" id="4" />
+              <br />
+            </li>
+            <li>
+              <label for="5" class="dias">11:00 AM a 11:40 AM</label>
+              <input type="checkbox" id="5" />
+              <br />
+            </li>
+            <li>
+              <label for="6" class="dias">11:45 AM a 12:25 PM</label>
+              <input type="checkbox" id="6" />
+              <br />
+            </li>
+            <li>
+              <label for="7" class="dias">12:25 PM a 13:05 PM</label>
+              <input type="checkbox" id="7" />
+              <br />
+            </li>
+            <li>
+              <label for="8" class="dias">13:05 PM a 13:45 PM</label>
+              <input type="checkbox" id="8" />
+              <br />
+            </li>
+            <li>
+              <label for="9" class="dias">13:50 PM a 14:30 PM</label>
+              <input type="checkbox" id="9" />
+              <br />
+            </li>
+            <li>
+              <label for="10" class="dias">14:30 PM a 15:10 PM</label>
+              <input type="checkbox" id="11" />
+              <br />
+            </li>
+            <li>
+              <label for="11" class="dias">15:15 PM a 15:55 PM</label>
+              <input type="checkbox" id="11" />
+              <br />
+            </li>
+            <li>
+              <label for="12" class="dias">15:55 PM a 16:35 PM</label>
+              <input type="checkbox" id="12" />
+              <br />
+            </li>
+          </ul>
           <br />
-        </li>
-        <li>
-          <label for="2" class="dias">8:40 AM a 9:20 AM</label>
-          <input type="checkbox" id="2" />
           <br />
-        </li>
-        <li>
-          <label for="3" class="dias">9:25 AM a 10:05 AM</label>
-          <input type="checkbox" id="3" />
-          <br />
-        </li>
-        <li>
-          <label for="4" class="dias">10:15 AM a 10:55 AM</label>
-          <input type="checkbox" id="4" />
-          <br />
-        </li>
-        <li>
-          <label for="5" class="dias">11:00 AM a 11:40 AM</label>
-          <input type="checkbox" id="5" />
-          <br />
-        </li>
-        <li>
-          <label for="6" class="dias">11:45 AM a 12:25 PM</label>
-          <input type="checkbox" id="6" />
-          <br />
-        </li>
-        <li>
-          <label for="7" class="dias">12:25 PM a 13:05 PM</label>
-          <input type="checkbox" id="7" />
-          <br />
-        </li>
-        <li>
-          <label for="8" class="dias">13:05 PM a 13:45 PM</label>
-          <input type="checkbox" id="8" />
-          <br />
-        </li>
-        <li>
-          <label for="9" class="dias">13:50 PM a 14:30 PM</label>
-          <input type="checkbox" id="9" />
-          <br />
-        </li>
-        <li>
-          <label for="10" class="dias">14:30 PM a 15:10 PM</label>
-          <input type="checkbox" id="11" />
-          <br />
-        </li>
-        <li>
-          <label for="11" class="dias">15:15 PM a 15:55 PM</label>
-          <input type="checkbox" id="11" />
-          <br />
-        </li>
-        <li>
-          <label for="12" class="dias">15:55 PM a 16:35 PM</label>
-          <input type="checkbox" id="12" />
-          <br />
-        </li>
-      </ul>
-      <br />
 
-      <!--JUEVES-->
-      <input
-        type="checkbox"
-        id="jueves"
-        name="jueves"
-        onclick="DespliegaHorarios()"
-      />
-      <label for="jueves" class="dias">Jueves</label>
-      <ul id="ul-jueves" hidden>
-        <li>
-          <label for="1" class="dias">8:00 AM a 8:40 AM</label>
-          <input type="checkbox" id="1" />
-          <br />
-        </li>
-        <li>
-          <label for="2" class="dias">8:40 AM a 9:20 AM</label>
-          <input type="checkbox" id="2" />
-          <br />
-        </li>
-        <li>
-          <label for="3" class="dias">9:25 AM a 10:05 AM</label>
-          <input type="checkbox" id="3" />
-          <br />
-        </li>
-        <li>
-          <label for="4" class="dias">10:15 AM a 10:55 AM</label>
-          <input type="checkbox" id="4" />
-          <br />
-        </li>
-        <li>
-          <label for="5" class="dias">11:00 AM a 11:40 AM</label>
-          <input type="checkbox" id="5" />
-          <br />
-        </li>
-        <li>
-          <label for="6" class="dias">11:45 AM a 12:25 PM</label>
-          <input type="checkbox" id="6" />
-          <br />
-        </li>
-        <li>
-          <label for="7" class="dias">12:25 PM a 13:05 PM</label>
-          <input type="checkbox" id="7" />
-          <br />
-        </li>
-        <li>
-          <label for="8" class="dias">13:05 PM a 13:45 PM</label>
-          <input type="checkbox" id="8" />
-          <br />
-        </li>
-        <li>
-          <label for="9" class="dias">13:50 PM a 14:30 PM</label>
-          <input type="checkbox" id="9" />
-          <br />
-        </li>
-        <li>
-          <label for="10" class="dias">14:30 PM a 15:10 PM</label>
-          <input type="checkbox" id="11" />
-          <br />
-        </li>
-        <li>
-          <label for="11" class="dias">15:15 PM a 15:55 PM</label>
-          <input type="checkbox" id="11" />
-          <br />
-        </li>
-        <li>
-          <label for="12" class="dias">15:55 PM a 16:35 PM</label>
-          <input type="checkbox" id="12" />
-          <br />
-        </li>
-      </ul>
-      <br />
+          <!-- <h3 class="subTitulos">SubTitulo</h3>
+        <p class="texto">Texto</p>
+        --></div>
+      </div>
+    </div>
 
-      <!--VIERNES-->
-      <input
-        type="checkbox"
-        id="viernes"
-        name="viernes"
-        onclick="DespliegaHorarios()"
-      />
-      <label for="viernes" class="dias">Viernes</label>
-      <ul id="ul-viernes" hidden>
-        <li>
-          <label for="1" class="dias">8:00 AM a 8:40 AM</label>
-          <input type="checkbox" id="1" />
-          <br />
-        </li>
-        <li>
-          <label for="2" class="dias">8:40 AM a 9:20 AM</label>
-          <input type="checkbox" id="2" />
-          <br />
-        </li>
-        <li>
-          <label for="3" class="dias">9:25 AM a 10:05 AM</label>
-          <input type="checkbox" id="3" />
-          <br />
-        </li>
-        <li>
-          <label for="4" class="dias">10:15 AM a 10:55 AM</label>
-          <input type="checkbox" id="4" />
-          <br />
-        </li>
-        <li>
-          <label for="5" class="dias">11:00 AM a 11:40 AM</label>
-          <input type="checkbox" id="5" />
-          <br />
-        </li>
-        <li>
-          <label for="6" class="dias">11:45 AM a 12:25 PM</label>
-          <input type="checkbox" id="6" />
-          <br />
-        </li>
-        <li>
-          <label for="7" class="dias">12:25 PM a 13:05 PM</label>
-          <input type="checkbox" id="7" />
-          <br />
-        </li>
-        <li>
-          <label for="8" class="dias">13:05 PM a 13:45 PM</label>
-          <input type="checkbox" id="8" />
-          <br />
-        </li>
-        <li>
-          <label for="9" class="dias">13:50 PM a 14:30 PM</label>
-          <input type="checkbox" id="9" />
-          <br />
-        </li>
-        <li>
-          <label for="10" class="dias">14:30 PM a 15:10 PM</label>
-          <input type="checkbox" id="11" />
-          <br />
-        </li>
-        <li>
-          <label for="11" class="dias">15:15 PM a 15:55 PM</label>
-          <input type="checkbox" id="11" />
-          <br />
-        </li>
-        <li>
-          <label for="12" class="dias">15:55 PM a 16:35 PM</label>
-          <input type="checkbox" id="12" />
-          <br />
-        </li>
-      </ul>
-      <br />
-      <br />
+    <!--Aca esta la barrita, el navbar-->
+    <div
+      id="barraNavbar"
+      class="justify-content-between navbar navbar-expand-lg"
+    >
+      <div class="d-flex">
+        <a id="marcaNavbar" class="navbar-brand" href="#">Urbanaut</a>
+      </div>
+      <!--
+				<div id="botonesNavbar" class="d-flex">
+				<button class="botonNavbar" onclick="botonInicio()">Inicio</button>
+				<button class="botonNavbar" onclick="botonMapa()">Mapa</button>
+				<button class="botonNavbar" onclick="botonOpciones()">Opciones</button>
+				<button class="botonNavbar" onclick="botonCuenta()">Cuenta</button>
 
-      <center>
-        <button class="comenzar">Comenzar</button>
-      </center>
+				</div>
+			-->
+      <button
+        id="botonHamburguesa"
+        class="navbar-toggler my-auto"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#botonesNavbar"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div
+        id="botonesNavbar"
+        class="collapse navbar-collapse justify-content-end text-end"
+      >
+        <!-- Links de la navbar -->
+        <ul class="navbar-nav">
+          <li class="nav-item item-navbar">
+            <a class="nav-link link-navbar" href="#">
+              <button class="btn rounded">Inicio</button>
+            </a>
+          </li>
+          <li class="nav-item item-navbar">
+            <a class="nav-link link-navbar" href="#">
+              <button class="btn rounded">Ingresar</button>
+            </a>
+          </li>
+        </ul>
+      </div>
     </div>
 
     <!-- SELECCIÓN DE HORARIOS-->
     <script>
       function DespliegaHorarios() {
-        var tarjeta = document.getElementById("tarjeta");
+        var tarjeta = document.getElementById("cajaCrearCuenta");
 
         /*LUNES*/
         ulLun = document.getElementById("ul-lunes");
