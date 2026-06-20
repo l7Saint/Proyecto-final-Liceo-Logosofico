@@ -1,0 +1,22 @@
+services:
+  apache:
+    build: src/
+    ports:
+      - "8080:80"
+    depends_on:
+      - mariadb
+
+  mariadb:
+    image: mariadb:11
+    environment:
+      MARIADB_ROOT_PASSWORD: rootpassword
+      MARIADB_DATABASE: myapp
+      MARIADB_USER: appuser
+      MARIADB_PASSWORD: apppassword
+    ports:
+    - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data:
