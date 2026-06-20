@@ -123,6 +123,66 @@
       padding-top: 1rem;
       padding-bottom: 1rem;
     }
+    .textoInput {
+      color: #67878a;
+      font-weight: lighter;
+      font-family: "Open Sans", sans-serif;
+      padding-left: 1rem;
+    }
+
+    .datos {
+      border-radius: 5px;
+      border-color: #d9d9d9;
+      border: 2px 2px solid;
+      cursor: text;
+      width: 50%;
+      margin-left: 1rem;
+      transition: 300ms ease-in-out;
+      background-color: #e7e7e7;
+    }
+
+    .datos:focus {
+      transform: scale(1.05);
+      background-color: whitesmoke;
+    }
+    #tituloIngresar {
+      padding-left: 1rem;
+    }
+
+    .btnAcceder {
+      background: linear-gradient(#285357 0 0) left / 0% 100% no-repeat;
+      color: #285357;
+      border: 2px solid #285357;
+      transition:
+        background-size 0.3s ease,
+        color 0.3s ease;
+      margin-left: 1rem;
+      position: relative;
+      font-weight: bolder;
+      cursor: pointer;
+    }
+
+    .btnAcceder:hover {
+      background-size: 100% 100%;
+      color: white;
+    }
+
+    .btnRecuperar {
+      color: #d6e0e1;
+      font-weight: bolder;
+      cursor: pointer;
+      background-color: #285357;
+      border-radius: 10px;
+      border: 2px 2px solid;
+      border-color: #67878a;
+      margin-left: 1rem;
+    }
+
+    .textoRecuperar {
+      color: #21434d;
+      font-family: "Open Sans", sans-serif;
+      font-weight: bold;
+    }
   </style>
   <body>
     <div
@@ -131,10 +191,27 @@
     >
       <div id="contenido" class="container-lg">
         <div id="cajaIngresar">
-          <h1 class="titulos">Titulo</h1>
-          <h3 class="subTitulos">SubTitulo</h3>
+          <h1 class="titulos" id="tituloIngresar">Ingresar</h1>
+          <label for="email" class="textoInput">Email</label>
+          <br />
+          <input type="email" id="email" class="datos" />
+          <br /><br />
+          <label for="contraseña" class="textoInput">Contraseña</label>
+          <br />
+          <input type="password" id="contraseña" class="datos" />
+          <br /><br />
+          <input type="submit" value="Acceder" class="btnAcceder" />
+          <!--  <h3 class="subTitulos">SubTitulo</h3>
           <p class="texto">Texto</p>
+          -->
         </div>
+        <center>
+          <br />
+          <label class="textoRecuperar" for="btnRecuperar"
+            >Olvidé mi contraseña...</label
+          >
+          <input type="submit" value="Recuperar" class="btnRecuperar" />
+        </center>
       </div>
     </div>
 
