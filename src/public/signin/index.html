@@ -1,1030 +1,198 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <!-- bootstrap cdn -->
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
-      crossorigin="anonymous"
-    />
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
-      crossorigin="anonymous"
-    ></script>
-    <!-- cdn de google para la fuente de Open Sans -->
-    <link
-      href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="../../assets/css/main_style.css" />
-  </head>
-
-  <style>
-    :root {
-      /*colores*/
-      --color-fondo: #88b6c2;
-      --color-navbar: #32545c;
-      --color-boton-navbar: #1b3237;
-      --color-titulos: #32545c;
-      --color-subtitulos: #497c88;
-      --color-texto: #21434d;
-
-      --padding-navbar: 1rem;
-    }
-
-    body {
-      background-color: var(--color-fondo);
-      padding-bottom: 100px;
-      font-size: 19px;
-      font-family: "Open Sans", sans-serif;
-    }
-
-    #barraNavbar {
-      width: 100%;
-      background-color: var(--color-navbar);
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      /*fuerza a que la navbar se superponga sobre todos los elementos*/
-      z-index: 1050;
-    }
-
-    #marcaNavbar {
-      color: white;
-      font-size: 30px;
-      font-family: Verdana, Geneva, Tahoma, sans-serif;
-      font-weight: bold;
-      /*aca uso la variable, si despues le pongo "--padding-navbar: 3rem;"
-	  se va a ver afectado en todos los "var(--padding-navbar);"*/
-      margin-left: var(--padding-navbar);
-      margin-right: var(--padding-navbar);
-    }
-
-    #botonesNavbar {
-      margin-left: var(--padding-navbar);
-      margin-right: var(--padding-navbar);
-      gap: 0.4rem;
-    }
-
-    /*aca sobreescribo 2 atributos de una de las clases de bootstrap*/
-    .btn {
-      background-color: var(--color-boton-navbar);
-      color: white;
-    }
-
-    #botonHamburguesa {
-      margin-left: var(--padding-navbar);
-      margin-right: var(--padding-navbar);
-    }
-
-    .titulos {
-      /*font-family:Verdana, Geneva, Tahoma, sans-serif;*/
-      font-weight: bold;
-      color: var(--color-titulos);
-    }
-
-    .subTitulos {
-      /*font-family:Verdana, Geneva, Tahoma, sans-serif;*/
-      color: var(--color-subtitulos);
-    }
-
-    .texto {
-      /*font-family:Verdana, Geneva, Tahoma, sans-serif;*/
-      color: var(--color-texto);
-    }
-
-    #contenido {
-      text-align: center;
-      margin-top: 0.5rem;
-    }
-
-    @media (min-width: 992px) {
-      #contenido {
-        text-align: left;
-      }
-
-      /*aca cambio el padding del navbar
-	  para las pantallas grandes ( > o = 992px ) */
-      :root {
-        --padding-navbar: 2.4rem;
-      }
-    }
-
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+		<!-- bootstrap cdn -->
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous"/>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+		<!-- cdn de google para la fuente de Open Sans -->
+		<link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet"/>
+		<link rel="stylesheet" href="../../assets/css/main_style.css"/>
+	</head>
+	<style>
     #cajaCrearCuenta {
-      background-color: whitesmoke;
-      border-radius: 15px;
+	    background-color: whitesmoke;
+	    border-radius: 15px;
 
-      padding-top: 1rem;
-      padding-bottom: 1rem;
+	    padding-top: 1rem;
+	    padding-bottom: 1rem;
     }
 
     .textoInput {
-      color: #67878a;
-      font-weight: lighter;
-      font-family: "Open Sans", sans-serif;
+	    color: #67878a;
+	    font-weight: lighter;
+	    font-family: "Open Sans", sans-serif;
     }
 
     .datos {
-      border-radius: 5px;
-      border-color: #d9d9d9;
-      border: 2px 2px solid;
-      cursor: text;
-      width: 50%;
+	    border-radius: 5px;
+	    border-color: #d9d9d9;
+	    border: 2px 2px solid;
+	    cursor: text;
+	    width: 50%;
     }
 
     .btnComenzar {
-      color: #285357;
-      font-weight: bolder;
-      cursor: pointer;
-      background-color: #67878a;
-      border-radius: 10px;
-      border: 2px 2px solid;
-      border-color: #67878a;
+	    color: #285357;
+	    font-weight: bolder;
+	    cursor: pointer;
+	    background-color: #67878a;
+	    border-radius: 10px;
+	    border: 2px 2px solid;
+	    border-color: #67878a;
     }
     .btnComenzar:hover {
-      background-color: #455c5e;
-      color: whitesmoke;
+	    background-color: #455c5e;
+	    color: whitesmoke;
     }
-  </style>
-  <body>
-    <div
-      id="contenedorPrincipal"
-      class="d-flex container-fluid align-items-center"
-    >
-      <div id="contenido" class="container-lg">
-        <form action="signin.php" method="POST">
-          <div id="cajaCrearCuenta" class="d-flex justify-content-around">
-            <div id="cajaDatosUsuario">
-              <h1 class="titulos">Crear Cuenta</h1>
-              <label class="textoInput" for="nombre">Nombre</label>
-              <br />
-              <input type="text" id="nombre" name="nombre" class="datos" />
-              <br />
-              <br />
-              <label class="textoInput" for="apellido" class="apellido"
-                >Apellido</label
-              >
-              <br />
-              <input type="text" id="apellido" name="apellido" class="datos" />
-              <br />
-              <br />
-              <label class="textoInput" for="email" class="email">Email</label>
-              <br />
-              <input type="email" id="email" name="email" class="datos" />
-              <br />
-              <br />
-              <label class="textoInput" for="contraseña">Constraseña</label>
-              <br />
-              <input
-                type="password"
-                id="contraseña"
-                name="contraseña"
-                class="datos"
-              />
-              <br />
-              <br />
-              <label for="marca_modelo" class="textoInput"
-                >Marca/Modelo Auto</label
-              >
-              <br />
-              <input
-                type="text"
-                id="marca_modelo"
-                name="marca_modelo"
-                class="datos"
-              />
-              <br />
-              <br />
-              <input type="submit" value="Comenzar" class="btnComenzar" />
-            </div>
-            <div id="cajaHorarios">
-              <h2 class="subTitulos">Horarios</h2>
-              <!--CAMBIOS: los checkbox se guardan en un array, pertenenen al mismo grupo
-              les puse un value a cada uno de los horarios, con el horario correspondiente, es el dato/valor que recibe php)-->
-              <!--LUNES -->
-              <input
-                type="checkbox"
-                id="lunes"
-                name="lunes"
-                value="Lunes"
-                onclick="DespliegaHorarios()"
-              />
-              <label for="lunes" class="dias">Lunes</label>
-              <ul id="ul-lunes" hidden>
-                <li>
-                  <label for="lunes1" class="dias">8:00 AM a 8:40 AM</label>
-                  <input
-                    type="checkbox"
-                    id="lunes1"
-                    name="horariosLunes[]"
-                    value="8:00 AM a 8:40 AM"
-                  />
-                  <br />
-                </li>
-                <li>
-                  <label for="lunes2" class="dias">8:40 AM a 9:20 AM</label>
-                  <input
-                    type="checkbox"
-                    id="lunes2"
-                    name="horariosLunes[]"
-                    value="8:40 AM a 9:20 AM"
-                  />
-                  <br />
-                </li>
-                <li>
-                  <label for="lunes3" class="dias">9:25 AM a 10:05 AM</label>
-                  <input
-                    type="checkbox"
-                    id="lunes3"
-                    name="horariosLunes[]"
-                    value="9:25 AM a 10:05 AM"
-                  />
-                  <br />
-                </li>
-                <li>
-                  <label for="lunes4" class="dias">10:15 AM a 10:55 AM</label>
-                  <input
-                    type="checkbox"
-                    id="lunes4"
-                    name="horariosLunes[]"
-                    value="10:15 AM a 10:55 AM"
-                  />
-                  <br />
-                </li>
-                <li>
-                  <label for="lunes5" class="dias">11:00 AM a 11:40 AM</label>
-                  <input
-                    type="checkbox"
-                    id="lunes5"
-                    name="horariosLunes[]"
-                    value="11:00 AM a 11:40 AM"
-                  />
-                  <br />
-                </li>
-                <li>
-                  <label for="lunes6" class="dias">11:45 AM a 12:25 PM</label>
-                  <input
-                    type="checkbox"
-                    id="lunes6"
-                    name="horariosLunes[]"
-                    value="11:45 AM a 12:25 PM"
-                  />
-                  <br />
-                </li>
-                <li>
-                  <label for="lunes7" class="dias">12:25 PM a 13:05 PM</label>
-                  <input
-                    type="checkbox"
-                    id="lunes7"
-                    name="horariosLunes[]"
-                    value="12:25 PM a 13:05 PM"
-                  />
-                  <br />
-                </li>
-                <li>
-                  <label for="lunes8" class="dias">13:05 PM a 13:45 PM</label>
-                  <input
-                    type="checkbox"
-                    id="lunes8"
-                    name="horariosLunes[]"
-                    value="13:05 PM a 13:45 PM"
-                  />
-                  <br />
-                </li>
-                <li>
-                  <label for="lunes9" class="dias">13:50 PM a 14:30 PM</label>
-                  <input
-                    type="checkbox"
-                    id="lunes9"
-                    name="horariosLunes[]"
-                    value="13:50 PM a 14:30 PM"
-                  />
-                  <br />
-                </li>
-                <li>
-                  <label for="lunes10" class="dias">14:30 PM a 15:10 PM</label>
-                  <input
-                    type="checkbox"
-                    id="lunes10"
-                    name="horariosLunes[]"
-                    value="14:30 PM a 15:10 PM"
-                  />
-                  <br />
-                </li>
-                <li>
-                  <label for="lunes11" class="dias">15:15 PM a 15:55 PM</label>
-                  <input
-                    type="checkbox"
-                    id="lunes11"
-                    name="horariosLunes[]"
-                    value="15:15 PM a 15:55 PM"
-                  />
-                  <br />
-                </li>
-                <li>
-                  <label for="lunes12" class="dias">15:55 PM a 16:35 PM</label>
-                  <input
-                    type="checkbox"
-                    id="lunes12"
-                    name="horariosLunes[]"
-                    value="15:55 PM a 16:35 PM"
-                  />
-                  <br />
-                </li>
-              </ul>
-              <br />
+	</style>
+	<body>
+		<div id="contenedorPrincipal" class="d-flex container-fluid align-items-center">
+			<div id="contenido" class="container-lg">
+				<form action="signin.php" method="POST">
+					<div id="cajaCrearCuenta" class="d-flex justify-content-around">
+						<div id="cajaDatosUsuario">
+							<h1 class="titulos">Crear Cuenta</h1>
+							<label class="textoInput" for="nombre">Nombre</label>
+							<input type="text" id="nombre" name="nombre" class="datos" />
 
-              <!--MARTES-->
-              <input
-                type="checkbox"
-                id="martes"
-                name="martes"
-                value="Martes"
-                onclick="DespliegaHorarios()"
-              />
-              <label for="martes" class="dias">Martes</label>
-              <ul id="ul-martes" hidden>
-                <li>
-                  <label for="martes1" class="dias">8:00 AM a 8:40 AM</label>
-                  <input
-                    type="checkbox"
-                    id="martes1"
-                    name="horariosMartes[]"
-                    value="8:00 AM a 8:40 AM"
-                  />
-                  <br />
-                </li>
-                <li>
-                  <label for="martes2" class="dias">8:40 AM a 9:20 AM</label>
-                  <input
-                    type="checkbox"
-                    id="martes2"
-                    name="horariosMartes[]"
-                    value="8:40 AM a 9:20 AM"
-                  />
-                  <br />
-                </li>
-                <li>
-                  <label for="martes3" class="dias">9:25 AM a 10:05 AM</label>
-                  <input
-                    type="checkbox"
-                    id="martes3"
-                    name="horariosMartes[]"
-                    value="9:25 AM a 10:05 AM"
-                  />
-                  <br />
-                </li>
-                <li>
-                  <label for="martes4" class="dias">10:15 AM a 10:55 AM</label>
-                  <input
-                    type="checkbox"
-                    id="martes4"
-                    name="horariosMartes[]"
-                    value="10:15 AM a 10:55 AM"
-                  />
-                  <br />
-                </li>
-                <li>
-                  <label for="martes5" class="dias">11:00 AM a 11:40 AM</label>
-                  <input
-                    type="checkbox"
-                    id="martes5"
-                    name="horariosMartes[]"
-                    value="11:00 AM a 11:40 AM"
-                  />
-                  <br />
-                </li>
-                <li>
-                  <label for="martes6" class="dias">11:45 AM a 12:25 PM</label>
-                  <input
-                    type="checkbox"
-                    id="martes6"
-                    name="horariosMartes[]"
-                    value="11:45 AM a 12:25 PM"
-                  />
-                  <br />
-                </li>
-                <li>
-                  <label for="martes7" class="dias">12:25 PM a 13:05 PM</label>
-                  <input
-                    type="checkbox"
-                    id="martes7"
-                    name="horariosMartes[]"
-                    value="12:25 PM a 13:05 PM"
-                  />
-                  <br />
-                </li>
-                <li>
-                  <label for="martes8" class="dias">13:05 PM a 13:45 PM</label>
-                  <input
-                    type="checkbox"
-                    id="martes8"
-                    name="horariosMartes[]"
-                    value="13:05 PM a 13:45 PM"
-                  />
-                  <br />
-                </li>
-                <li>
-                  <label for="martes9" class="dias">13:50 PM a 14:30 PM</label>
-                  <input
-                    type="checkbox"
-                    id="martes9"
-                    name="horariosMartes[]"
-                    value="13:50 PM a 14:30 PM"
-                  />
-                  <br />
-                </li>
-                <li>
-                  <label for="martes10" class="dias">14:30 PM a 15:10 PM</label>
-                  <input
-                    type="checkbox"
-                    id="martes10"
-                    name="horariosMartes[]"
-                    value="14:30 PM a 15:10 PM"
-                  />
-                  <br />
-                </li>
-                <li>
-                  <label for="martes11" class="dias">15:15 PM a 15:55 PM</label>
-                  <input
-                    type="checkbox"
-                    id="martes11"
-                    name="horariosMartes[]"
-                    value="15:15 PM a 15:55 PM"
-                  />
-                  <br />
-                </li>
-                <li>
-                  <label for="martes12" class="dias">15:55 PM a 16:35 PM</label>
-                  <input
-                    type="checkbox"
-                    id="martes12"
-                    name="horariosMartes[]"
-                    value="15:55 PM a 16:35 PM"
-                  />
-                  <br />
-                </li>
-              </ul>
-              <br />
+							<label class="textoInput" for="apellido" class="apellido">Apellido</label>
+							<input type="text" id="apellido" name="apellido" class="datos" />
 
-              <!--MIÉRCOLES-->
-              <input
-                type="checkbox"
-                id="miercoles"
-                name="miercoles"
-                value="Miércoles"
-                onclick="DespliegaHorarios()"
-              />
+							<label class="textoInput" for="email" class="email">Email</label>
+							<input type="email" id="email" name="email" class="datos" />
 
-              <label for="miercoles" class="dias">Miércoles</label>
+							<label class="textoInput" for="contraseña">Constraseña</label>
+							<input type="password" id="contraseña" name="contraseña" class="datos"/>
 
-              <ul id="ul-miercoles" hidden>
-                <li>
-                  <label for="miercoles1" class="dias">8:00 AM a 8:40 AM</label>
-                  <input
-                    type="checkbox"
-                    id="miercoles1"
-                    name="horariosMiercoles[]"
-                    value="8:00 AM a 8:40 AM"
-                  />
-                </li>
+							<label for="marca_modelo" class="textoInput">Marca/Modelo Auto</label>
+							<input type="text" id="marca_modelo" name="marca_modelo" class="datos"/>
+							<input type="submit" value="Comenzar" class="btnComenzar" />
+						</div>
+						<div id="cajaHorarios">
+							<h2 class="subTitulos">Horarios</h2>
+							<div id="contenedorLunes">
+								<input type="checkbox" id="Lunes" name="dias[]" value="Lunes" onclick="despliegaHorarios('contenedorLunes')"/>
+								<label for="Lunes" class="dias">Lunes</label>	
+							</div>
+							<div id="contenedorMartes">
+								<input type="checkbox" id="Martes" name="dias[]" value="Martes" onclick="despliegaHorarios('contenedorMartes')"/>
+								<label for="Martes" class="dias">Martes</label>	
+							</div>
+							<div id="contenedorMiercoles">
+								<input type="checkbox" id="Miercoles" name="dias[]" value="Miercoles" onclick="despliegaHorarios('contenedorMiercoles')"/>
+								<label for="Miercoles" class="dias">Miercoles</label>	
+							</div>
+							<div id="contenedorJueves">
+								<input type="checkbox" id="Jueves" name="dias[]" value="Jueves" onclick="despliegaHorarios('contenedorJueves')"/>
+								<label for="Jueves" class="dias">Jueves</label>	
+							</div>
+							<div id="contenedorViernes">
+								<input type="checkbox" id="Viernes" name="dias[]" value="Viernes" onclick="despliegaHorarios('contenedorViernes')"/>
+								<label for="Viernes" class="dias">Viernes</label>	
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
 
-                <li>
-                  <label for="miercoles2" class="dias">8:40 AM a 9:20 AM</label>
-                  <input
-                    type="checkbox"
-                    id="miercoles2"
-                    name="horariosMiercoles[]"
-                    value="8:40 AM a 9:20 AM"
-                  />
-                </li>
+		<!--Aca esta la barrita, el navbar-->
+		<div id="barraNavbar" class="justify-content-between navbar navbar-expand-lg">
+			<div class="d-flex">
+				<a id="marcaNavbar" class="navbar-brand" href="#">Urbanaut</a>
+			</div>
+			<button id="botonHamburguesa" class="navbar-toggler my-auto" type="button" data-bs-toggle="collapse" data-bs-target="#botonesNavbar">
+			<span class="navbar-toggler-icon"></span>
+			</button>
+			<div id="botonesNavbar" class="collapse navbar-collapse justify-content-end text-end">
+				<!-- Links de la navbar -->
+				<ul class="navbar-nav">
+					<li class="nav-item item-navbar">
+						<a class="nav-link link-navbar" href="../login/index.html">
+							<button class="btn rounded">Ingresar</button>
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
 
-                <li>
-                  <label for="miercoles3" class="dias"
-                    >9:25 AM a 10:05 AM</label
-                  >
-                  <input
-                    type="checkbox"
-                    id="miercoles3"
-                    name="horariosMiercoles[]"
-                    value="9:25 AM a 10:05 AM"
-                  />
-                </li>
+		<!-- SELECCIÓN DE HORARIOS-->
+		<script>
+			const enumDias = {
+				LUN: 0,
+				MAR: 1,
+				MIE: 2,
+				JUE: 3,
+				VIE: 4
+			};
+			const Dias = [
+				"Lunes",	
+				"Martes",	
+				"Miercoles",	
+				"Jueves",	
+				"Viernes",	
+			]
+			const DESPLIEGAHORARIOS = [
+				false,
+				false,
+				false,
+				false,
+				false
+			];
+			const HORARIOS = [
+				"8:00 - 8:40",  // 0
+				"8:40 - 9:20",  // 1
+				"9:25 - 10:05", // 2
+				"10:15 - 10:55",// 3
+				"11:00 - 11:40",// 4
+				"11:00 - 11:40",// 5
+				"11:45 - 12:25",// 6
+				"12:25 - 13:05",// 7
+				"13:05 - 13:45",// 8
+				"13:50 - 14:30",// 9
+				"14:30 - 15:10",// 10
+				"15:15 - 15:55",// 11
+				"15:55 - 16:35" // 12
+			];
 
-                <li>
-                  <label for="miercoles4" class="dias"
-                    >10:15 AM a 10:55 AM</label
-                  >
-                  <input
-                    type="checkbox"
-                    id="miercoles4"
-                    name="horariosMiercoles[]"
-                    value="10:15 AM a 10:55 AM"
-                  />
-                </li>
+			function generarLiHorarioHora(dia, nhora){
+				var liHora = document.createElement("li");
+				// 'dia' tendria que ser por ejemplo: "Viernes"
 
-                <li>
-                  <label for="miercoles5" class="dias"
-                    >11:00 AM a 11:40 AM</label
-                  >
-                  <input
-                    type="checkbox"
-                    id="miercoles5"
-                    name="horariosMiercoles[]"
-                    value="11:00 AM a 11:40 AM"
-                  />
-                </li>
+				// 'nhora' tendria que ser el numero de la hora, por ejemplo: "5"
+				// que corresponderia a "11:00 - 11:40"
+				liHora.innerHTML = `
+<label for="`+dia+nhora+`" class="dias">`+HORARIOS[nhora]+`</label>
+<input
+	type="checkbox"
+	id="`+dia+nhora+`"
+	name="horarios`+dia+`[]"
+	value="`+HORARIOS[nhora]+`"
+/>
+`;
+				liHora.id = "li"+dia+nhora;
+				return liHora;
+			}
 
-                <li>
-                  <label for="miercoles6" class="dias"
-                    >11:45 AM a 12:25 PM</label
-                  >
-                  <input
-                    type="checkbox"
-                    id="miercoles6"
-                    name="horariosMiercoles[]"
-                    value="11:45 AM a 12:25 PM"
-                  />
-                </li>
+			function generarHorarios() {
+				for(dia = 0; dia < Dias.length; dia++){
+					var contenedorDia = 
+				}
+			}
 
-                <li>
-                  <label for="miercoles7" class="dias"
-                    >12:25 PM a 13:05 PM</label
-                  >
-                  <input
-                    type="checkbox"
-                    id="miercoles7"
-                    name="horariosMiercoles[]"
-                    value="12:25 PM a 13:05 PM"
-                  />
-                </li>
-
-                <li>
-                  <label for="miercoles8" class="dias"
-                    >13:05 PM a 13:45 PM</label
-                  >
-                  <input
-                    type="checkbox"
-                    id="miercoles8"
-                    name="horariosMiercoles[]"
-                    value="13:05 PM a 13:45 PM"
-                  />
-                </li>
-
-                <li>
-                  <label for="miercoles9" class="dias"
-                    >13:50 PM a 14:30 PM</label
-                  >
-                  <input
-                    type="checkbox"
-                    id="miercoles9"
-                    name="horariosMiercoles[]"
-                    value="13:50 PM a 14:30 PM"
-                  />
-                </li>
-
-                <li>
-                  <label for="miercoles10" class="dias"
-                    >14:30 PM a 15:10 PM</label
-                  >
-                  <input
-                    type="checkbox"
-                    id="miercoles10"
-                    name="horariosMiercoles[]"
-                    value="14:30 PM a 15:10 PM"
-                  />
-                </li>
-
-                <li>
-                  <label for="miercoles11" class="dias"
-                    >15:15 PM a 15:55 PM</label
-                  >
-                  <input
-                    type="checkbox"
-                    id="miercoles11"
-                    name="horariosMiercoles[]"
-                    value="15:15 PM a 15:55 PM"
-                  />
-                </li>
-
-                <li>
-                  <label for="miercoles12" class="dias"
-                    >15:55 PM a 16:35 PM</label
-                  >
-                  <input
-                    type="checkbox"
-                    id="miercoles12"
-                    name="horariosMiercoles[]"
-                    value="15:55 PM a 16:35 PM"
-                  />
-                </li>
-              </ul>
-              <br />
-              <!--JUEVES-->
-              <input
-                type="checkbox"
-                id="jueves"
-                name="jueves"
-                value="Jueves"
-                onclick="DespliegaHorarios()"
-              />
-
-              <label for="jueves" class="dias">Jueves</label>
-
-              <ul id="ul-jueves" hidden>
-                <li>
-                  <label for="jueves1" class="dias">8:00 AM a 8:40 AM</label>
-                  <input
-                    type="checkbox"
-                    id="jueves1"
-                    name="horariosJueves[]"
-                    value="8:00 AM a 8:40 AM"
-                  />
-                  <br />
-                </li>
-
-                <li>
-                  <label for="jueves2" class="dias">8:40 AM a 9:20 AM</label>
-                  <input
-                    type="checkbox"
-                    id="jueves2"
-                    name="horariosJueves[]"
-                    value="8:40 AM a 9:20 AM"
-                  />
-                  <br />
-                </li>
-
-                <li>
-                  <label for="jueves3" class="dias">9:25 AM a 10:05 AM</label>
-                  <input
-                    type="checkbox"
-                    id="jueves3"
-                    name="horariosJueves[]"
-                    value="9:25 AM a 10:05 AM"
-                  />
-                  <br />
-                </li>
-
-                <li>
-                  <label for="jueves4" class="dias">10:15 AM a 10:55 AM</label>
-                  <input
-                    type="checkbox"
-                    id="jueves4"
-                    name="horariosJueves[]"
-                    value="10:15 AM a 10:55 AM"
-                  />
-                  <br />
-                </li>
-
-                <li>
-                  <label for="jueves5" class="dias">11:00 AM a 11:40 AM</label>
-                  <input
-                    type="checkbox"
-                    id="jueves5"
-                    name="horariosJueves[]"
-                    value="11:00 AM a 11:40 AM"
-                  />
-                  <br />
-                </li>
-
-                <li>
-                  <label for="jueves6" class="dias">11:45 AM a 12:25 PM</label>
-                  <input
-                    type="checkbox"
-                    id="jueves6"
-                    name="horariosJueves[]"
-                    value="11:45 AM a 12:25 PM"
-                  />
-                  <br />
-                </li>
-
-                <li>
-                  <label for="jueves7" class="dias">12:25 PM a 13:05 PM</label>
-                  <input
-                    type="checkbox"
-                    id="jueves7"
-                    name="horariosJueves[]"
-                    value="12:25 PM a 13:05 PM"
-                  />
-                  <br />
-                </li>
-
-                <li>
-                  <label for="jueves8" class="dias">13:05 PM a 13:45 PM</label>
-                  <input
-                    type="checkbox"
-                    id="jueves8"
-                    name="horariosJueves[]"
-                    value="13:05 PM a 13:45 PM"
-                  />
-                  <br />
-                </li>
-
-                <li>
-                  <label for="jueves9" class="dias">13:50 PM a 14:30 PM</label>
-                  <input
-                    type="checkbox"
-                    id="jueves9"
-                    name="horariosJueves[]"
-                    value="13:50 PM a 14:30 PM"
-                  />
-                  <br />
-                </li>
-
-                <li>
-                  <label for="jueves10" class="dias">14:30 PM a 15:10 PM</label>
-                  <input
-                    type="checkbox"
-                    id="jueves10"
-                    name="horariosJueves[]"
-                    value="14:30 PM a 15:10 PM"
-                  />
-                  <br />
-                </li>
-
-                <li>
-                  <label for="jueves11" class="dias">15:15 PM a 15:55 PM</label>
-                  <input
-                    type="checkbox"
-                    id="jueves11"
-                    name="horariosJueves[]"
-                    value="15:15 PM a 15:55 PM"
-                  />
-                  <br />
-                </li>
-
-                <li>
-                  <label for="jueves12" class="dias">15:55 PM a 16:35 PM</label>
-                  <input
-                    type="checkbox"
-                    id="jueves12"
-                    name="horariosJueves[]"
-                    value="15:55 PM a 16:35 PM"
-                  />
-                  <br />
-                </li>
-              </ul>
-              <br />
-
-              <!--VIERNES-->
-              <input
-                type="checkbox"
-                id="viernes"
-                name="viernes"
-                value="Viernes"
-                onclick="DespliegaHorarios()"
-              />
-
-              <label for="viernes" class="dias">Viernes</label>
-
-              <ul id="ul-viernes" hidden>
-                <li>
-                  <label for="viernes1" class="dias">8:00 AM a 8:40 AM</label>
-                  <input
-                    type="checkbox"
-                    id="viernes1"
-                    name="horariosViernes[]"
-                    value="8:00 AM a 8:40 AM"
-                  />
-                  <br />
-                </li>
-
-                <li>
-                  <label for="viernes2" class="dias">8:40 AM a 9:20 AM</label>
-                  <input
-                    type="checkbox"
-                    id="viernes2"
-                    name="horariosViernes[]"
-                    value="8:40 AM a 9:20 AM"
-                  />
-                  <br />
-                </li>
-
-                <li>
-                  <label for="viernes3" class="dias">9:25 AM a 10:05 AM</label>
-                  <input
-                    type="checkbox"
-                    id="viernes3"
-                    name="horariosViernes[]"
-                    value="9:25 AM a 10:05 AM"
-                  />
-                  <br />
-                </li>
-
-                <li>
-                  <label for="viernes4" class="dias">10:15 AM a 10:55 AM</label>
-                  <input
-                    type="checkbox"
-                    id="viernes4"
-                    name="horariosViernes[]"
-                    value="10:15 AM a 10:55 AM"
-                  />
-                  <br />
-                </li>
-
-                <li>
-                  <label for="viernes5" class="dias">11:00 AM a 11:40 AM</label>
-                  <input
-                    type="checkbox"
-                    id="viernes5"
-                    name="horariosViernes[]"
-                    value="11:00 AM a 11:40 AM"
-                  />
-                  <br />
-                </li>
-
-                <li>
-                  <label for="viernes6" class="dias">11:45 AM a 12:25 PM</label>
-                  <input
-                    type="checkbox"
-                    id="viernes6"
-                    name="horariosViernes[]"
-                    value="11:45 AM a 12:25 PM"
-                  />
-                  <br />
-                </li>
-
-                <li>
-                  <label for="viernes7" class="dias">12:25 PM a 13:05 PM</label>
-                  <input
-                    type="checkbox"
-                    id="viernes7"
-                    name="horariosViernes[]"
-                    value="12:25 PM a 13:05 PM"
-                  />
-                  <br />
-                </li>
-
-                <li>
-                  <label for="viernes8" class="dias">13:05 PM a 13:45 PM</label>
-                  <input
-                    type="checkbox"
-                    id="viernes8"
-                    name="horariosViernes[]"
-                    value="13:05 PM a 13:45 PM"
-                  />
-                  <br />
-                </li>
-
-                <li>
-                  <label for="viernes9" class="dias">13:50 PM a 14:30 PM</label>
-                  <input
-                    type="checkbox"
-                    id="viernes9"
-                    name="horariosViernes[]"
-                    value="13:50 PM a 14:30 PM"
-                  />
-                  <br />
-                </li>
-
-                <li>
-                  <label for="viernes10" class="dias"
-                    >14:30 PM a 15:10 PM</label
-                  >
-                  <input
-                    type="checkbox"
-                    id="viernes10"
-                    name="horariosViernes[]"
-                    value="14:30 PM a 15:10 PM"
-                  />
-                  <br />
-                </li>
-
-                <li>
-                  <label for="viernes11" class="dias"
-                    >15:15 PM a 15:55 PM</label
-                  >
-                  <input
-                    type="checkbox"
-                    id="viernes11"
-                    name="horariosViernes[]"
-                    value="15:15 PM a 15:55 PM"
-                  />
-                  <br />
-                </li>
-
-                <li>
-                  <label for="viernes12" class="dias"
-                    >15:55 PM a 16:35 PM</label
-                  >
-                  <input
-                    type="checkbox"
-                    id="viernes12"
-                    name="horariosViernes[]"
-                    value="15:55 PM a 16:35 PM"
-                  />
-                  <br />
-                </li>
-              </ul>
-              <br />
-              <br />
-              <br />
-
-              <!-- <h3 class="subTitulos">SubTitulo</h3>
-        <p class="texto">Texto</p>
-        
-        -->
-            </div>
-          </div>
-        </form>
-      </div>
-    </div>
-
-    <!--Aca esta la barrita, el navbar-->
-    <div
-      id="barraNavbar"
-      class="justify-content-between navbar navbar-expand-lg"
-    >
-      <div class="d-flex">
-        <a id="marcaNavbar" class="navbar-brand" href="#">Urbanaut</a>
-      </div>
-      <!--
-				<div id="botonesNavbar" class="d-flex">
-				<button class="botonNavbar" onclick="botonInicio()">Inicio</button>
-				<button class="botonNavbar" onclick="botonMapa()">Mapa</button>
-				<button class="botonNavbar" onclick="botonOpciones()">Opciones</button>
-				<button class="botonNavbar" onclick="botonCuenta()">Cuenta</button>
-
-				</div>
-			-->
-      <button
-        id="botonHamburguesa"
-        class="navbar-toggler my-auto"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#botonesNavbar"
-      >
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div
-        id="botonesNavbar"
-        class="collapse navbar-collapse justify-content-end text-end"
-      >
-        <!-- Links de la navbar -->
-        <ul class="navbar-nav">
-          <li class="nav-item item-navbar">
-            <a class="nav-link link-navbar" href="../login/index.html">
-              <button class="btn rounded">Ingresar</button>
-            </a>
-          </li>
-        </ul>
-      </div>
-    </div>
-
-    <!-- SELECCIÓN DE HORARIOS-->
-    <script>
-      function DespliegaHorarios() {
-        var tarjeta = document.getElementById("cajaCrearCuenta");
-
-        /*LUNES*/
-        ulLun = document.getElementById("ul-lunes");
-        var asisteLunes = document.getElementById("lunes");
-        if (asisteLunes.checked) {
-          ulLun.hidden = false;
-        } else {
-          ulLun.hidden = true;
-        }
-
-        /*MARTES*/
-        ulMar = document.getElementById("ul-martes");
-        var asisteMartes = document.getElementById("martes");
-        if (asisteMartes.checked) {
-          ulMar.hidden = false;
-        } else {
-          ulMar.hidden = true;
-        }
-
-        /*MIERCOLES*/
-        ulMie = document.getElementById("ul-miercoles");
-        var asisteMiercoles = document.getElementById("miercoles");
-        if (asisteMiercoles.checked) {
-          ulMie.hidden = false;
-        } else {
-          ulMie.hidden = true;
-        }
-
-        /*JUEVES*/
-        ulJue = document.getElementById("ul-jueves");
-        var asisteJueves = document.getElementById("jueves");
-        if (asisteJueves.checked) {
-          ulJue.hidden = false;
-        } else {
-          ulJue.hidden = true;
-        }
-
-        ulVie = document.getElementById("ul-viernes");
-        var asisteViernes = document.getElementById("viernes");
-        if (asisteViernes.checked) {
-          ulVie.hidden = false;
-        } else {
-          ulVie.hidden = true;
-        }
-      }
-    </script>
-  </body>
+			function generarUlHorarioDia(dia){
+				// 'dia' tendria que ser por ejemplo: "Viernes"
+				var ulDia = document.createElement("ul");
+				for(nhora = 0; nhora < HORARIOS.length; i++){
+					var liHora = generarLiHorarioHora(dia, nhora);
+					ulDia.appendChild(liHora);
+				}
+				ulDia.id = "ul"+dia;
+				return ulDia;
+			}
+		</script>
+	</body>
 </html>

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Datos</title>
     <style>
-        :root { 
+	:root { 
 	/*colores*/
 	--color-fondo: #88B6C2;
 	--color-navbar: #32545C;
@@ -139,15 +139,14 @@ body{
 
     <h1 class = "titulos">Datos de registro:</h1>
     <p class="textoPregunta">¿Estos datos son correctos?</p>
- 
-    <?php
+
+<?php
 $nombrePersona = $_POST['nombre'];
 $apellidoPersona = $_POST['apellido'];
 $email = $_POST['email'];
 $contraseñaUsuario = $_POST['contraseña'];
 $marca_modeloAuto = $_POST['marca_modelo'];
-$marco_lunes = $_POST['lunes'] ?? "" ; /*Los signos de preguntan funcionan como un if, si el usuario puso una opción recibe el dato, 
-si lo dejó vacio, para que no de un error, lo deja vacío.*/
+$marco_lunes = $_POST['lunes'] ?? "" ; /*Los signos de preguntan funcionan como un if, si el usuario puso una opción recibe el dato, si lo dejó vacio, para que no de un error, lo deja vacío.*/
 $horario_lunes = $_POST["horariosLunes"] ?? []; 
 $marco_martes = $_POST['martes']?? "";
 $horario_martes = $_POST["horariosMartes"] ?? [];
@@ -166,28 +165,27 @@ echo "<p class='dato'><b class='etiqueta'>Marca y modelo del auto:</b> $marca_mo
 /*Recorro el array para imprimirlo*/
 echo "<b class='etiqueta'>Horarios seleccionados: </b>" . "<br>";
 echo $marco_lunes . "</br>";
-for ($i=0; $i < count($horario_lunes); $i++) { /*La función count() devuelve la cantidad de elementos que hay en el array, por lo que lo va recorriendo 
-dependiendo de cuántas funciones elegió el usuario, e imprime el contenido en la posición que esté ($i)*/
-    echo $horario_lunes[$i] . "<br>";
+for ($i=0; $i < count($horario_lunes); $i++) { /*La función count() devuelve la cantidad de elementos que hay en el array, por lo que lo va recorriendo dependiendo de cuántas funciones elegió el usuario, e imprime el contenido en la posición que esté ($i)*/
+	echo $horario_lunes[$i] . "<br>";
 }
 echo $marco_martes . "</br>";
 for ($i=0; $i < count($horario_martes); $i++) {
-    echo $horario_martes[$i] . "<br>";
+	echo $horario_martes[$i] . "<br>";
 }
 
 echo $marco_miercoles . "</br>";
 for ($i=0; $i < count($horario_miercoles); $i++) {
-    echo $horario_miercoles[$i] . "<br>";
+	echo $horario_miercoles[$i] . "<br>";
 }
 
 echo $marco_jueves . "</br>";
 for ($i=0; $i < count($horario_jueves); $i++) {
-    echo $horario_jueves[$i] . "<br>";
+	echo $horario_jueves[$i] . "<br>";
 }
 
 echo $marco_viernes . "</br>";
 for ($i=0; $i < count($horario_viernes); $i++) {
-    echo $horario_viernes[$i] . "<br>";
+	echo $horario_viernes[$i] . "<br>";
 }
 
 ?>
