@@ -118,7 +118,8 @@ body{
 		<div id="contenedorPrincipal" class="d-flex container-fluid align-items-center">
 			<div id="contenido" class="container-lg">
 				<h1 class="titulos">Este sitio esta fuera de servicio por ahora...</h1>
-				<button class="btn" onclick="window.location.href='index.html'">Volver</button>
+				<button class="btn" onclick="window.location.href='index.html'">Volver</button> 
+               
 			</div>
 		</div>
 
