@@ -12,85 +12,105 @@
 		<link rel="stylesheet" href="../../assets/css/main_style.css"/>
 	</head>
 	<style>
-    #cajaCrearCuenta {
-	    background-color: whitesmoke;
-	    border-radius: 15px;
+.li-hora {
+	font-size: 15px;
+}
 
-	    padding-top: 1rem;
-	    padding-bottom: 1rem;
-    }
+#cajaCrearCuenta {
+	background-color: whitesmoke;
+	border-radius: 15px;
 
-    .textoInput {
-	    color: #67878a;
-	    font-weight: lighter;
-	    font-family: "Open Sans", sans-serif;
-    }
+	padding: 1rem;
+}
 
-    .datos {
-	    border-radius: 5px;
-	    border-color: #d9d9d9;
-	    border: 2px 2px solid;
-	    cursor: text;
-	    width: 50%;
-    }
+#cajaHorarios {
+	width: 30%
+}
 
-    .btnComenzar {
-	    color: #285357;
-	    font-weight: bolder;
-	    cursor: pointer;
-	    background-color: #67878a;
-	    border-radius: 10px;
-	    border: 2px 2px solid;
-	    border-color: #67878a;
-    }
-    .btnComenzar:hover {
-	    background-color: #455c5e;
-	    color: whitesmoke;
-    }
+#cajaDatosUsuario {
+	width: 30%
+}
+
+.textoInput {
+	color: #67878a;
+	font-weight: lighter;
+	font-family: "Open Sans", sans-serif;
+}
+
+.datos {
+	border-radius: 5px;
+	border-color: #d9d9d9;
+	border: 2px 2px solid;
+	cursor: text;
+	width: 100%;
+	margin: 0.8rem;
+}
+
+.btnComenzar {
+	color: #285357;
+	font-weight: bolder;
+	cursor: pointer;
+	background-color: #67878a;
+	border-radius: 10px;
+	border: 2px 2px solid;
+	border-color: #67878a;
+}
+.btnComenzar:hover {
+	background-color: #455c5e;
+	color: whitesmoke;
+}
 	</style>
 	<body>
 		<div id="contenedorPrincipal" class="d-flex container-fluid align-items-center">
 			<div id="contenido" class="container-lg">
 				<form action="signin.php" method="POST">
-					<div id="cajaCrearCuenta" class="d-flex justify-content-around">
+					<div id="cajaCrearCuenta" class="d-flex justify-content-between">
 						<div id="cajaDatosUsuario">
 							<h1 class="titulos">Crear Cuenta</h1>
-							<label class="textoInput" for="nombre">Nombre</label>
-							<input type="text" id="nombre" name="nombre" class="datos" />
-
-							<label class="textoInput" for="apellido" class="apellido">Apellido</label>
-							<input type="text" id="apellido" name="apellido" class="datos" />
-
-							<label class="textoInput" for="email" class="email">Email</label>
-							<input type="email" id="email" name="email" class="datos" />
-
-							<label class="textoInput" for="contraseña">Constraseña</label>
-							<input type="password" id="contraseña" name="contraseña" class="datos"/>
-
-							<label for="marca_modelo" class="textoInput">Marca/Modelo Auto</label>
-							<input type="text" id="marca_modelo" name="marca_modelo" class="datos"/>
+							<div id="cajaCamposUsuario">
+								<div class="form-group">
+									<label class="textoInput" for="nombre">Nombre</label>
+									<input type="text" id="nombre" name="nombre" class="datos form-control" />
+								</div>
+								<div class="form-group">
+									<label class="textoInput" for="apellido" class="apellido">Apellido</label>
+									<input type="text" id="apellido" name="apellido" class="datos form-control" />
+								</div>
+								<div class="form-group">
+									<label class="textoInput" for="email" class="email">Email</label>
+									<input type="email" id="email" name="email" class="datos form-control" />
+								</div>
+								<div class="form-group">
+									<label class="textoInput" for="contraseña">Constraseña</label>
+									<input type="password" id="contraseña" name="contraseña" class="datos form-control"/>
+								</div>
+								<div class="form-group">
+									<label for="marca_modelo" class="textoInput">Marca/Modelo Auto</label>
+									<input type="text" id="marca_modelo" name="marca_modelo" class="datos form-control"/>
+								</div>
+							</div>
 							<input type="submit" value="Comenzar" class="btnComenzar" />
 						</div>
-						<div id="cajaHorarios">
+						<div id="cajaHorarios d-flex justify-content-end">
 							<h2 class="subTitulos">Horarios</h2>
 							<div id="contenedorLunes">
-								<input type="checkbox" id="Lunes" name="dias[]" value="Lunes" onclick="despliegaHorarios('contenedorLunes')"/>
+								<input type="checkbox" id="Lunes" name="dias[]" value="Lunes" onclick="despliegaHorarios('ulLunes')"/>
 								<label for="Lunes" class="dias">Lunes</label>	
 							</div>
 							<div id="contenedorMartes">
-								<input type="checkbox" id="Martes" name="dias[]" value="Martes" onclick="despliegaHorarios('contenedorMartes')"/>
+								<input type="checkbox" id="Martes" name="dias[]" value="Martes" onclick="despliegaHorarios('ulMartes')"/>
 								<label for="Martes" class="dias">Martes</label>	
 							</div>
 							<div id="contenedorMiercoles">
-								<input type="checkbox" id="Miercoles" name="dias[]" value="Miercoles" onclick="despliegaHorarios('contenedorMiercoles')"/>
+								<input type="checkbox" id="Miercoles" name="dias[]" value="Miercoles" onclick="despliegaHorarios('ulMiercoles')"/>
 								<label for="Miercoles" class="dias">Miercoles</label>	
 							</div>
 							<div id="contenedorJueves">
-								<input type="checkbox" id="Jueves" name="dias[]" value="Jueves" onclick="despliegaHorarios('contenedorJueves')"/>
+								<input type="checkbox" id="Jueves" name="dias[]" value="Jueves" onclick="despliegaHorarios('ulJueves')"/>
 								<label for="Jueves" class="dias">Jueves</label>	
 							</div>
 							<div id="contenedorViernes">
-								<input type="checkbox" id="Viernes" name="dias[]" value="Viernes" onclick="despliegaHorarios('contenedorViernes')"/>
+								<input type="checkbox" id="Viernes" name="dias[]" value="Viernes" onclick="despliegaHorarios('ulViernes')"/>
 								<label for="Viernes" class="dias">Viernes</label>	
 							</div>
 						</div>
@@ -105,7 +125,7 @@
 				<a id="marcaNavbar" class="navbar-brand" href="#">Urbanaut</a>
 			</div>
 			<button id="botonHamburguesa" class="navbar-toggler my-auto" type="button" data-bs-toggle="collapse" data-bs-target="#botonesNavbar">
-			<span class="navbar-toggler-icon"></span>
+				<span class="navbar-toggler-icon"></span>
 			</button>
 			<div id="botonesNavbar" class="collapse navbar-collapse justify-content-end text-end">
 				<!-- Links de la navbar -->
@@ -121,6 +141,7 @@
 
 		<!-- SELECCIÓN DE HORARIOS-->
 		<script>
+			var horariosCreados = false;
 			const enumDias = {
 				LUN: 0,
 				MAR: 1,
@@ -135,14 +156,14 @@
 				"Jueves",	
 				"Viernes",	
 			]
-			const DESPLIEGAHORARIOS = [
+			const DESPLIEGAHORAS = [
 				false,
 				false,
 				false,
 				false,
 				false
 			];
-			const HORARIOS = [
+			const HORAS = [
 				"8:00 - 8:40",  // 0
 				"8:40 - 9:20",  // 1
 				"9:25 - 10:05", // 2
@@ -165,33 +186,52 @@
 				// 'nhora' tendria que ser el numero de la hora, por ejemplo: "5"
 				// que corresponderia a "11:00 - 11:40"
 				liHora.innerHTML = `
-<label for="`+dia+nhora+`" class="dias">`+HORARIOS[nhora]+`</label>
+<label for="`+dia+nhora+`" class="dias">`+HORAS[nhora]+`</label>
 <input
 	type="checkbox"
 	id="`+dia+nhora+`"
 	name="horarios`+dia+`[]"
-	value="`+HORARIOS[nhora]+`"
+	value="`+nhora+`"
 />
 `;
 				liHora.id = "li"+dia+nhora;
 				return liHora;
 			}
 
-			function generarHorarios() {
-				for(dia = 0; dia < Dias.length; dia++){
-					var contenedorDia = 
-				}
-			}
-
 			function generarUlHorarioDia(dia){
 				// 'dia' tendria que ser por ejemplo: "Viernes"
 				var ulDia = document.createElement("ul");
-				for(nhora = 0; nhora < HORARIOS.length; i++){
+				for(nhora = 0; nhora < HORAS.length; nhora++){
 					var liHora = generarLiHorarioHora(dia, nhora);
+					liHora.classList.add("li-hora");
+					liHora.classList.add("d-flex");
+					liHora.classList.add("justify-content-end");
 					ulDia.appendChild(liHora);
 				}
 				ulDia.id = "ul"+dia;
 				return ulDia;
+			}
+
+			function generarHorarios() {
+				for(ndia = 0; ndia < Dias.length; ndia++){
+					var contenedorDia = document.getElementById("contenedor"+Dias[ndia]);
+					var ulDia = generarUlHorarioDia(Dias[ndia]);
+					ulDia.hidden = true;
+					contenedorDia.appendChild(ulDia);
+				}
+			}
+
+			function despliegaHorarios(idUl){
+				if(!horariosCreados){
+					generarHorarios();
+				}
+
+				var ul = document.getElementById(idUl);
+				if(ul.hidden){
+					ul.hidden = false;
+				} else {
+					ul.hidden = true;
+				}
 			}
 		</script>
 	</body>
