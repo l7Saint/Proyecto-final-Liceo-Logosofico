@@ -73,6 +73,7 @@
       background-size: 100% 100%;
       color: white;
     }
+   
 
     .btnRecuperar {
       color: #d6e0e1;
@@ -91,34 +92,37 @@
       font-weight: bold;
     }
   </style>
+
+
+
   <body>
-    <div
-      id="contenedorPrincipal"
-      class="d-flex container-fluid align-items-center"
-    >
+    <form action="login.php" method="post">
+    
+    <div id="contenedorPrincipal" class="d-flex justify-content-center align-items-center vh-100">
       <div id="contenido" class="container-lg">
         <div id="cajaIngresar">
           <h1 class="titulos" id="tituloIngresar">Ingresar</h1>
           <label for="email" class="textoInput">Email</label>
           <br />
-          <input type="email" id="email" class="datos" />
+          <input type="email" id="email" name="email" class="datos" />
           <br /><br />
-          <label for="contraseña" class="textoInput">Contraseña</label>
+          <label for="clave" class="textoInput">Contraseña</label>
           <br />
-          <input type="password" id="contraseña" class="datos" />
+          <input type="password" id="clave" name="clave" class="datos" />
           <br /><br />
-          <input type="submit" value="Acceder" class="btnAcceder" />
+           <input type="submit" value="Acceder" class="btnAcceder">
           <!--  <h3 class="subTitulos">SubTitulo</h3>
           <p class="texto">Texto</p>
           -->
+      
         </div>
         <center>
           <br />
           <label class="textoRecuperar" for="btnRecuperar"
             >Olvidé mi contraseña...</label
           >
-          <input type="submit" value="Recuperar" class="btnRecuperar" />
-        </center>
+          <button type="button" class="btnRecuperar" onclick="window.location.href='recuperar.php'">Recuperar</button>
+          </form>
       </div>
     </div>
 
@@ -155,9 +159,8 @@
         <!-- Links de la navbar -->
         <ul class="navbar-nav">
           <li class="nav-item item-navbar">
-            <a class="nav-link link-navbar" href="#">
-              <button class="btn rounded">Crear Cuenta</button>
-            </a>
+          <button class="btn" onclick="window.location.href='/Proyecto-final-Liceo-Logosofico/src/public/signin/index.html'">Crear Cuenta</button>
+            
           </li>
         </ul>
       </div>
