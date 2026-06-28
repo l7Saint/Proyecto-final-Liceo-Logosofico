@@ -125,6 +125,13 @@ body{
 
 	</style>
 	<body>
+
+		<form action="contacto.php" method="post"></form>
+		<form action="equipo.php" method="post"></form>
+		<form action="proceso.php" method="post"></form>
+		<form action="manual.php" method="post"></form>
+
+
 		<div id="contenedorPrincipal" class="d-flex container-fluid align-items-center">
 			<div id="contenido" class="container-lg">
 				<h1 class="titulos">¡Bienvenido Usuario!</h1>
@@ -140,7 +147,7 @@ body{
                 <div id="contenedorManual">
 
                 <h3 class="subTitulos">Manual</h3>
-                <button onclick="botonContacto()" class="botonesNosotros"><img src="imagenes/imagenManual.png"></button>
+                <button onclick="botonManual()" class="botonesNosotros"><img src="imagenes/imagenManual.png"></button>
 
                 </div>
                
@@ -193,4 +200,28 @@ body{
 			</div>
 		</div>
 	</body>
+
+
+
+<script>
+
+
+function botonContacto() {
+    window.location.href = "/Proyecto-final-Liceo-Logosofico/frontend/lucia/inicio/contacto.php";
+}
+function botonEquipo() {
+    window.location.href = "/Proyecto-final-Liceo-Logosofico/frontend/lucia/inicio/equipo.php";
+}
+function botonProceso() {
+    window.location.href = "/Proyecto-final-Liceo-Logosofico/frontend/lucia/inicio/proceso.php";
+}
+function botonManual() {
+    window.location.href = "/Proyecto-final-Liceo-Logosofico/frontend/lucia/inicio/manual.php";
+}
+</script>
+
+
+
+
+
 </html>
