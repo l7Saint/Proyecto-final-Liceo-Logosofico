@@ -1,8 +1,3 @@
-<?php
-  
-  ?>
-
-
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -16,12 +11,12 @@
 		<link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
 		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-<script src="../../assets/js/cargarNavbarLogin.js"></script>
+	<script src="../../assets/js/cargarNavbar.js"></script>
 </head>
 	<style>
 /*Esto es para crear variables de css,
   basicamente, desde aca puedo cambiar el padding
-  general de los elementos adentro del navbar, o los
+	  general de los elementos adentro del navbar, o los
   colores*/
 :root { 
 	/*colores*/
@@ -73,8 +68,6 @@ body{
 .btn {
 	background-color: var(--color-boton-navbar); 
 	color: white;
-    margin-top: 6rem;
-    padding: 10px 17px;
 }
 
 #botonHamburguesa {
@@ -85,14 +78,14 @@ body{
 .titulos{
 	/*font-family:Verdana, Geneva, Tahoma, sans-serif;*/
 	font-weight: bold;
-    font-size: 5rem;
 	color: var(--color-titulos);
-    padding-top: 13rem;
 }
 
 .subTitulos{
 	/*font-family:Verdana, Geneva, Tahoma, sans-serif;*/
 	color : var(--color-subtitulos);
+margin-top: 3rem;
+margin-bottom: 0.5rem;
 }
 
 .texto{
@@ -100,50 +93,118 @@ body{
 	color: var(--color-texto);
 }
 
-#contenido {
-	text-align: center;
-	margin-top: 0.5rem;	
-}
+ .botonesNosotros{
 
-@media (min-width: 992px) { 
-	#contenido {
-		text-align: left;
-	} 
+	 border: none;
+	 background: none;
 
-	/*aca cambio el padding del navbar
-	  para las pantallas grandes ( > o = 992px ) */
-	:root { 
-		--padding-navbar: 2.4rem;
-	}
-} 
+ }
+ .botonManual{
+	 border: none;
+	 background: none;
+ }
+
+
+
+
+ #contenido {
+	 text-align: center;
+	 margin-top: 0.5rem;	
+ }
+
+ @media (min-width: 992px) { 
+	 #contenido {
+		 text-align: left;
+	 } 
+
+	 /*aca cambio el padding del navbar
+	   para las pantallas grandes ( > o = 992px ) */
+	 :root { 
+		 --padding-navbar: 2.4rem;
+	 }
+ }
+
 	</style>
+
+	<!--
+		antiguo: <button onclick="botonContacto()" class="botonesNosotros"><img src="../../assets/img/imagenContacto.png"></button>
+
+		nuevo:
+
+		<a href="RUTAHACIAELARCHIVO">
+		<buttonclass="botonesNosotros"><img src="../../assets/img/imagenContacto.png"></button>
+		</a>
+
+		ejemplo:
+		<a href="./nosotros.php">
+		<buttonclass="botonesNosotros"><img src="../../assets/img/imagenContacto.png"></button>
+		</a>
+
+		./nosotros.php es una ruta local, que dice, dentro de esta carpeta a nosotros.php
+	-->
 	<body>
 		<div id="contenedorPrincipal" class="  d-flex container-fluid align-items-center">
 			<div id="contenido" class="container-lg">
-				<h1 class="titulos">Este sitio esta fuera de servicio por ahora...</h1>
-				<button class="btn" onclick="window.location.href='index.html'">Volver</button> 
-               
+				<h1 class="titulos">¡Bienvenido Usuario!</h1>
+				<div id="contenedorNosotros" >
+					<h3 class="subTitulos">Nosotros</h3>
+					<a href="contacto.php">
+						<button class="botonesNosotros"><img src="../../assets/img/imagenContacto.png"></button>
+					</a>
+					<a href="equipo.php">
+						<button class="botonesNosotros"><img src="../../assets/img/imagenEquipo.png"></button>
+					</a>
+					<a href="proceso.php">
+						<button class="botonesNosotros"><img src="../../assets/img/imagenProceso.png"></button>
+					</a>
+
+				</div>
+				<div id="contenedorManual">
+
+					<h3 class="subTitulos">Manual</h3>
+					<a href="manual.php">
+						<button onclick="botonManual()" class="botonesNosotros"><img src="../../assets/img/imagenManual.png"></button>
+					</a>
+
+				</div>
 			</div>
 		</div>
-
+		<div id="barraNavbar" class="justify-content-between navbar navbar-expand-lg">
+		</div>
 		<!--Aca esta la barrita, el navbar-->
+		<!--
 		<div id="barraNavbar" class="justify-content-between navbar navbar-expand-lg">
 			<div class="d-flex ">
 				<a id="marcaNavbar" class="navbar-brand" href="#">Urbanaut</a>
 			</div>
-			<!--
-				<div id="botonesNavbar" class="d-flex">
-				<button class="botonNavbar" onclick="botonInicio()">Inicio</button>
-				<button class="botonNavbar" onclick="botonMapa()">Mapa</button>
-				<button class="botonNavbar" onclick="botonOpciones()">Opciones</button>
-				<button class="botonNavbar" onclick="botonCuenta()">Cuenta</button>
-
-				</div>
-			-->
 			<button id="botonHamburguesa" class="navbar-toggler my-auto" type="button" data-bs-toggle="collapse" data-bs-target="#botonesNavbar">
 				<span class="navbar-toggler-icon"></span>
 			</button>
-			
+			<div id="botonesNavbar" class="collapse navbar-collapse justify-content-end text-end">
+				<ul class="navbar-nav">	
+					<li class="nav-item item-navbar">
+						<a class="nav-link link-navbar" href="../../public/inicio/index.html">
+							<button class="btn rounded">Inicio</button>
+						</a>
+					</li>
+					<li class="nav-item item-navbar">
+						<a class="nav-link link-navbar" href="../../public/mapa/index.html">
+							<button class="btn rounded">Mapa</button>
+						</a>
+					</li>
+					<li class="nav-item item-navbar">
+						<a class="nav-link link-navbar" href="../../public/opciones/index.html">
+							<button class="btn rounded">Opciones</button>
+						</a>
+					</li>
+					<li class="nav-item item-navbar">
+						<a class="nav-link link-navbar" href="../../public/cuenta/index.html">
+							<button class="btn rounded">Cuenta</button>
+						</a>
+					</li>
+				</ul>
+			</div>
 		</div>
+		-->
 	</body>
 </html>

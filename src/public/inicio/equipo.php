@@ -1,8 +1,3 @@
-<?php
-  
-  ?>
-
-
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -15,8 +10,6 @@
 		<!-- cdn de google para la fuente de Open Sans -->
 		<link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
 		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-<script src="../../assets/js/cargarNavbarLogin.js"></script>
 </head>
 	<style>
 /*Esto es para crear variables de css,
@@ -85,9 +78,9 @@ body{
 .titulos{
 	/*font-family:Verdana, Geneva, Tahoma, sans-serif;*/
 	font-weight: bold;
-    font-size: 5rem;
 	color: var(--color-titulos);
-    padding-top: 13rem;
+  padding-top: 13rem;
+  font-size: 5rem;
 }
 
 .subTitulos{
@@ -100,9 +93,11 @@ body{
 	color: var(--color-texto);
 }
 
+
 #contenido {
 	text-align: center;
 	margin-top: 0.5rem;	
+
 }
 
 @media (min-width: 992px) { 
@@ -116,34 +111,61 @@ body{
 		--padding-navbar: 2.4rem;
 	}
 } 
+
+.cajaContacta{
+	
+    background: white;
+    border-radius: 2rem;
+    padding: 2rem;
+    margin: 11rem auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.cerrar{
+    color:  #1B3237;
+    background: none;
+    border: none;
+    font-size: 3rem; 
+    cursor: pointer;
+}
+
 	</style>
 	<body>
 		<div id="contenedorPrincipal" class="  d-flex container-fluid align-items-center">
-			<div id="contenido" class="container-lg">
-				<h1 class="titulos">Este sitio esta fuera de servicio por ahora...</h1>
-				<button class="btn" onclick="window.location.href='index.html'">Volver</button> 
+		    <div class="cajaContacta" >
+              <div id="contenido" class="container-lg">
+                <button onclick="botonCerrar()" class="cerrar">&times;</button>
+                <br>
+                <br>
+                <h1 class="subTitulos">Quienes Somos?</h1>
+                <p class="texto">Craft Solutions comenzo en 2026 con el objetivo de ayudar a los docentes a integrar la tecnolgia en su dia a dia. Su mas reciente creacion fue Urbanaut. Una aplicacion capaz de monitorear los alrededores de una zona con datos internos creados por su comunidad.</p>
                
-			</div>
-		</div>
-
+			  </div>
+		    </div>
+        </div>
 		<!--Aca esta la barrita, el navbar-->
 		<div id="barraNavbar" class="justify-content-between navbar navbar-expand-lg">
 			<div class="d-flex ">
 				<a id="marcaNavbar" class="navbar-brand" href="#">Urbanaut</a>
 			</div>
-			<!--
-				<div id="botonesNavbar" class="d-flex">
-				<button class="botonNavbar" onclick="botonInicio()">Inicio</button>
-				<button class="botonNavbar" onclick="botonMapa()">Mapa</button>
-				<button class="botonNavbar" onclick="botonOpciones()">Opciones</button>
-				<button class="botonNavbar" onclick="botonCuenta()">Cuenta</button>
-
-				</div>
-			-->
+			
 			<button id="botonHamburguesa" class="navbar-toggler my-auto" type="button" data-bs-toggle="collapse" data-bs-target="#botonesNavbar">
 				<span class="navbar-toggler-icon"></span>
 			</button>
 			
 		</div>
+
+
 	</body>
+
+<script>
+    function botonCerrar() {
+        window.location.href = "/Proyecto-final-Liceo-Logosofico/frontend/lucia/inicio/index.html";
+    }
+
+</script>
+    
 </html>
+

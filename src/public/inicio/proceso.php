@@ -1,8 +1,3 @@
-<?php
-  
-  ?>
-
-
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -15,8 +10,6 @@
 		<!-- cdn de google para la fuente de Open Sans -->
 		<link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
 		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-<script src="../../assets/js/cargarNavbarLogin.js"></script>
 </head>
 	<style>
 /*Esto es para crear variables de css,
@@ -85,9 +78,9 @@ body{
 .titulos{
 	/*font-family:Verdana, Geneva, Tahoma, sans-serif;*/
 	font-weight: bold;
-    font-size: 5rem;
 	color: var(--color-titulos);
-    padding-top: 13rem;
+  padding-top: 13rem;
+  font-size: 5rem;
 }
 
 .subTitulos{
@@ -100,9 +93,11 @@ body{
 	color: var(--color-texto);
 }
 
+
 #contenido {
 	text-align: center;
 	margin-top: 0.5rem;	
+
 }
 
 @media (min-width: 992px) { 
@@ -116,34 +111,75 @@ body{
 		--padding-navbar: 2.4rem;
 	}
 } 
+
+.cajaContacta{
+	
+    background: white;
+    border-radius: 2rem;
+    padding: 2rem;
+    margin: 11rem auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.cerrar{
+    color:  #1B3237;
+    background: none;
+    border: none;
+    font-size: 3rem; 
+    cursor: pointer;
+}
+
 	</style>
 	<body>
 		<div id="contenedorPrincipal" class="  d-flex container-fluid align-items-center">
-			<div id="contenido" class="container-lg">
-				<h1 class="titulos">Este sitio esta fuera de servicio por ahora...</h1>
-				<button class="btn" onclick="window.location.href='index.html'">Volver</button> 
-               
-			</div>
-		</div>
+		    <div class="cajaContacta" >
+              <div id="contenido" class="container-lg">
+		<a href="index.html">
+                <button class="cerrar">&times;</button>
+		</a>
+                            <div id="carouselFotos" class="carousel slide">
+                    <div class="carousel-inner">
 
+                        <div class="carousel-item active">
+                            <img src="imagenes/imagen1.jpg" class="d-block w-100" alt="Foto 1">
+                        </div>
+
+                        <div class="carousel-item">
+                            <img src="imagenes/imagen2.jpg" class="d-block w-100" alt="Foto 2">
+                        </div>
+
+                        <div class="carousel-item">
+                            <img src="imagenes/imagen3.png" class="d-block w-100" alt="Foto 3">
+                        </div>
+
+    </div>
+
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselFotos" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+    </button>
+
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselFotos" data-bs-slide="next">
+        <span class="carousel-control-next-icon"></span>
+    </button>
+</div>
+			  </div>
+		    </div>
+        </div>
 		<!--Aca esta la barrita, el navbar-->
 		<div id="barraNavbar" class="justify-content-between navbar navbar-expand-lg">
 			<div class="d-flex ">
 				<a id="marcaNavbar" class="navbar-brand" href="#">Urbanaut</a>
 			</div>
-			<!--
-				<div id="botonesNavbar" class="d-flex">
-				<button class="botonNavbar" onclick="botonInicio()">Inicio</button>
-				<button class="botonNavbar" onclick="botonMapa()">Mapa</button>
-				<button class="botonNavbar" onclick="botonOpciones()">Opciones</button>
-				<button class="botonNavbar" onclick="botonCuenta()">Cuenta</button>
-
-				</div>
-			-->
+			
 			<button id="botonHamburguesa" class="navbar-toggler my-auto" type="button" data-bs-toggle="collapse" data-bs-target="#botonesNavbar">
 				<span class="navbar-toggler-icon"></span>
 			</button>
 			
 		</div>
+
+
 	</body>
 </html>
+

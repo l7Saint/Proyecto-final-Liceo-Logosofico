@@ -1,8 +1,3 @@
-<?php
-  
-  ?>
-
-
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -16,7 +11,7 @@
 		<link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
 		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-<script src="../../assets/js/cargarNavbarLogin.js"></script>
+	<script src="../../assets/js/cargarNavbar.js"></script>
 </head>
 	<style>
 /*Esto es para crear variables de css,
@@ -73,8 +68,6 @@ body{
 .btn {
 	background-color: var(--color-boton-navbar); 
 	color: white;
-    margin-top: 6rem;
-    padding: 10px 17px;
 }
 
 #botonHamburguesa {
@@ -85,9 +78,7 @@ body{
 .titulos{
 	/*font-family:Verdana, Geneva, Tahoma, sans-serif;*/
 	font-weight: bold;
-    font-size: 5rem;
 	color: var(--color-titulos);
-    padding-top: 13rem;
 }
 
 .subTitulos{
@@ -120,30 +111,14 @@ body{
 	<body>
 		<div id="contenedorPrincipal" class="  d-flex container-fluid align-items-center">
 			<div id="contenido" class="container-lg">
-				<h1 class="titulos">Este sitio esta fuera de servicio por ahora...</h1>
-				<button class="btn" onclick="window.location.href='index.html'">Volver</button> 
-               
+				<h1 class="titulos">Titulo</h1>
+				<h3 class="subTitulos">SubTitulo</h3>
+				<p class="texto">Texto</p>
 			</div>
 		</div>
 
 		<!--Aca esta la barrita, el navbar-->
-		<div id="barraNavbar" class="justify-content-between navbar navbar-expand-lg">
-			<div class="d-flex ">
-				<a id="marcaNavbar" class="navbar-brand" href="#">Urbanaut</a>
-			</div>
-			<!--
-				<div id="botonesNavbar" class="d-flex">
-				<button class="botonNavbar" onclick="botonInicio()">Inicio</button>
-				<button class="botonNavbar" onclick="botonMapa()">Mapa</button>
-				<button class="botonNavbar" onclick="botonOpciones()">Opciones</button>
-				<button class="botonNavbar" onclick="botonCuenta()">Cuenta</button>
-
-				</div>
-			-->
-			<button id="botonHamburguesa" class="navbar-toggler my-auto" type="button" data-bs-toggle="collapse" data-bs-target="#botonesNavbar">
-				<span class="navbar-toggler-icon"></span>
-			</button>
-			
-		</div>
+	<div id="barraNavbar" class="justify-content-between navbar navbar-expand-lg">
+	</div>
 	</body>
 </html>
