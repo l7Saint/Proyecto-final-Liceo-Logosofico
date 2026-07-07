@@ -1,3 +1,8 @@
+<?php
+  
+  ?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -9,7 +14,10 @@
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 		<!-- cdn de google para la fuente de Open Sans -->
 		<link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
-	</head>
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script src="../../assets/js/cargarNavbarLogin.js"></script>
+</head>
 	<style>
 /*Esto es para crear variables de css,
   basicamente, desde aca puedo cambiar el padding
@@ -65,6 +73,8 @@ body{
 .btn {
 	background-color: var(--color-boton-navbar); 
 	color: white;
+    margin-top: 6rem;
+    padding: 10px 17px;
 }
 
 #botonHamburguesa {
@@ -75,14 +85,14 @@ body{
 .titulos{
 	/*font-family:Verdana, Geneva, Tahoma, sans-serif;*/
 	font-weight: bold;
+    font-size: 5rem;
 	color: var(--color-titulos);
+    padding-top: 13rem;
 }
 
 .subTitulos{
 	/*font-family:Verdana, Geneva, Tahoma, sans-serif;*/
 	color : var(--color-subtitulos);
-    margin-top: 3rem;
-    margin-bottom: 0.5rem;
 }
 
 .texto{
@@ -90,21 +100,6 @@ body{
 	color: var(--color-texto);
 }
 
- .botonesNosotros{
-
-    border: none;
-    background: none;
-
- }
-
- .botonesManual{
-    border: none;
-    background: none;
- }
-
-
-        
-    
 #contenido {
 	text-align: center;
 	margin-top: 0.5rem;	
@@ -120,33 +115,14 @@ body{
 	:root { 
 		--padding-navbar: 2.4rem;
 	}
-}
-
-   
-
+} 
 	</style>
 	<body>
-		<div id="contenedorPrincipal" class="d-flex container-fluid align-items-center">
+		<div id="contenedorPrincipal" class="  d-flex container-fluid align-items-center">
 			<div id="contenido" class="container-lg">
-				<h1 class="titulos">¡Bienvenido Usuario!</h1>
-				
-                <div id="contenedorNosotros" >
-                <h3 class="subTitulos">Nosotros</h3>
-                <button onclick="botonContacto()" class="botonesNosotros"><img src="imagenes/imagenContacto.png"></button>
-                <button onclick="botonEquipo()" class="botonesNosotros"><img src="imagenes/imagenEquipo.png"></button>
-                <button onclick="botonProceso()" class="botonesNosotros"><img src="imagenes/imagenProceso.png"></button>
-
-                </div>
-
-                <div id="contenedorManual">
-
-                <h3 class="subTitulos">Manual</h3>
-                <button onclick="botonContacto()" class="botonesManual"><img src="imagenes/imagenManual.png"></button>
-
-                </div>
+				<h1 class="titulos">Este sitio esta fuera de servicio por ahora...</h1>
+				<button class="btn" onclick="window.location.href='index.html'">Volver</button> 
                
-                
-				
 			</div>
 		</div>
 
@@ -167,31 +143,7 @@ body{
 			<button id="botonHamburguesa" class="navbar-toggler my-auto" type="button" data-bs-toggle="collapse" data-bs-target="#botonesNavbar">
 				<span class="navbar-toggler-icon"></span>
 			</button>
-			<div id="botonesNavbar" class="collapse navbar-collapse justify-content-end text-end">
-				<!-- Links de la navbar -->
-				<ul class="navbar-nav">	
-					<li class="nav-item item-navbar">
-						<a class="nav-link link-navbar" href="#">
-							<button class="btn rounded">Inicio</button>
-						</a>
-					</li>
-					<li class="nav-item item-navbar">
-						<a class="nav-link link-navbar" href="#">
-							<button class="btn rounded">Mapa</button>
-						</a>
-					</li>
-					<li class="nav-item item-navbar">
-						<a class="nav-link link-navbar" href="#">
-							<button class="btn rounded">Opciones</button>
-						</a>
-					</li>
-					<li class="nav-item item-navbar">
-						<a class="nav-link link-navbar" href="#">
-							<button class="btn rounded">Cuenta</button>
-						</a>
-					</li>
-				</ul>
-			</div>
+			
 		</div>
 	</body>
 </html>

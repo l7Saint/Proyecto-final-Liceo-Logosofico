@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+		<!-- bootstrap cdn -->
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous"/>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+		<!-- cdn de google para la fuente de Open Sans -->
+		<link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet"/>
+		<link rel="stylesheet" href="../../assets/css/main_style.css"/>
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+	<script src="../../assets/js/cargarNavbarLogin.js"></script>
+</head>
+	<style>
+.li-hora {
+	font-size: 15px;
+}
+
+#cajaCrearCuenta {
+	background-color: whitesmoke;
+	border-radius: 15px;
+
+	padding: 1rem;
+}
+
+#cajaHorarios {
+	width: 30%
+}
+
+#cajaDatosUsuario {
+	width: 30%
+}
+
+.textoInput {
+	color: #67878a;
+	font-weight: lighter;
+	font-family: "Open Sans", sans-serif;
+}
+
+.datos {
+	border-radius: 5px;
+	border-color: #d9d9d9;
+	border: 2px 2px solid;
+	cursor: text;
+	width: 100%;
+	margin: 0.8rem;
+}
+
+.btnComenzar {
+	color: #285357;
+	font-weight: bolder;
+	cursor: pointer;
+	background-color: #67878a;
+	border-radius: 10px;
+	border: 2px 2px solid;
+	border-color: #67878a;
+}
+.btnComenzar:hover {
+	background-color: #455c5e;
+	color: whitesmoke;
+}
+	</style>
+	<body>
+		<div id="contenedorPrincipal" class="  d-flex container-fluid align-items-center">
+			<div id="contenido" class="container-lg">
+				<form action="signin.php" method="POST">
+					<div id="cajaCrearCuenta" class="d-flex justify-content-between">
+						<div id="cajaDatosUsuario">
+							<h1 class="titulos">Crear Cuenta</h1>
+							<div id="cajaCamposUsuario">
+								<div class="form-group">
+									<label class="textoInput" for="nombre">Nombre</label>
+									<input type="text" id="nombre" name="nombre" class="datos form-control" />
+								</div>
+								<div class="form-group">
+									<label class="textoInput" for="apellido" class="apellido">Apellido</label>
+									<input type="text" id="apellido" name="apellido" class="datos form-control" />
+								</div>
+								<div class="form-group">
+									<label class="textoInput" for="email" class="email">Email</label>
+									<input type="email" id="email" name="email" class="datos form-control" />
+								</div>
+								<div class="form-group">
+									<label class="textoInput" for="contraseña">Constraseña</label>
+									<input type="password" id="contraseña" name="contraseña" class="datos form-control"/>
+								</div>
+								<div class="form-group">
+									<label for="marca_modelo" class="textoInput">Marca/Modelo Auto</label>
+									<input type="text" id="marca_modelo" name="marca_modelo" class="datos form-control"/>
+								</div>
+							</div>
+							<input type="submit" value="Comenzar" class="btnComenzar" />
+						</div>
+						<div id="cajaHorarios d-flex justify-content-end">
+							<h2 class="subTitulos">Horarios</h2>
+							<div id="contenedorLunes">
+								<input type="checkbox" id="Lunes" name="dias[]" value="Lunes" onclick="despliegaHorarios('ulLunes')"/>
+								<label for="Lunes" class="dias">Lunes</label>	
+							</div>
+							<div id="contenedorMartes">
+								<input type="checkbox" id="Martes" name="dias[]" value="Martes" onclick="despliegaHorarios('ulMartes')"/>
+								<label for="Martes" class="dias">Martes</label>	
+							</div>
+							<div id="contenedorMiercoles">
+								<input type="checkbox" id="Miercoles" name="dias[]" value="Miercoles" onclick="despliegaHorarios('ulMiercoles')"/>
+								<label for="Miercoles" class="dias">Miercoles</label>	
+							</div>
+							<div id="contenedorJueves">
+								<input type="checkbox" id="Jueves" name="dias[]" value="Jueves" onclick="despliegaHorarios('ulJueves')"/>
+								<label for="Jueves" class="dias">Jueves</label>	
+							</div>
+							<div id="contenedorViernes">
+								<input type="checkbox" id="Viernes" name="dias[]" value="Viernes" onclick="despliegaHorarios('ulViernes')"/>
+								<label for="Viernes" class="dias">Viernes</label>	
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+
+		<!--Aca esta la barrita, el navbar-->
+		<div id="barraNavbar" class="justify-content-between navbar navbar-expand-lg">
+		</div>
+
+		<!-- SELECCIÓN DE HORARIOS-->
+		<script>
+			var horariosCreados = false;
+			const DIAS = [
+				"Lunes",	
+				"Martes",	
+				"Miercoles",	
+				"Jueves",	
+				"Viernes",	
+			]
+			const HORAS = [
+				"8:00 - 8:40",  // 0
+				"8:40 - 9:20",  // 1
+				"9:25 - 10:05", // 2
+				"10:15 - 10:55",// 3
+				"11:00 - 11:40",// 4
+				"11:00 - 11:40",// 5
+				"11:45 - 12:25",// 6
+				"12:25 - 13:05",// 7
+				"13:05 - 13:45",// 8
+				"13:50 - 14:30",// 9
+				"14:30 - 15:10",// 10
+				"15:15 - 15:55",// 11
+				"15:55 - 16:35" // 12
+			];
+
+			function generarLiHorarioHora(dia, nhora){
+				var liHora = document.createElement("li");
+				// 'dia' tendria que ser por ejemplo: "Viernes"
+				// 'nhora' tendria que ser el numero de la hora, por ejemplo: "5"
+				// que corresponderia a "11:00 - 11:40"
+				liHora.innerHTML = `
+				<label for="`+dia+nhora+`" class="dias">`+HORAS[nhora]+`</label>
+				<input
+					type="checkbox"
+					id="`+dia+nhora+`"
+					name="horarios`+dia+`[]"
+					value="`+nhora+`"
+				/>
+				`;
+				liHora.id = "li"+dia+nhora;
+				return liHora;
+			}
+
+			function generarUlHorarioDia(dia){
+				// 'dia' tendria que ser por ejemplo: "Viernes"
+				var ulDia = document.createElement("ul");
+				for(nhora = 0; nhora < HORAS.length; nhora++){
+					var liHora = generarLiHorarioHora(dia, nhora);
+					liHora.classList.add("li-hora");
+					liHora.classList.add("d-flex");
+					liHora.classList.add("justify-content-end");
+					ulDia.appendChild(liHora);
+				}
+				ulDia.id = "ul"+dia;
+				return ulDia;
+			}
+
+			function generarHorarios() {
+				for(ndia = 0; ndia < DIAS.length; ndia++){
+					var contenedorDia = document.getElementById("contenedor"+DIAS[ndia]);
+					var ulDia = generarUlHorarioDia(DIAS[ndia]);
+					ulDia.hidden = true;
+					contenedorDia.appendChild(ulDia);
+				}
+			}
+
+			function despliegaHorarios(idUl){
+				if(!horariosCreados){
+					generarHorarios();
+					horariosCreados = true;
+				}
+
+				var ul = document.getElementById(idUl);
+				if(ul.hidden){
+					ul.hidden = false;
+				} else {
+					ul.hidden = true;
+				}
+			}
+		</script>
+	</body>
+</html>
