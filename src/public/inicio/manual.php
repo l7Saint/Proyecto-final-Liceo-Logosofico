@@ -79,8 +79,8 @@ body{
 	/*font-family:Verdana, Geneva, Tahoma, sans-serif;*/
 	font-weight: bold;
 	color: var(--color-titulos);
-  padding-top: 13rem;
-  font-size: 5rem;
+  	padding-top: 5rem;
+ 	 font-size: 5rem;
 }
 
 .subTitulos{
@@ -140,7 +140,7 @@ body{
 				<button class="cerrar">&times;</button>
 </a>
 				<h1 class="titulos d-flex container-fluid align-items-center">Manual de Usuario</h1>
-				<button class="btn d-flex container-fluid align-items-center"onclick="window.location.href='ManualPDF/ManualUsuario-Urbanaut.pdf'">Descargar PDF</button>
+				<button class="btn" onclick="window.location.href='ManualPDF/ManualUsuario-Urbanaut.pdf'">Descargar PDF</button>
 			</div>
 		</div>
 	</div>
