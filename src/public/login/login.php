@@ -126,12 +126,12 @@ body{
                   $claveCorrecta = "123";
 
                   if ($email == $emailCorrecto && $clave == $claveCorrecta) {
-                     header("Location: /Proyecto-final-Liceo-Logosofico/frontend/lucia/inicio/index.html");
+                     header("Location: /Proyecto-final-Liceo-Logosofico/src/public/inicio/index.html");
                     exit();
                   } else {
                   ?>
                       <h1 class="titulos">Algo salió mal, intente otra vez...</h1>
-                      <button class="btn" onclick="window.location.href='index.html'">Volver</button>
+	
                   <?php
                   }
           ?>
