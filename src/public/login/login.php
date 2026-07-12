@@ -131,7 +131,7 @@ body{
                   } else {
                   ?>
                       <h1 class="titulos">Algo salió mal, intente otra vez...</h1>
-					  <a href="../inicio/index.html" class="btn">Volver/a>
+					  <a href="index.html" class="btn">Volver</a>
                   <?php
                   }
           ?>
