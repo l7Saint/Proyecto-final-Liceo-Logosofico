@@ -141,8 +141,8 @@ body{
 				</a>
                 <br>
                 <br>
-                <h1 class="subTitulos">Quienes Somos?</h1>
-                <p class="texto">Craft Solutions comenzo en 2026 con el objetivo de ayudar a los docentes a integrar la tecnolgia en su dia a dia. Su mas reciente creacion fue Urbanaut. Una aplicacion capaz de monitorear los alrededores de una zona con datos internos creados por su comunidad.</p>
+                <h1 class="subTitulos">¿Quiénes Somos?</h1>
+                <p class="texto">Craft Solutions comenzó en 2026 con el objetivo de ayudar a los docentes a integrar la tecnolgía en su día a día. Su más reciente creación fue Urbanaut, una aplicación capaz de monitorear los alrededores de una zona con datos internos creados por su comunidad.</p>
                
 			  </div>
 		    </div>

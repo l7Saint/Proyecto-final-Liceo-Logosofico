@@ -144,7 +144,7 @@ body{
 					</a>
 					<br>
 					<br>
-					<h1 class="subTitulos">Mandanos un mail con tu opinion...</h1>
+					<h1 class="subTitulos">Mandános un mail con tu opinión...</h1>
 					<br>
 					<p class="texto">craft.solutions.uy@gmail.com</p>
 				</div>
