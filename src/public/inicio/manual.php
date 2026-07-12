@@ -140,6 +140,7 @@ body{
 				<button class="cerrar">&times;</button>
 </a>
 				<h1 class="titulos">Manual de Usuario</h1>
+				<button onclick="window.location.href='ManualPDF/ManualUsuario-Urbanaut.pdf'">Descargar PDF</button>
 			</div>
 		</div>
 	</div>
