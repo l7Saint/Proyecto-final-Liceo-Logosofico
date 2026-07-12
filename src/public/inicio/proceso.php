@@ -143,15 +143,15 @@ body{
                     <div class="carousel-inner">
 
                         <div class="carousel-item active">
-                            <img src="imagenes/imagen1.jpg" class="d-block w-100" alt="Foto 1">
+                            <img src="../../assets/img/procesoimg1.jpeg" class="d-block w-100" alt="Foto 1">
                         </div>
 
                         <div class="carousel-item">
-                            <img src="imagenes/imagen2.jpg" class="d-block w-100" alt="Foto 2">
+                            <img src="../../assets/img/procesoimg2.jpeg" class="d-block w-100" alt="Foto 2">
                         </div>
 
                         <div class="carousel-item">
-                            <img src="imagenes/imagen3.png" class="d-block w-100" alt="Foto 3">
+                            <img src="../../assets/img/procesoimg3.jpeg" class="d-block w-100" alt="Foto 3">
                         </div>
 
     </div>
