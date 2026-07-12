@@ -126,7 +126,7 @@ body{
                   $claveCorrecta = "123";
 
                   if ($email == $emailCorrecto && $clave == $claveCorrecta) {
-                     header("Location: /Proyecto-final-Liceo-Logosofico/src/inicio/index.html");
+                     header("Location: /Proyecto-final-Liceo-Logosofico/src/public/inicio/index.html");
                     exit();
                   } else {
                   ?>
