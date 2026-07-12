@@ -1,169 +1,196 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <!-- bootstrap cdn -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+      crossorigin="anonymous"
+    ></script>
+    <!-- cdn de google para la fuente de Open Sans -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Document</title>
-	<!-- bootstrap cdn -->
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
-		integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
-		integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
-		crossorigin="anonymous"></script>
-	<!-- cdn de google para la fuente de Open Sans -->
-	<link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-	<script src="../../assets/js/cargarNavbar.js"></script>
-</head>
-<style>
-	/*Esto es para crear variables de css,
+    <script src="../../assets/js/cargarNavbar.js"></script>
+  </head>
+  <style>
+    /*Esto es para crear variables de css,
   basicamente, desde aca puedo cambiar el padding
   general de los elementos adentro del navbar, o los
   colores*/
-	:root {
-		/*colores*/
-		--color-fondo: #88B6C2;
-		--color-navbar: #32545C;
-		--color-boton-navbar: #1B3237;
-		--color-titulos: #32545c;
-		--color-subtitulos: #497C88;
-		--color-texto: #21434D;
+    :root {
+      /*colores*/
+      --color-fondo: #88b6c2;
+      --color-navbar: #32545c;
+      --color-boton-navbar: #1b3237;
+      --color-titulos: #32545c;
+      --color-subtitulos: #497c88;
+      --color-texto: #21434d;
 
-		--padding-navbar: 1rem;
-	}
+      --padding-navbar: 1rem;
+    }
 
-	body {
-		background-color: var(--color-fondo);
-		padding-bottom: 20px;
-		font-size: 19px;
-		font-family: 'Open Sans', sans-serif;
-	}
+    body {
+      background-color: var(--color-fondo);
+      padding-bottom: 20px;
+      font-size: 19px;
+      font-family: "Open Sans", sans-serif;
+    }
 
-	#barraNavbar {
-		width: 100%;
-		background-color: var(--color-navbar);
-		position: fixed;
-		bottom: 0;
-		left: 0;
-		/*fuerza a que la navbar se superponga sobre todos los elementos*/
-		z-index: 1050;
-	}
+    #barraNavbar {
+      width: 100%;
+      background-color: var(--color-navbar);
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      /*fuerza a que la navbar se superponga sobre todos los elementos*/
+      z-index: 1050;
+    }
 
-	#marcaNavbar {
-		color: white;
-		font-size: 30px;
-		font-family: Verdana, Geneva, Tahoma, sans-serif;
-		font-weight: bold;
-		/*aca uso la variable, si despues le pongo "--padding-navbar: 3rem;"
+    #marcaNavbar {
+      color: white;
+      font-size: 30px;
+      font-family: Verdana, Geneva, Tahoma, sans-serif;
+      font-weight: bold;
+      /*aca uso la variable, si despues le pongo "--padding-navbar: 3rem;"
 	  se va a ver afectado en todos los "var(--padding-navbar);"*/
-		margin-left: var(--padding-navbar);
-		margin-right: var(--padding-navbar);
-	}
+      margin-left: var(--padding-navbar);
+      margin-right: var(--padding-navbar);
+    }
 
-	#botonesNavbar {
-		margin-left: var(--padding-navbar);
-		margin-right: var(--padding-navbar);
-		gap: 0.4rem;
-	}
+    #botonesNavbar {
+      margin-left: var(--padding-navbar);
+      margin-right: var(--padding-navbar);
+      gap: 0.4rem;
+    }
 
-	/*aca sobreescribo 2 atributos de una de las clases de bootstrap*/
-	.btn {
-		background-color: var(--color-boton-navbar);
-		color: white;
-	}
+    /*aca sobreescribo 2 atributos de una de las clases de bootstrap*/
+    .btn {
+      background-color: var(--color-boton-navbar);
+      color: white;
+    }
 
-	#botonHamburguesa {
-		margin-left: var(--padding-navbar);
-		margin-right: var(--padding-navbar);
-	}
+    #botonHamburguesa {
+      margin-left: var(--padding-navbar);
+      margin-right: var(--padding-navbar);
+    }
 
-	.titulos {
-		/*font-family:Verdana, Geneva, Tahoma, sans-serif;*/
-		font-weight: bold;
-		color: var(--color-titulos);
-	}
+    .titulos {
+      /*font-family:Verdana, Geneva, Tahoma, sans-serif;*/
+      font-weight: bold;
+      color: var(--color-titulos);
+    }
 
-	.subTitulos {
-		/*font-family:Verdana, Geneva, Tahoma, sans-serif;*/
-		color: var(--color-subtitulos);
-	}
+    .subTitulos {
+      /*font-family:Verdana, Geneva, Tahoma, sans-serif;*/
+      color: var(--color-subtitulos);
+    }
 
-	.texto {
-		/*font-family:Verdana, Geneva, Tahoma, sans-serif;*/
-		color: var(--color-texto);
-	}
+    .texto {
+      /*font-family:Verdana, Geneva, Tahoma, sans-serif;*/
+      color: var(--color-texto);
+    }
 
-	.contenedorUsuario {
-		background-color: #9cc1c4;
-		border: 3px solid #3C6862;
-		border-radius: 10px;
-		margin-top: 1rem;
-		margin-bottom: 1rem;
-		width: 45%;
-		padding: 1rem;
-	}
+    .contenedorUsuario {
+      background-color: #9cc1c4;
+      border: 3px solid #3c6862;
+      border-radius: 10px;
+      margin-top: 1rem;
+      margin-bottom: 1rem;
+      width: 45%;
+      padding: 1rem;
+      transition: 0.3s;
+    }
+    .contenedorUsuario:hover {
+      transform: translateY(-5px);
+    }
 
-	.contenedorVehiculoTexto {
-		background-color: #9cc1c4;
-		border: 3px solid #3C6862;
-		border-radius: 10px;
-		width: 45%;
-		padding: 1rem;
-	}
+    .contenedorVehiculoTexto {
+      background-color: #9cc1c4;
+      border: 3px solid #3c6862;
+      border-radius: 10px;
+      width: fit-content;
+      padding: 1rem;
+      transition: 0.3s;
+    }
+    .contenedorVehiculoTexto:hover {
+      transform: translateY(-5px);
+    }
 
-	s #contenido {
-		text-align: center;
-		margin-top: 0.5rem;
-	}
+    s #contenido {
+      text-align: center;
+      margin-top: 0.5rem;
+    }
 
-	@media (min-width: 992px) {
-		#contenido {
-			text-align: left;
-		}
+    @media (min-width: 992px) {
+      #contenido {
+        text-align: left;
+      }
 
-		/*aca cambio el padding del navbar
+      /*aca cambio el padding del navbar
 	  para las pantallas grandes ( > o = 992px ) */
-		:root {
-			--padding-navbar: 2.4rem;
-		}
-	}
-</style>
+      :root {
+        --padding-navbar: 2.4rem;
+      }
+    }
 
-<body>
-	<div id="contenedorPrincipal" class="  d-flex container-fluid align-items-center">
-		<div id="contenido" class="container-lg">
-			<h1 class="titulos">¡Hola Usuario!</h1>
-			<img src="../../assets/img/imagenUsuario.png">
-			<div class="contenedorUsuario">
+    .contenedorVehiculoFoto {
+      padding-left: 1rem;
+    }
 
-				<h3 class="subTitulos">Mi Cuenta</h3>
-				<p class="texto">Mail: usuario@gmail.com</p>
-				<p class="texto">ID Auto: 123</p>
+    .saludoUser {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: #32545c;
+      margin: 30px 0;
+    }
+  </style>
 
-			</div>
+  <body>
+    <div
+      id="contenedorPrincipal"
+      class="d-flex container-fluid align-items-center"
+    >
+      <div id="contenido" class="container-lg">
+        <h1 class="saludoUser">¡Hola Usuario!</h1>
+        <img src="../../assets/img/imagenUsuario.png" />
+        <div class="contenedorUsuario">
+          <h3 class="subTitulos">Mi Cuenta</h3>
+          <p class="texto">Mail: usuario@gmail.com</p>
+          <p class="texto">ID Auto: 123</p>
+        </div>
 
-			<div class="contenedorVehiculoTexto d-flex justify-content-between">
+        <div class="contenedorVehiculoTexto d-flex justify-content-between">
+          <div class="textoVehiculo">
+            <h3 class="subTitulos">Mi Vehículo</h3>
+            <p class="texto">Color: Blanco</p>
+            <p class="texto">Marca/Modelo: RAM</p>
+          </div>
 
-				<div class="textoVehiculo">
-					<h3 class="subTitulos">Mi Vehículo</h3>
-					<p class="texto">Color: Blanco</p>
-					<p class="texto">Marca/Modelo: RAM</p>
-				</div>
+          <div class="contenedorVehiculoFoto">
+            <img src="../../assets/img/imagenAuto.png" />
+          </div>
+        </div>
+      </div>
+    </div>
 
-				<div class="contenedorVehiculoFoto">
-
-					<img src="../../assets/img/imagenAuto.png">
-
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<!--Aca esta la barrita, el navbar-->
-	<div id="barraNavbar" class="justify-content-between navbar navbar-expand-lg">
-	</div>
-</body>
-
+    <!--Aca esta la barrita, el navbar-->
+    <div
+      id="barraNavbar"
+      class="justify-content-between navbar navbar-expand-lg"
+    ></div>
+  </body>
 </html>

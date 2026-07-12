@@ -136,7 +136,9 @@ body{
 	<div id="contenedorPrincipal" class="  d-flex container-fluid align-items-center">
 		<div class="cajaContacta" >
 			<div id="contenido" class="container-lg">
-				<button onclick="botonCerrar()" class="cerrar">&times;</button>
+				<a href="index.html">
+				<button class="cerrar">&times;</button>
+</a>
 				<h1 class="titulos">Manual de Usuario</h1>
 			</div>
 		</div>

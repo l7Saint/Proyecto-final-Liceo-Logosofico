@@ -136,7 +136,9 @@ body{
 		<div id="contenedorPrincipal" class="  d-flex container-fluid align-items-center">
 		    <div class="cajaContacta" >
               <div id="contenido" class="container-lg">
-                <button onclick="botonCerrar()" class="cerrar">&times;</button>
+				<a href="index.html">
+                <button class="cerrar">&times;</button>
+				</a>
                 <br>
                 <br>
                 <h1 class="subTitulos">Quienes Somos?</h1>
@@ -161,10 +163,7 @@ body{
 	</body>
 
 <script>
-    function botonCerrar() {
-        window.location.href = "/Proyecto-final-Liceo-Logosofico/frontend/lucia/inicio/index.html";
-    }
-
+  
 </script>
     
 </html>

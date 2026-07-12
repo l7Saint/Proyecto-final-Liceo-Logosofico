@@ -129,6 +129,34 @@
       text-align: center;
       cursor: default;
     }
+
+    .btnVolver{
+    padding: 0.5rem;
+	  width: 6rem;
+	  background-color: #28464D;
+    color: white;
+	  font-family: Arial, sans-serif;
+    font-size: 1.1rem;
+    font-weight: bold;
+    border-radius: 0.8rem;
+    border: 0.15rem solid #182B2F;
+    transition: 0.3s;
+	  margin-bottom: 1rem;
+    margin-top: 1rem;
+    }
+
+    .btnVolver:hover{
+    background-color: white;
+    color: #28464D;
+    transform: translateY(-0.2rem);
+    box-shadow: 0 0.5rem 1rem;
+}
+
+    .imagenMapa{
+       width: 30rem;
+      height: 20rem;
+    }
+
   </style>
   <body>
     <div
@@ -139,11 +167,12 @@
         <center>
           <div id="cajaHistorial">
             <h3 class="titulos" id="tituloHistorial">Lugares Favoritos</h3>
-            <img src="img/mapa.webp" class="imagenMapa" />
-            <!--<h1 class="titulos">Titulo</h1>
-          <h3 class="subTitulos">SubTitulo</h3>
-          <p class="texto">Texto</p>
-        -->
+            <img src="../../assets/img/mapa.webp" class="imagenMapa" />
+         	<a class="text-decoration-none" href="index.html">
+					<center>
+						<button class="btnVolver">Volver</button>
+						</center>
+					<a/>
           </div>
         </center>
       </div>
@@ -182,22 +211,17 @@
         <!-- Links de la navbar -->
         <ul class="navbar-nav">
           <li class="nav-item item-navbar">
-            <a class="nav-link link-navbar" href="#">
+            <a class="nav-link link-navbar" href="../inicio/index.html">
               <button class="btn rounded">Inicio</button>
             </a>
           </li>
           <li class="nav-item item-navbar">
-            <a class="nav-link link-navbar" href="#">
+            <a class="nav-link link-navbar" href="../mapa/index.html">
               <button class="btn rounded">Mapa</button>
             </a>
           </li>
           <li class="nav-item item-navbar">
-            <a class="nav-link link-navbar" href="#">
-              <button class="btn rounded">Opciones</button>
-            </a>
-          </li>
-          <li class="nav-item item-navbar">
-            <a class="nav-link link-navbar" href="#">
+            <a class="nav-link link-navbar" href="../cuenta/index.html">
               <button class="btn rounded">Cuenta</button>
             </a>
           </li>

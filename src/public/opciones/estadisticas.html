@@ -25,7 +25,7 @@
 	--color-titulos: #32545c;
 	--color-subtitulos: #497C88;
 	--color-texto: #21434D;
-	--color-opciones: #d0d189;
+	
 
 	--padding-navbar: 1rem;
 }
@@ -113,20 +113,78 @@ body{
 			--padding-navbar: 2.4rem;
 		}
 	} 
+
+	#cajaEstadisticas{
+		background-color: whitesmoke;
+		 border-radius: 15px;
+		 width: fit-content;
+		 margin: 0 auto;
+   		 margin-top: 1rem
+	}
+
+	.imgMantenimiento{
+	 	width: 50rem;
+    	display: block;
+   		margin: 0 auto -3rem auto;
+	
+	}
+
+	.textoMant{
+		margin-top: 0;
+   		text-align: center;
+		font-weight: bold;
+		font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+		font-size: 2.2rem;
+		letter-spacing: 0.05rem;
+		color: #477D8A;
+		text-shadow: 0.1rem 0.1rem 0.2rem #88B6C2;
+	}
+
+	.subMant{
+		text-align: center;
+		color:#090F11;
+	}
+
+	.btnVolver{
+	padding: 0.5rem;
+	width: 6rem;
+	background-color: #28464D;
+    color: white;
+	font-family: Arial, sans-serif;
+    font-size: 1.1rem;
+    font-weight: bold;
+    border-radius: 0.8rem;
+    border: 0.15rem solid #182B2F;
+    transition: 0.3s;
+	margin-bottom: 1rem;
+	}
+
+	.btnVolver:hover{
+    background-color: white;
+    color: #28464D;
+    transform: translateY(-0.2rem);
+    box-shadow: 0 0.5rem 1rem;
+}
+
+
 	</style>
 	<body>
 		<div id="contenedorPrincipal" class="  d-flex container-fluid align-items-center">
 			<div id="contenido" class="container-lg">
-				<h1 class="titulos">Opciones</h1>
-				<h3 class="subTitulos">SubTitulo</h3>
-				<p class="texto">Texto</p>
-				<div id="opciones" class="container">
-					<form action="#" method="POST">
-					</form>	
-					<br>
-					<a class="text-decoration-none" href="#">
-						<h3 class="subTitulos">Volver</h3>
+				
+				<div id="cajaEstadisticas">
+				<center>
+				<img class="imgMantenimiento" src="../../assets/img/mantenimiento.png">
+				</center>
+				<h1 class="textoMant">ESTAMOS HACIENDO ALGUNOS AJUSTES</h1>
+				<p class="subMant">El servicio estará disponible en breve, gracias por tu paciencia</p>
+				<a class="text-decoration-none" href="index.html">
+					<center>
+						<button class="btnVolver">Volver</button>
+						</center>
 					<a/>
+					</div>
+					
 
 				</div>
 			</div>
@@ -134,6 +192,9 @@ body{
 
 		<!--Aca esta la barrita, el navbar-->
 		<div id="barraNavbar" class="justify-content-between navbar navbar-expand-lg">
+			<div class="d-flex ">
+				<a id="marcaNavbar" class="navbar-brand" href="#">Urbanaut</a>
+			</div>
 		</div>
 	</body>
 </html>

@@ -97,9 +97,11 @@ body{
 }
 
 #opciones{
-	background-color: var(--color-opciones);
-	border: 10px solid var(--color-opciones);
-	border-radius: 6px;
+	background-color: #f8f8f8;
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.2);
+    width: 70%;
 }
 
 @media (min-width: 992px) { 
@@ -113,22 +115,51 @@ body{
 		--padding-navbar: 2.4rem;
 	}
 } 
+
+	.titulo_opciones{
+	padding-top: 5rem;
+  	color: #32545C;
+    font-size: 3.5rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+	padding-bottom: 1rem;
+	text-align: center;
+	text-shadow: 0.2rem 0.2rem 0.3rem #497C88;
+	font-family: Arial, sans-serif;
+ 
+
+    
+}
+
+	.opciones{
+	padding: 1rem;
+    color: #497C88;
+	font-size: 1.8rem;
+    border-radius: 0.5rem;
+    transition: 0.3s;
+	}
+
+	.opciones:hover{
+    background-color: #d7e8ed;
+    padding-left: 2rem;
+    color: #1F4E5F;
+}
+
+
 	</style>
 	<body>
 		<div id="contenedorPrincipal" class="  d-flex container-fluid align-items-center">
 			<div id="contenido" class="container-lg">
-				<h1 class="titulos">Opciones</h1>
-				<h3 class="subTitulos">SubTitulo</h3>
-				<p class="texto">Texto</p>
+				<h1 class="titulo_opciones">Opciones</h1>
 				<div id="opciones" class="container">
-					<a class="text-decoration-none" href="#">
-						<h3 class="subTitulos">Estadísticas ></h3>
+					<a class="text-decoration-none" href="estadisticas.html">
+						<h3 class="opciones">Estadísticas ></h3>
 					<a/>
-					<a class="text-decoration-none" href="#">
-						<h3 class="subTitulos">Historial ></h3>
+					<a class="text-decoration-none" href="historial.html">
+						<h3 class="opciones">Historial ></h3>
 					<a/>
-					<a class="text-decoration-none" href="#">
-						<h3 class="subTitulos">Estacionamientos Privados ></h3>
+					<a class="text-decoration-none" href="estacionamiento_privado/index.html">
+						<h3 class="opciones">Estacionamientos Privados ></h3>
 					<a/>
 				</div>
 			</div>
