@@ -1,0 +1,7 @@
+Para levantar todo de una y facil con docker compose
+hacen:
+	docker-compose up -d --build
+
+Para acceder a la pagina desde el navegador es:
+	
+	http://localhost:80
