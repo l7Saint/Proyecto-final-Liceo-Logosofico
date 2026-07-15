@@ -29,7 +29,7 @@ Administrar grupos.
 	
 	(1) Ver lista de grupos.
 	(2) Añadir un grupo.
-	(3) Modificar un grupo.
+	(3) Eliminar un grupo.
 
 	(0) Volver al menu principal.
 "
@@ -41,10 +41,9 @@ Modificar usuarios.
 	(3) Cambiar carpeta Home.
 	(4) Cambiar Shell.
 	(5) Añadir grupos secundarios.
-	(6) Eliminar todos los grupos secundarios.
-	(7) Cambiar grupo principal.
-	(8) Bloquear al Usuario.
-	(9) Desbloquear al Usuario.
+	(6) Cambiar grupo principal.
+	(7) Bloquear al Usuario.
+	(8) Desbloquear al Usuario.
 
 	(0) Volver al menu usuarios.
 "
@@ -56,9 +55,17 @@ imprimirMenu(){
 }
 
 imprimirLista(){
-	# Solo muestra los usuarios/grupos con id >= 1000, id <= 9999 (usuarios/grupos regulares, no del sistema) 
 	# ${1} puede ser '/etc/passwd' o '/etc/group'
-	lista="$(cat ${1} | cut --delimiter ':' --fields 1,3 | grep -e ':....')"
+	if [[ "${1}" == '/etc/group' ]]; then
+		lista="$(cat ${1} | cut --delimiter ':' --fields 1,3)"
+	else 
+		if [[ "${1}" == '/etc/passwd' ]]; then
+			lista="$(cat ${1} | cut --delimiter ':' --fields 1,3,4,5,6,7)"
+		else
+			lista="$(cat ${1})"
+		fi
+	fi
+
 	echo "${lista}" | less
 }
 
@@ -85,7 +92,7 @@ ingresarSiNo(){
 				sino_returnv=1 
 				salirIngresarSiNo=1
 				;;		
-			*) echo "\'${eleccion}\' no es una eleccion valida." ;;
+			*) printf "\'${eleccion}\' no es una eleccion valida." ;;
 		esac
 	done
 	return ${sino_returnv}
@@ -103,6 +110,7 @@ ejecutarComando(){
 		read -p "[Presiona Enter]" poop
 	else
 		echo "Comando ejecutado correctamente."
+		read -p "[Presiona Enter]" poop
 	fi
 }
 
@@ -183,6 +191,7 @@ useraddEjecutar() {
 			chpasswd <<< "${nombreUsuario}:${contrasenaUsuario}"
 		fi
 		echo "Usuario creado correctamente."
+		read -p "[Presiona Enter]" poop
 	fi
 }
 
@@ -214,7 +223,7 @@ anadirUsuario(){
 	ingresarInput 'grupos secundarios del usuario' 'confirmar' 'VACIO'
 	gruposSecundariosUsuario="${returnv}"
 	if [[ "${gruposSecundariosUsuario}" == 'VACIO' ]]; then
-		argumentogruposSecundariosUsuario=""
+		unset argumentogruposSecundariosUsuario
 	else
 		argumentogruposSecundariosUsuario="-G${gruposSecundariosUsuario} "
 	fi
@@ -222,7 +231,7 @@ anadirUsuario(){
 	ingresarInput 'fecha de expiracion del usuario (formato: YYYY-MM-DD)' 'confirmar' 'VACIO'
 	fechaExpiracionUsuario="${returnv}"
 	if [[ "${fechaExpiracionUsuario}" == 'VACIO' ]]; then
-		argumentofechaExpiracionUsuario=""
+		unset argumentofechaExpiracionUsuario
 	else
 		argumentofechaExpiracionUsuario="--expiredate ${fechaExpiracionUsuario} "
 	fi
@@ -230,7 +239,7 @@ anadirUsuario(){
 	ingresarInput 'contrasena inicial del usuario' 'confirmar' 'VACIO'
 	contrasenaUsuario="${returnv}"
 	if [[ "${contrasenaUsuario}" == 'VACIO' ]]; then
-		argumentocontrasenaUsuario=""
+		unset argumentocontrasenaUsuario
 	else
 		# cuando es -1 el valor la contrasena nunca expira
 		ingresarInput 'numero de dias antes que la contrasena expire' 'confirmar' '-1'
@@ -247,7 +256,7 @@ modificarUsuario(){
 	ingresarInput 'nombre del usuario a modificar' 'confirmar' 'obligatorio'
 	nombreUsuario="${returnv}"
 	salirModificarUsuario=0
-	while [[ ${salirModificarUsuarios} == 0 ]]; do
+	while [[ "${salirModificarUsuario}" == 0 ]]; do
 		imprimirMenu "${MENUMODIFICARUSUARIOS}"
 		echo "Usuario a modificar: ${nombreUsuario}"
 		read -p "=> " input
@@ -265,30 +274,24 @@ modificarUsuario(){
 				ingresarInput 'nueva Shell' 'confirmar' 'obligatorio'
 				ejecutarComando "usermod --shell ${returnv} ${nombreUsuario}";;
 			5)
-				ingresarinput 'grupos secundarios a añadir (formato: grupo1,grupo2,grupo3)' 'confirmar' 'obligatorio'
-				ejecutarcomando "usermod --append --groups ${returnv} ${nombreusuario}";;
+				ingresarInput 'grupos secundarios a añadir (formato: grupo1,grupo2,grupo3)' 'confirmar' 'obligatorio'
+				ejecutarComando "usermod --append --groups ${returnv} ${nombreUsuario}";;
 			6)
-				if $(ingresarSiNo "Esta SEGURO de eliminar TODOS los grupos secundarios del usuario ${nombreUsuario}?"); then
-					ejecutarcomando "usermod --groups \'\' ${nombreusuario}";;
-				else
-					echo "No se hizo ningun cambio."
-					echo "[Presione Enter]"
-					read
-				fi;;
-			7)
 				ingresarinput 'nuevo grupo principal' 'confirmar' 'obligatorio'
-				ejecutarcomando "usermod --gid ${returnv} ${nombreusuario}";;
-			8)
-				if $(ingresarSiNo "Esta SEGURO de BLOQUEAR al usuario ${nombreUsuario}? (Se puede revertir)"); then
-					ejecutarcomando "usermod --lock ${nombreusuario}";;
+				ejecutarcomando "usermod --gid ${returnv} ${nombreUsuario}";;
+			7)
+				ingresarSiNo "Esta SEGURO de BLOQUEAR al usuario ${nombreUsuario}? (Se puede revertir)"
+				if ! $?; then
+					ejecutarComando "usermod --lock ${nombreUsuario}"
 				else
 					echo "No se hizo ningun cambio."
 					echo "[Presione Enter]"
 					read
 				fi;;
-			9)
-				if $(ingresarSiNo "Esta SEGURO de DESBLOQUEAR al usuario ${nombreUsuario}? (Se puede revertir)"); then
-					ejecutarcomando "usermod --unlock ${nombreusuario}";;
+			8)
+				ingresarSiNo "Esta SEGURO de DESBLOQUEAR al usuario ${nombreUsuario}? (Se puede revertir)"
+				if ! $?; then
+					ejecutarComando "usermod --unlock ${nombreUsuario}"
 				else
 					echo "No se hizo ningun cambio."
 					echo "[Presione Enter]"
@@ -302,7 +305,7 @@ modificarUsuario(){
 }
 
 eliminarUsuario(){
-	ingreseInput 'usuario a ELIMINAR' 'confirmar' 'obligatorio'
+	ingresarInput 'usuario a ELIMINAR' 'confirmar' 'obligatorio'
 	nombreUsuario="${returnv}"
 
 	if $(ingresarSiNo "Esta completamente seguro de eliminar al usuario ${nombreUsuario}?"); then
@@ -338,8 +341,8 @@ groupaddEjecutar(){
 	e_nombreGrupo="${3}"
 	
 	cmd="groupadd "
-	cmd+="--gid ${e_gidGrupo}"
-	cmd+="${e_argumentousuarioInicialesGrupo}"
+	cmd+="${e_gidGrupo} "
+	cmd+="${e_argumentousuarioInicialesGrupo} "
 	cmd+="${e_nombreGrupo}"
 
 	if ! error=$(${cmd} 2>&1); then
@@ -352,12 +355,19 @@ groupaddEjecutar(){
 		read -p "[Presiona Enter]" poop
 	else
 		echo "Grupo creado correctamente."
+		read -p "[Presiona Enter]" poop
 	fi
 }
 
 anadirGrupo(){
-	ingresarInput 'gid del grupo' 'confirmar' 'obligatorio'	
+	ingresarInput 'gid del grupo' ' ' 'VACIO' 
 	gidGrupo="${returnv}"
+
+	if [[ "${gidGrupo}" == "VACIO" ]]; then
+		unset argumentogidGrupo	
+	else
+		argumentogidGrupo="--gid ${gidGrupo}"
+	fi
 
 	ingresarInput 'nombre del grupo' 'confirmar' 'obligatorio'	
 	nombreGrupo="${returnv}"
@@ -366,18 +376,19 @@ anadirGrupo(){
 	usuariosInicialesGrupo="${returnv}"
 
 	if [[ "${usuariosInicialesGrupo}" == "VACIO" ]]; then
-		argumentousuariosInicialesGrupo=""
+		unset argumentousuariosInicialesGrupo
 	else
 		argumentousuariosInicialesGrupo="--users ${usuariosInicialesGrupo}"
+		echo "argumentousuariosInicialesGrupo=--users ${usuariosInicialesGrupo}"
 	fi
 
-	groupaddEjecutar "${gidGrupo}" "${usuariosInicialesGrupo}" "${argumentousuariosInicialesGrupo}"
+	groupaddEjecutar "${argumentogidGrupo}" "${argumentousuariosInicialesGrupo}" "${nombreGrupo}"
 }
 
 eliminarGrupo(){
 	ingresarInput 'gid/nombre del grupo a eliminar' 'confirmar' 'obligatorio'
-	cmd='groupdel ${returnv}'
-	if ! error=$({cmd} 2>&1); then
+	cmd="groupdel ${returnv}"
+	if ! error=$(${cmd} 2>&1); then
 		echo "Hubo un error inesperado eliminando el grupo. No se elimino ningun grupo." 
 		echo "Codigo de error de groupdel: $?"
 		echo "Mensaje de error de groupdel: ${error}"
@@ -386,6 +397,7 @@ eliminarGrupo(){
 		read -p "[Presiona Enter]" poop
 	else
 		echo "Grupo eliminado correctamente."
+		read -p "[Presiona Enter]" poop
 	fi
 }
 
@@ -408,6 +420,10 @@ administrarGrupos(){
 # -- Funcion Main --
 main() {
 	salirMenuPrincipal=0
+	if [[ "$(whoami)" != "root" ]]; then
+		echo "Para que el script funcione se debe ejecutar como usuario root."
+		exit
+	fi
 	while [[ ${salirMenuPrincipal} == 0 ]]; do
 		imprimirMenu "${MENUINICIAL}"
 		read -p "=> " input
@@ -417,7 +433,7 @@ main() {
 			3) 
 				if [ -z "${EDITOR}" ]; then
 					ingresarInput 'editor de terminal a usar' 'confirmar' 'vi'
-					EDITOR="${returnv}"
+					export EDITOR="${returnv}"
 				fi
 				visudo ;;
 			0) salirMenuPrincipal=1 ;;
