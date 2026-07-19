@@ -38,11 +38,11 @@ for($ndia = 0; $ndia < count($DIAS); $ndia++){
 
 require_once("/config/conexion.php");
 $sql = "INSERT INTO Usuario(nombre, apellido, email, contrasena)
-	VALUES (?, ?, ?)"
+	VALUES (?, ?, ?, ?)";
 
-$stmt = conexion->prepare($sql);
-$stmt->execute([$nombrePersona, $apellidoPersona, $email, $contrasenaUsuario]};
-$header("Location: /public/login/index.html");
+$stmt = $conexion->prepare($sql);
+$stmt->execute([$nombrePersona, $apellidoPersona, $email, $contrasenaUsuario]);
+header("Location: /public/login/index.html");
 ?>
 
 
