@@ -1,8 +1,8 @@
 <?php
-$host = "mariadb"
+$host = "127.0.0.1";
 $bd = "urbanaut";
-$usuario = "urbanaut_user";
-$password = "urbanaut123";
+$usuario = "root";
+$password = "";
 
 try {
 	$conexion = new PDO(
