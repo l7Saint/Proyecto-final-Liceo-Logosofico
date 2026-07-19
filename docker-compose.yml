@@ -8,11 +8,12 @@ services:
 
   mariadb:
     image: mariadb:11
+    container_name: mariadb
     environment:
-      MARIADB_ROOT_PASSWORD: rootpassword
-      MARIADB_DATABASE: myapp
-      MARIADB_USER: appuser
-      MARIADB_PASSWORD: apppassword
+      MARIADB_ROOT_PASSWORD: root
+      MARIADB_DATABASE: urbanaut
+      MARIADB_USER: urbanaut_user
+      MARIADB_PASSWORD: urbanaut123
     ports:
     - "3306:3306"
     volumes:
