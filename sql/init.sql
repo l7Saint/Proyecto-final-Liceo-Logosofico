@@ -21,8 +21,10 @@ CREATE TABLE IF NOT EXISTS J_Usuario_Auto (
 	FK_id_Usuario INT,
 	FK_id_Auto INT,
 
-	FOREIGN KEY (FK_id_Usuario) REFERENCES Usuario(id),
-	FOREIGN KEY (FK_id_Auto) REFERENCES Auto(id),
+	FOREIGN KEY (FK_id_Usuario) 
+		REFERENCES Usuario(id),
+	FOREIGN KEY (FK_id_Auto) 
+		REFERENCES Auto(id),
 
 	PRIMARY KEY(FK_id_Usuario, FK_id_Auto)
 );
@@ -38,14 +40,15 @@ CREATE TABLE IF NOT EXISTS Ubicacion (
 
 CREATE TABLE IF NOT EXISTS Estaciona (
 	FK_id_Usuario INT,
-	FK_id_Vehiculo INT,
+	FK_id_Auto INT,
 	FK_id_Ubicacion INT,
-	horaInicio TIMESTAMP DEFUALT CURRENT_TIMESTAMP,
+	horaInicio TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	horaFin TIMESTAMP,
 
-	FOREIGN KEY (FK_id_Usuario) REFERENCES J_Usuario_Auto(FK_id_Usuario),
-	FOREIGN KEY (FK_id_Ubicacion) REFERENCES J_Usuario_Auto(id),
-	FOREIGN KEY (FK_id_Auto) REFERENCES J_Usuario_Auto(FK_id_Auto),
+	FOREIGN KEY (FK_id_Usuario, FK_id_Auto) 
+		REFERENCES J_Usuario_Auto(FK_id_Usuario, FK_id_Auto),
+	FOREIGN KEY (FK_id_Ubicacion) 
+		REFERENCES Ubicacion(id),
 
 	PRIMARY KEY(FK_id_Usuario, FK_id_Auto, horaInicio, horaFin)
 );
