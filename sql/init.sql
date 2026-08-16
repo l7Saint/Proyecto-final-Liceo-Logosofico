@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS Auto (
 	tamano VARCHAR(15) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS J_Usuario_Auto (
+CREATE TABLE IF NOT EXISTS Posee (
 	FK_id_Usuario INT,
 	FK_id_Auto INT,
 
@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS Ubicacion (
 	longitud REAL
 );
 
-CREATE TABLE IF NOT EXISTS Estaciona (
+CREATE TABLE IF NOT EXISTS Estaciona_En (
 	FK_id_Usuario INT,
 	FK_id_Auto INT,
 	FK_id_Ubicacion INT,
@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS Estaciona (
 	horaFin TIMESTAMP,
 
 	FOREIGN KEY (FK_id_Usuario, FK_id_Auto) 
-		REFERENCES J_Usuario_Auto(FK_id_Usuario, FK_id_Auto),
+		REFERENCES Posee(FK_id_Usuario, FK_id_Auto),
 	FOREIGN KEY (FK_id_Ubicacion) 
 		REFERENCES Ubicacion(id),
 
