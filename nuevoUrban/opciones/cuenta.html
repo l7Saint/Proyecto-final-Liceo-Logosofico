@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="es">
 
 <head>
@@ -86,7 +87,7 @@
             padding: 8px;
         }
 
-        /* TARJETA PRINCIPAL */
+        /* TARJETA */
 
         .card-urbanaut {
             width: min(92vw, 850px);
@@ -130,6 +131,7 @@
 
         .titulo i {
             color: #238bff;
+
             font-size: 28px;
         }
 
@@ -203,6 +205,7 @@
 
         .bloque-titulo i {
             color: #238bff;
+
             font-size: 19px;
         }
 
@@ -266,7 +269,7 @@
             cursor: pointer;
         }
 
-        /* COLORES DEL PERFIL */
+        /* COLORES PERFIL */
 
         .colores {
             display: flex;
@@ -313,6 +316,38 @@
             background: #ffe59a;
         }
 
+        /* ELIMINAR CUENTA */
+
+        .eliminar {
+            width: 100%;
+
+            margin-top: 12px;
+
+            border: none;
+
+            border-radius: 9px;
+
+            padding: 7px;
+
+            background: #dc3545;
+
+            color: white;
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition: 0.25s;
+        }
+
+        .eliminar:hover {
+            background: #b02a37;
+
+            transform: translateY(-1px);
+        }
+
         /* DATOS */
 
         .dato {
@@ -334,6 +369,7 @@
 
         .dato i {
             color: #238bff;
+
             font-size: 15px;
         }
 
@@ -382,8 +418,7 @@
         .editar:hover {
             background: #126dcc;
 
-            transform:
-                translateY(-1px);
+            transform: translateY(-1px);
         }
 
         /* AUTO */
@@ -434,6 +469,7 @@
             display: flex;
 
             justify-content: center;
+
             align-items: center;
 
             min-height: 82px;
@@ -453,7 +489,7 @@
             transition: 0.25s;
         }
 
-        /* COLORES DEL AUTO */
+        /* COLORES AUTO */
 
         .colores-auto {
             display: flex;
@@ -516,6 +552,38 @@
             margin-top: 2px;
         }
 
+        /* BOTÓN EDITAR AUTO */
+
+        .editar-auto {
+            width: 100%;
+
+            border: none;
+
+            border-radius: 9px;
+
+            padding: 7px;
+
+            margin-top: 8px;
+
+            background: #238bff;
+
+            color: white;
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition: 0.25s;
+        }
+
+        .editar-auto:hover {
+            background: #126dcc;
+
+            transform: translateY(-1px);
+        }
+
         /* BOTÓN VOLVER */
 
         .botones {
@@ -530,6 +598,7 @@
             display: inline-flex;
 
             align-items: center;
+
             justify-content: center;
 
             gap: 6px;
@@ -556,11 +625,10 @@
 
             color: white;
 
-            transform:
-                translateY(-2px);
+            transform: translateY(-2px);
         }
 
-        /* MODAL */
+        /* MODALES */
 
         .modal-contenido {
             border-radius: 20px;
@@ -607,6 +675,61 @@
             font-weight: 700;
         }
 
+        /* MODAL ELIMINAR */
+
+        .modal-eliminar {
+            border-radius: 20px;
+
+            border: none;
+
+            background:
+                rgba(255,248,248,0.97);
+
+            backdrop-filter: blur(15px);
+        }
+
+        .titulo-eliminar {
+            color: #b02a37;
+
+            font-weight: 750;
+        }
+
+        .icono-eliminar {
+            color: #dc3545;
+
+            font-size: 45px;
+
+            margin-bottom: 10px;
+        }
+
+        .texto-eliminar {
+            color: #58738e;
+
+            font-size: 14px;
+
+            text-align: center;
+        }
+
+        .btn-confirmar-eliminar {
+            border: none;
+
+            background: #dc3545;
+
+            color: white;
+
+            border-radius: 10px;
+
+            padding: 8px 17px;
+
+            font-weight: 700;
+
+            transition: 0.2s;
+        }
+
+        .btn-confirmar-eliminar:hover {
+            background: #b02a37;
+        }
+
         /* RESPONSIVE */
 
         @media (max-width: 650px) {
@@ -650,22 +773,17 @@
             .auto-icono {
                 font-size: 55px;
             }
-
         }
 
     </style>
 
 </head>
 
-
 <body>
-
 
     <main class="contenedor">
 
-
         <section class="card-urbanaut">
-
 
             <!-- TÍTULO -->
 
@@ -679,18 +797,14 @@
 
             </div>
 
-
             <p class="subtitulo">
-
                 Administrá tus datos y tu vehículo.
-
             </p>
 
 
             <!-- PERFIL Y DATOS -->
 
             <div class="contenido">
-
 
                 <!-- PERFIL -->
 
@@ -751,6 +865,21 @@
                         </span>
 
                     </div>
+
+
+                    <!-- ELIMINAR CUENTA -->
+
+                    <button
+                        type="button"
+                        class="eliminar"
+                        data-bs-toggle="modal"
+                        data-bs-target="#modalEliminar">
+
+                        <i class="bi bi-trash3-fill"></i>
+
+                        Eliminar cuenta
+
+                    </button>
 
                 </div>
 
@@ -845,7 +974,6 @@
 
             <div class="bloque">
 
-
                 <div class="bloque-titulo">
 
                     <i class="bi bi-car-front-fill"></i>
@@ -857,9 +985,7 @@
 
                 <div class="auto">
 
-
                     <div class="auto-info">
-
 
                         <div class="auto-dato">
 
@@ -867,7 +993,9 @@
                                 Vehículo
                             </strong>
 
-                            Volkswagen Gol
+                            <span id="vehiculo">
+                                Volkswagen Gol
+                            </span>
 
                         </div>
 
@@ -878,7 +1006,9 @@
                                 Matrícula
                             </strong>
 
-                            ABC 1234
+                            <span id="matricula">
+                                ABC 1234
+                            </span>
 
                         </div>
 
@@ -894,7 +1024,6 @@
                             </span>
 
                         </div>
-
 
                     </div>
 
@@ -912,38 +1041,31 @@
 
 
                 <div class="texto-color">
-
                     Cambiar color del auto
-
                 </div>
 
 
                 <div class="colores-auto">
-
 
                     <span
                         class="color-auto auto-azul"
                         onclick="cambiarAuto('#238bff', 'Azul')">
                     </span>
 
-
                     <span
                         class="color-auto auto-rojo"
                         onclick="cambiarAuto('#e85d75', 'Rojo')">
                     </span>
-
 
                     <span
                         class="color-auto auto-verde"
                         onclick="cambiarAuto('#43b883', 'Verde')">
                     </span>
 
-
                     <span
                         class="color-auto auto-negro"
                         onclick="cambiarAuto('#263238', 'Negro')">
                     </span>
-
 
                     <span
                         class="color-auto auto-blanco"
@@ -952,10 +1074,25 @@
 
                 </div>
 
+
+                <!-- EDITAR AUTO -->
+
+                <button
+                    type="button"
+                    class="editar-auto"
+                    data-bs-toggle="modal"
+                    data-bs-target="#modalEditarAuto">
+
+                    <i class="bi bi-pencil"></i>
+
+                    Editar mi auto
+
+                </button>
+
             </div>
 
 
-            <!-- BOTÓN VOLVER A INICIO -->
+            <!-- VOLVER A INICIO -->
 
             <div class="botones">
 
@@ -970,7 +1107,6 @@
                 </a>
 
             </div>
-
 
         </section>
 
@@ -988,15 +1124,11 @@
 
             <div class="modal-content modal-contenido">
 
-
                 <div class="modal-header">
 
                     <h5 class="modal-titulo">
-
                         Editar mis datos
-
                     </h5>
-
 
                     <button
                         type="button"
@@ -1008,7 +1140,6 @@
 
 
                 <div class="modal-body">
-
 
                     <div class="mb-3">
 
@@ -1054,7 +1185,6 @@
 
                     </div>
 
-
                 </div>
 
 
@@ -1081,6 +1211,207 @@
 
                 </div>
 
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- MODAL EDITAR AUTO -->
+
+    <div
+        class="modal fade"
+        id="modalEditarAuto"
+        tabindex="-1">
+
+        <div class="modal-dialog modal-dialog-centered">
+
+            <div class="modal-content modal-contenido">
+
+                <div class="modal-header">
+
+                    <h5 class="modal-titulo">
+
+                        Editar mi auto
+
+                    </h5>
+
+                    <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal">
+                    </button>
+
+                </div>
+
+
+                <div class="modal-body">
+
+                    <div class="mb-3">
+
+                        <label class="form-label">
+                            Vehículo
+                        </label>
+
+                        <input
+                            type="text"
+                            id="editarVehiculo"
+                            class="form-control"
+                            value="Volkswagen Gol">
+
+                    </div>
+
+
+                    <div class="mb-3">
+
+                        <label class="form-label">
+                            Matrícula
+                        </label>
+
+                        <input
+                            type="text"
+                            id="editarMatricula"
+                            class="form-control"
+                            value="ABC 1234">
+
+                    </div>
+
+
+                    <div class="mb-3">
+
+                        <label class="form-label">
+                            Color
+                        </label>
+
+                        <select
+                            id="editarColor"
+                            class="form-control">
+
+                            <option value="Azul">
+                                Azul
+                            </option>
+
+                            <option value="Rojo">
+                                Rojo
+                            </option>
+
+                            <option value="Verde">
+                                Verde
+                            </option>
+
+                            <option value="Negro">
+                                Negro
+                            </option>
+
+                            <option value="Blanco">
+                                Blanco
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+                <div class="modal-footer">
+
+                    <button
+                        type="button"
+                        class="btn btn-secondary"
+                        data-bs-dismiss="modal">
+
+                        Cancelar
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="guardar"
+                        onclick="guardarAuto()">
+
+                        Guardar cambios
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- MODAL ELIMINAR CUENTA -->
+
+    <div
+        class="modal fade"
+        id="modalEliminar"
+        tabindex="-1">
+
+        <div class="modal-dialog modal-dialog-centered">
+
+            <div class="modal-content modal-eliminar">
+
+                <div class="modal-header">
+
+                    <h5 class="modal-title titulo-eliminar">
+
+                        Eliminar cuenta
+
+                    </h5>
+
+                    <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal">
+                    </button>
+
+                </div>
+
+
+                <div class="modal-body text-center">
+
+                    <i
+                        class="bi bi-exclamation-triangle-fill icono-eliminar">
+                    </i>
+
+                    <p class="texto-eliminar">
+
+                        ¿Seguro que querés borrar tu cuenta en Urbanaut?
+
+                    </p>
+
+                </div>
+
+
+                <div class="modal-footer">
+
+                    <button
+                        type="button"
+                        class="btn btn-secondary"
+                        data-bs-dismiss="modal">
+
+                        Cancelar
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="btn-confirmar-eliminar"
+                        onclick="eliminarCuenta()">
+
+                        <i class="bi bi-trash3-fill"></i>
+
+                        Eliminar cuenta
+
+                    </button>
+
+                </div>
 
             </div>
 
@@ -1155,7 +1486,7 @@
         }
 
 
-        /* GUARDAR DATOS */
+        /* GUARDAR DATOS DEL USUARIO */
 
         function guardarDatos() {
 
@@ -1200,8 +1531,85 @@
 
         }
 
-    </script>
 
+        /* GUARDAR DATOS DEL AUTO */
+
+        function guardarAuto() {
+
+            const vehiculo =
+                document
+                .getElementById("editarVehiculo")
+                .value;
+
+            const matricula =
+                document
+                .getElementById("editarMatricula")
+                .value;
+
+            const color =
+                document
+                .getElementById("editarColor")
+                .value;
+
+
+            document
+                .getElementById("vehiculo")
+                .textContent = vehiculo;
+
+            document
+                .getElementById("matricula")
+                .textContent = matricula;
+
+            document
+                .getElementById("colorTexto")
+                .textContent = color;
+
+
+            /* Cambiar automáticamente el color del auto */
+
+            const colores = {
+
+                "Azul": "#238bff",
+
+                "Rojo": "#e85d75",
+
+                "Verde": "#43b883",
+
+                "Negro": "#263238",
+
+                "Blanco": "#ffffff"
+
+            };
+
+
+            document
+                .getElementById("autoIcono")
+                .style.color = colores[color];
+
+
+            const modal =
+                bootstrap.Modal
+                .getInstance(
+                    document.getElementById(
+                        "modalEditarAuto"
+                    )
+                );
+
+            modal.hide();
+
+        }
+
+
+        /* ELIMINAR CUENTA */
+
+        function eliminarCuenta() {
+
+            window.location.href =
+                "../signin/cuenta.html";
+
+        }
+
+    </script>
 
 </body>
 

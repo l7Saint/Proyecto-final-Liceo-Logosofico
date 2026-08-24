@@ -2,13 +2,8 @@
 <html lang="es">
 
 <head>
-
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Urbanaut | Administrador</title>
 
     <!-- Bootstrap Icons -->
@@ -25,13 +20,8 @@
         }
 
         body {
-
             min-height: 100vh;
-
-            font-family:
-                "Segoe UI",
-                Arial,
-                sans-serif;
+            font-family: "Segoe UI", Arial, sans-serif;
 
             background:
                 linear-gradient(
@@ -43,31 +33,24 @@
                 no-repeat fixed;
 
             color: #d8fbe8;
-
             padding: 30px 15px;
         }
-
 
         /* =========================
            CONTENEDOR
            ========================= */
 
         .contenedor {
-
             width: 100%;
-
             max-width: 1100px;
-
             margin: auto;
         }
-
 
         /* =========================
            PANEL
            ========================= */
 
         .panel {
-
             width: 100%;
 
             background:
@@ -78,7 +61,6 @@
                 rgba(56, 220, 139, 0.45);
 
             border-radius: 18px;
-
             padding: 30px;
 
             box-shadow:
@@ -88,19 +70,14 @@
             backdrop-filter: blur(8px);
         }
 
-
         /* =========================
            ENCABEZADO
            ========================= */
 
         .encabezado {
-
             display: flex;
-
             align-items: center;
-
             justify-content: space-between;
-
             gap: 20px;
 
             padding-bottom: 20px;
@@ -112,59 +89,39 @@
             margin-bottom: 25px;
         }
 
-
         .titulo {
-
             display: flex;
-
             align-items: center;
-
             gap: 14px;
         }
 
-
         .titulo i {
-
             font-size: 32px;
-
             color: #43e58c;
         }
 
-
         h1 {
-
             color: #8affb9;
-
             font-size: 28px;
-
             font-weight: 700;
         }
 
-
         .subtitulo {
-
             color: #8da99b;
-
             font-size: 13px;
-
             margin-top: 3px;
         }
-
 
         /* =========================
            ESTADO
            ========================= */
 
         .estado {
-
             display: flex;
-
             align-items: center;
-
             gap: 7px;
 
             color: #67ed9d;
-
             font-size: 12px;
 
             border:
@@ -172,20 +129,15 @@
                 rgba(67, 229, 140, 0.3);
 
             padding: 7px 11px;
-
             border-radius: 8px;
 
             background:
                 rgba(50, 180, 110, 0.08);
         }
 
-
         .punto {
-
             width: 8px;
-
             height: 8px;
-
             border-radius: 50%;
 
             background: #43e58c;
@@ -194,26 +146,18 @@
                 0 0 8px #43e58c;
         }
 
-
         /* =========================
            INFORMACIÓN GENERAL
            ========================= */
 
         .info {
-
             display: grid;
-
-            grid-template-columns:
-                repeat(3, 1fr);
-
+            grid-template-columns: repeat(3, 1fr);
             gap: 15px;
-
             margin-bottom: 25px;
         }
 
-
         .info-box {
-
             background:
                 rgba(10, 35, 29, 0.85);
 
@@ -222,79 +166,54 @@
                 rgba(56, 220, 139, 0.20);
 
             border-radius: 12px;
-
             padding: 17px;
         }
 
-
         .info-box i {
-
             color: #43e58c;
-
             font-size: 20px;
         }
 
-
         .info-box strong {
-
             display: block;
-
             margin-top: 8px;
 
             color: #8affb9;
-
             font-size: 20px;
         }
 
-
         .info-box span {
-
             color: #779488;
-
             font-size: 12px;
         }
-
 
         /* =========================
            TÍTULO USUARIOS
            ========================= */
 
         .usuarios-titulo {
-
             display: flex;
-
             justify-content: space-between;
-
             align-items: center;
-
             margin-bottom: 12px;
         }
 
-
         .usuarios-titulo h2 {
-
             font-size: 18px;
-
             color: #a5ffc8;
         }
 
-
         .usuarios-titulo span {
-
             font-size: 11px;
-
             color: #6f8c7d;
         }
-
 
         /* =========================
            TABLA
            ========================= */
 
         .tabla-contenedor {
-
             width: 100%;
-
             overflow-x: auto;
 
             border-radius: 12px;
@@ -304,34 +223,23 @@
                 rgba(56, 220, 139, 0.20);
         }
 
-
         table {
-
             width: 100%;
-
             border-collapse: collapse;
-
             min-width: 900px;
         }
 
-
         thead {
-
             background:
                 rgba(37, 112, 76, 0.20);
         }
 
-
         th {
-
             padding: 13px;
-
             text-align: left;
 
             color: #72efa5;
-
             font-size: 11px;
-
             text-transform: uppercase;
 
             border-bottom:
@@ -339,13 +247,10 @@
                 rgba(56, 220, 139, 0.25);
         }
 
-
         td {
-
             padding: 13px;
 
             color: #b8cec2;
-
             font-size: 12px;
 
             border-bottom:
@@ -353,44 +258,70 @@
                 rgba(56, 220, 139, 0.10);
         }
 
-
         tbody tr {
-
             transition: 0.2s;
         }
 
-
         tbody tr:hover {
-
             background:
                 rgba(56, 220, 139, 0.06);
         }
 
+        /* =========================
+           ID
+           ========================= */
+
+        .id-usuario {
+            color: #43e58c;
+            font-family: monospace;
+            font-weight: 700;
+        }
 
         /* =========================
            NOMBRE
            ========================= */
 
         .nombre {
-
             color: #d8ffe6;
-
             font-weight: 600;
         }
 
-
         .dato {
-
             color: #8da99b;
         }
 
+        /* =========================
+           AUTOS
+           ========================= */
+
+        .cantidad-autos {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+
+            color: #8affb9;
+            font-weight: 700;
+
+            background:
+                rgba(67, 229, 140, 0.08);
+
+            border:
+                1px solid
+                rgba(67, 229, 140, 0.20);
+
+            padding: 5px 9px;
+            border-radius: 7px;
+        }
+
+        .cantidad-autos i {
+            color: #43e58c;
+        }
 
         /* =========================
            BOTÓN BORRAR
            ========================= */
 
         .btn-borrar {
-
             border:
                 1px solid
                 rgba(255, 90, 90, 0.35);
@@ -401,19 +332,15 @@
             color: #ff8585;
 
             border-radius: 7px;
-
             padding: 7px 10px;
 
             cursor: pointer;
-
             font-size: 11px;
 
             transition: 0.2s;
         }
 
-
         .btn-borrar:hover {
-
             background:
                 rgba(255, 70, 70, 0.18);
 
@@ -423,15 +350,12 @@
             color: #ffaaaa;
         }
 
-
         /* =========================
            EVENTO ESPECIAL
            ========================= */
 
         .evento-especial {
-
             margin-top: 25px;
-
             padding: 18px;
 
             border:
@@ -444,87 +368,56 @@
                 rgba(10, 35, 29, 0.70);
 
             display: flex;
-
             align-items: center;
-
             justify-content: space-between;
 
             gap: 20px;
         }
 
-
         .evento-info {
-
             display: flex;
-
             align-items: center;
-
             gap: 12px;
-
             flex: 1;
         }
 
-
         .evento-info i {
-
             font-size: 24px;
-
             color: #43e58c;
         }
 
-
         .evento-info h3 {
-
             color: #a5ffc8;
-
             font-size: 15px;
-
             margin-bottom: 3px;
         }
 
-
         .evento-info p {
-
             color: #779488;
-
             font-size: 11px;
-
             margin: 0;
-
             line-height: 1.5;
         }
-
 
         /* =========================
            INTERRUPTOR
            ========================= */
 
         .switch-evento {
-
             position: relative;
-
             width: 54px;
-
             height: 28px;
-
             flex-shrink: 0;
         }
 
-
         .switch-evento input {
-
             opacity: 0;
-
             width: 0;
-
             height: 0;
         }
 
-
         .slider-evento {
-
             position: absolute;
-
             inset: 0;
 
             cursor: pointer;
@@ -537,23 +430,18 @@
                 rgba(120, 150, 135, 0.35);
 
             border-radius: 30px;
-
             transition: 0.3s;
         }
 
-
         .slider-evento::before {
-
             content: "";
 
             position: absolute;
 
             width: 20px;
-
             height: 20px;
 
             left: 3px;
-
             top: 3px;
 
             background: #d8fbe8;
@@ -567,12 +455,7 @@
                 rgba(0,0,0,0.25);
         }
 
-
-        /* INTERRUPTOR ACTIVADO */
-
-        .switch-evento input:checked
-        + .slider-evento {
-
+        .switch-evento input:checked + .slider-evento {
             background: #249b62;
 
             border-color: #43e58c;
@@ -582,47 +465,33 @@
                 rgba(67, 229, 140, 0.25);
         }
 
-
-        .switch-evento input:checked
-        + .slider-evento::before {
-
-            transform:
-                translateX(26px);
-
+        .switch-evento input:checked + .slider-evento::before {
+            transform: translateX(26px);
             background: #ffffff;
         }
-
 
         /* =========================
            ESTADO EVENTO
            ========================= */
 
         .estado-evento {
-
             min-width: 75px;
-
             text-align: right;
 
             color: #779488;
-
             font-size: 10px;
         }
-
 
         /* =========================
            PIE
            ========================= */
 
         .pie {
-
             display: flex;
-
             justify-content: space-between;
-
             align-items: center;
 
             margin-top: 20px;
-
             padding-top: 18px;
 
             border-top:
@@ -630,27 +499,20 @@
                 rgba(56, 220, 139, 0.15);
         }
 
-
         .codigo {
-
             color: #587568;
-
             font-family: monospace;
-
             font-size: 11px;
         }
-
 
         /* =========================
            BOTÓN SALIR
            ========================= */
 
         .btn-volver {
-
             text-decoration: none;
 
             color: #7ddfa2;
-
             font-size: 12px;
 
             padding: 8px 12px;
@@ -664,15 +526,12 @@
             transition: 0.2s;
         }
 
-
         .btn-volver:hover {
-
             background:
                 rgba(56, 220, 139, 0.08);
 
             color: #aaffc7;
         }
-
 
         /* =========================
            CELULAR
@@ -681,65 +540,42 @@
         @media (max-width: 700px) {
 
             body {
-
-                padding:
-                    15px 10px;
+                padding: 15px 10px;
             }
 
-
             .panel {
-
                 padding: 20px;
             }
 
-
             .encabezado {
-
                 align-items: flex-start;
-
                 flex-direction: column;
             }
 
-
             .info {
-
-                grid-template-columns:
-                    1fr;
+                grid-template-columns: 1fr;
             }
 
-
             .evento-especial {
-
                 align-items: flex-start;
-
                 flex-wrap: wrap;
             }
 
-
             .estado-evento {
-
                 width: 100%;
-
                 text-align: left;
-
                 margin-left: 36px;
             }
 
-
             .pie {
-
                 flex-direction: column;
-
                 gap: 15px;
-
                 align-items: flex-start;
             }
         }
 
     </style>
-
 </head>
-
 
 <body>
 
@@ -747,10 +583,7 @@
 
         <section class="panel">
 
-
-            <!-- =========================
-                 ENCABEZADO
-                 ========================= -->
+            <!-- ENCABEZADO -->
 
             <header class="encabezado">
 
@@ -772,7 +605,6 @@
 
                 </div>
 
-
                 <div class="estado">
 
                     <span class="punto"></span>
@@ -784,9 +616,7 @@
             </header>
 
 
-            <!-- =========================
-                 INFORMACIÓN GENERAL
-                 ========================= -->
+            <!-- INFORMACIÓN GENERAL -->
 
             <section class="info">
 
@@ -837,9 +667,7 @@
             </section>
 
 
-            <!-- =========================
-                 USUARIOS
-                 ========================= -->
+            <!-- USUARIOS -->
 
             <div class="usuarios-titulo">
 
@@ -854,9 +682,7 @@
             </div>
 
 
-            <!-- =========================
-                 TABLA
-                 ========================= -->
+            <!-- TABLA -->
 
             <div class="tabla-contenedor">
 
@@ -865,6 +691,10 @@
                     <thead>
 
                         <tr>
+
+                            <th>
+                                ID
+                            </th>
 
                             <th>
                                 Usuario
@@ -883,7 +713,7 @@
                             </th>
 
                             <th>
-                                Patente
+                                Autos registrados
                             </th>
 
                             <th>
@@ -906,6 +736,10 @@
 
                         <tr>
 
+                            <td class="id-usuario">
+                                U001
+                            </td>
+
                             <td class="nombre">
                                 Juan Pérez
                             </td>
@@ -922,8 +756,16 @@
                                 Volkswagen Gol
                             </td>
 
-                            <td class="dato">
-                                ABC 1234
+                            <td>
+
+                                <span class="cantidad-autos">
+
+                                    <i class="bi bi-car-front-fill"></i>
+
+                                    1
+
+                                </span>
+
                             </td>
 
                             <td class="dato">
@@ -951,6 +793,10 @@
 
                         <tr>
 
+                            <td class="id-usuario">
+                                U002
+                            </td>
+
                             <td class="nombre">
                                 María López
                             </td>
@@ -967,8 +813,16 @@
                                 Chevrolet Onix
                             </td>
 
-                            <td class="dato">
-                                DEF 5678
+                            <td>
+
+                                <span class="cantidad-autos">
+
+                                    <i class="bi bi-car-front-fill"></i>
+
+                                    2
+
+                                </span>
+
                             </td>
 
                             <td class="dato">
@@ -996,6 +850,10 @@
 
                         <tr>
 
+                            <td class="id-usuario">
+                                U003
+                            </td>
+
                             <td class="nombre">
                                 Lucas Gómez
                             </td>
@@ -1012,8 +870,16 @@
                                 Fiat Argo
                             </td>
 
-                            <td class="dato">
-                                GHI 9012
+                            <td>
+
+                                <span class="cantidad-autos">
+
+                                    <i class="bi bi-car-front-fill"></i>
+
+                                    1
+
+                                </span>
+
                             </td>
 
                             <td class="dato">
@@ -1044,12 +910,9 @@
             </div>
 
 
-            <!-- =========================
-                 EVENTO ESPECIAL
-                 ========================= -->
+            <!-- EVENTO ESPECIAL -->
 
             <div class="evento-especial">
-
 
                 <div class="evento-info">
 
@@ -1094,21 +957,14 @@
 
                 </span>
 
-
             </div>
 
 
-            <!-- =========================
-                 PIE
-                 ========================= -->
+            <!-- PIE -->
 
             <footer class="pie">
 
-                <span class="codigo">
-                    urbanaut_admin@system:~$
-                </span>
-
-
+            
                 <a
                     href="../login/index.html"
                     class="btn-volver">
@@ -1121,18 +977,14 @@
 
             </footer>
 
-
         </section>
 
     </main>
 
 
-    <!-- =========================
-         JAVASCRIPT
-         ========================= -->
+    <!-- JAVASCRIPT -->
 
     <script>
-
 
         /* =========================
            BORRAR USUARIO
@@ -1143,13 +995,11 @@
             const fila =
                 boton.closest("tr");
 
-
             const nombre =
                 fila
                 .querySelector(".nombre")
                 .textContent
                 .trim();
-
 
             const confirmar =
                 confirm(
@@ -1157,7 +1007,6 @@
                     + nombre
                     + "?"
                 );
-
 
             if (confirmar) {
 
@@ -1181,7 +1030,6 @@
                     "#tablaUsuarios tr"
                 );
 
-
             document.getElementById(
                 "cantidadUsuarios"
             ).textContent =
@@ -1203,7 +1051,6 @@
                     "estadoEvento"
                 );
 
-
             if (switchEvento.checked) {
 
                 estado.textContent =
@@ -1212,14 +1059,12 @@
                 estado.style.color =
                     "#67ed9d";
 
-
                 alert(
                     "Evento especial activado.\n\n" +
                     "Los usuarios que participen " +
                     "podrán formar parte de las " +
                     "estadísticas del sábado."
                 );
-
 
             } else {
 
@@ -1229,7 +1074,6 @@
                 estado.style.color =
                     "#779488";
 
-
                 alert(
                     "Evento especial desactivado."
                 );
@@ -1238,9 +1082,7 @@
 
         }
 
-
     </script>
-
 
 </body>
 
