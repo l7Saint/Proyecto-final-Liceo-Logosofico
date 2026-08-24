@@ -1,0 +1,1208 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>Urbanaut | Mi Cuenta</title>
+
+    <!-- Bootstrap -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            width: 100%;
+            min-height: 100%;
+        }
+
+        body {
+            min-height: 100vh;
+
+            font-family:
+                "Segoe UI",
+                Arial,
+                sans-serif;
+
+            background:
+                url("../imagenes/imagen2.jpg")
+                center center / cover
+                no-repeat fixed;
+
+            overflow: hidden;
+        }
+
+        /* FONDO */
+
+        body::before {
+            content: "";
+
+            position: fixed;
+
+            inset: 0;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(0, 180, 255, 0.15),
+                    rgba(0, 255, 170, 0.08)
+                );
+
+            backdrop-filter: blur(2px);
+
+            z-index: -1;
+        }
+
+        /* CONTENEDOR */
+
+        .contenedor {
+            width: 100%;
+            height: 100vh;
+
+            display: flex;
+
+            justify-content: center;
+            align-items: center;
+
+            padding: 8px;
+        }
+
+        /* TARJETA PRINCIPAL */
+
+        .card-urbanaut {
+            width: min(92vw, 850px);
+
+            max-height: calc(100vh - 16px);
+
+            padding: 16px 22px;
+
+            border-radius: 25px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(255,255,255,0.74),
+                    rgba(230,250,255,0.48)
+                );
+
+            border:
+                1px solid
+                rgba(255,255,255,0.85);
+
+            box-shadow:
+                0 18px 50px
+                rgba(0,40,70,0.28);
+
+            backdrop-filter: blur(22px);
+        }
+
+        /* TÍTULO */
+
+        .titulo {
+            display: flex;
+
+            justify-content: center;
+            align-items: center;
+
+            gap: 8px;
+
+            margin-bottom: 2px;
+        }
+
+        .titulo i {
+            color: #238bff;
+            font-size: 28px;
+        }
+
+        h1 {
+            color: #123d69;
+
+            font-size: 28px;
+
+            font-weight: 750;
+
+            margin: 0;
+        }
+
+        .subtitulo {
+            text-align: center;
+
+            color: #58738e;
+
+            font-size: 13px;
+
+            margin-bottom: 11px;
+        }
+
+        /* CONTENIDO */
+
+        .contenido {
+            display: grid;
+
+            grid-template-columns:
+                0.8fr 1.2fr;
+
+            gap: 12px;
+
+            margin-bottom: 12px;
+        }
+
+        /* BLOQUES */
+
+        .bloque {
+            background:
+                rgba(255,255,255,0.55);
+
+            border:
+                1px solid
+                rgba(255,255,255,0.8);
+
+            border-radius: 17px;
+
+            padding: 12px;
+
+            box-shadow:
+                0 6px 16px
+                rgba(0,40,70,0.09);
+        }
+
+        .bloque-titulo {
+            display: flex;
+
+            align-items: center;
+
+            gap: 6px;
+
+            color: #123d69;
+
+            font-size: 15px;
+
+            font-weight: 700;
+
+            margin-bottom: 8px;
+        }
+
+        .bloque-titulo i {
+            color: #238bff;
+            font-size: 19px;
+        }
+
+        /* PERFIL */
+
+        .perfil {
+            display: flex;
+
+            flex-direction: column;
+
+            align-items: center;
+
+            text-align: center;
+        }
+
+        .avatar {
+            width: 82px;
+            height: 82px;
+
+            border-radius: 50%;
+
+            background: #bde9ff;
+
+            border:
+                4px solid
+                rgba(255,255,255,0.85);
+
+            box-shadow:
+                0 7px 17px
+                rgba(0,60,100,0.18);
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            font-size: 46px;
+
+            margin-bottom: 5px;
+
+            cursor: pointer;
+
+            transition: 0.25s;
+        }
+
+        .avatar:hover {
+            transform: scale(1.04);
+        }
+
+        .cambiar-foto {
+            border: none;
+
+            background: transparent;
+
+            color: #238bff;
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+        }
+
+        /* COLORES DEL PERFIL */
+
+        .colores {
+            display: flex;
+
+            justify-content: center;
+
+            gap: 6px;
+
+            margin-top: 5px;
+        }
+
+        .color {
+            width: 17px;
+            height: 17px;
+
+            border-radius: 50%;
+
+            border: 2px solid white;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 2px 5px
+                rgba(0,0,0,0.15);
+        }
+
+        .azul {
+            background: #9bddff;
+        }
+
+        .rosa {
+            background: #ffb6d9;
+        }
+
+        .verde {
+            background: #a9e6c1;
+        }
+
+        .violeta {
+            background: #cbb5ff;
+        }
+
+        .amarillo {
+            background: #ffe59a;
+        }
+
+        /* DATOS */
+
+        .dato {
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            margin-bottom: 5px;
+
+            padding: 6px 8px;
+
+            border-radius: 9px;
+
+            background:
+                rgba(255,255,255,0.45);
+        }
+
+        .dato i {
+            color: #238bff;
+            font-size: 15px;
+        }
+
+        .dato span {
+            color: #58738e;
+
+            font-size: 10px;
+
+            display: block;
+        }
+
+        .dato strong {
+            display: block;
+
+            color: #123d69;
+
+            font-size: 12px;
+        }
+
+        /* EDITAR DATOS */
+
+        .editar {
+            width: 100%;
+
+            border: none;
+
+            border-radius: 9px;
+
+            padding: 7px;
+
+            background: #238bff;
+
+            color: white;
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+            margin-top: 1px;
+
+            cursor: pointer;
+
+            transition: 0.25s;
+        }
+
+        .editar:hover {
+            background: #126dcc;
+
+            transform:
+                translateY(-1px);
+        }
+
+        /* AUTO */
+
+        .auto {
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            gap: 10px;
+
+            align-items: center;
+        }
+
+        .auto-info {
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 5px;
+        }
+
+        .auto-dato {
+            background:
+                rgba(255,255,255,0.45);
+
+            padding: 6px 9px;
+
+            border-radius: 9px;
+
+            color: #58738e;
+
+            font-size: 10px;
+        }
+
+        .auto-dato strong {
+            color: #123d69;
+
+            display: block;
+
+            font-size: 11px;
+        }
+
+        /* AUTO VISUAL */
+
+        .auto-visual {
+            display: flex;
+
+            justify-content: center;
+            align-items: center;
+
+            min-height: 82px;
+        }
+
+        .auto-icono {
+            font-size: 62px;
+
+            color: #238bff;
+
+            filter:
+                drop-shadow(
+                    0 5px 5px
+                    rgba(0,60,100,0.18)
+                );
+
+            transition: 0.25s;
+        }
+
+        /* COLORES DEL AUTO */
+
+        .colores-auto {
+            display: flex;
+
+            justify-content: center;
+
+            gap: 7px;
+
+            margin-top: 4px;
+        }
+
+        .color-auto {
+            width: 19px;
+            height: 19px;
+
+            border-radius: 50%;
+
+            border: 2px solid white;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 2px 5px
+                rgba(0,0,0,0.15);
+
+            transition: 0.2s;
+        }
+
+        .color-auto:hover {
+            transform: scale(1.12);
+        }
+
+        .auto-azul {
+            background: #238bff;
+        }
+
+        .auto-rojo {
+            background: #e85d75;
+        }
+
+        .auto-verde {
+            background: #43b883;
+        }
+
+        .auto-negro {
+            background: #263238;
+        }
+
+        .auto-blanco {
+            background: #ffffff;
+        }
+
+        .texto-color {
+            text-align: center;
+
+            color: #58738e;
+
+            font-size: 10px;
+
+            margin-top: 2px;
+        }
+
+        /* BOTÓN VOLVER */
+
+        .botones {
+            display: flex;
+
+            justify-content: center;
+
+            margin-top: 10px;
+        }
+
+        .volver {
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            gap: 6px;
+
+            padding: 8px 18px;
+
+            border-radius: 11px;
+
+            background: #1b3237;
+
+            color: white;
+
+            text-decoration: none;
+
+            font-weight: 700;
+
+            font-size: 12px;
+
+            transition: 0.25s;
+        }
+
+        .volver:hover {
+            background: #238bff;
+
+            color: white;
+
+            transform:
+                translateY(-2px);
+        }
+
+        /* MODAL */
+
+        .modal-contenido {
+            border-radius: 20px;
+
+            border: none;
+
+            background:
+                rgba(245,252,255,0.96);
+
+            backdrop-filter: blur(15px);
+        }
+
+        .modal-titulo {
+            color: #123d69;
+
+            font-weight: 750;
+        }
+
+        .form-label {
+            color: #123d69;
+
+            font-size: 13px;
+
+            font-weight: 700;
+        }
+
+        .form-control {
+            border-radius: 11px;
+
+            font-size: 13px;
+        }
+
+        .guardar {
+            border: none;
+
+            background: #238bff;
+
+            color: white;
+
+            border-radius: 10px;
+
+            padding: 8px 17px;
+
+            font-weight: 700;
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 650px) {
+
+            body {
+                overflow: auto;
+            }
+
+            .contenedor {
+                min-height: 100vh;
+
+                height: auto;
+
+                align-items: flex-start;
+
+                padding: 7px;
+            }
+
+            .card-urbanaut {
+                width: 100%;
+
+                max-height: none;
+
+                margin-top: 4px;
+
+                padding: 15px 13px;
+            }
+
+            .contenido {
+                grid-template-columns: 1fr;
+            }
+
+            .auto {
+                grid-template-columns: 1fr;
+            }
+
+            .auto-visual {
+                min-height: 65px;
+            }
+
+            .auto-icono {
+                font-size: 55px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <main class="contenedor">
+
+
+        <section class="card-urbanaut">
+
+
+            <!-- TÍTULO -->
+
+            <div class="titulo">
+
+                <i class="bi bi-person-circle"></i>
+
+                <h1>
+                    Mi Cuenta
+                </h1>
+
+            </div>
+
+
+            <p class="subtitulo">
+
+                Administrá tus datos y tu vehículo.
+
+            </p>
+
+
+            <!-- PERFIL Y DATOS -->
+
+            <div class="contenido">
+
+
+                <!-- PERFIL -->
+
+                <div class="bloque perfil">
+
+                    <div class="bloque-titulo">
+
+                        <i class="bi bi-person"></i>
+
+                        Mi perfil
+
+                    </div>
+
+
+                    <div
+                        class="avatar"
+                        id="avatar">
+
+                        🐵
+
+                    </div>
+
+
+                    <button
+                        class="cambiar-foto"
+                        onclick="cambiarAvatar()">
+
+                        Cambiar foto de perfil
+
+                    </button>
+
+
+                    <div class="colores">
+
+                        <span
+                            class="color azul"
+                            onclick="cambiarFondo('#9bddff')">
+                        </span>
+
+                        <span
+                            class="color rosa"
+                            onclick="cambiarFondo('#ffb6d9')">
+                        </span>
+
+                        <span
+                            class="color verde"
+                            onclick="cambiarFondo('#a9e6c1')">
+                        </span>
+
+                        <span
+                            class="color violeta"
+                            onclick="cambiarFondo('#cbb5ff')">
+                        </span>
+
+                        <span
+                            class="color amarillo"
+                            onclick="cambiarFondo('#ffe59a')">
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- DATOS -->
+
+                <div class="bloque">
+
+                    <div class="bloque-titulo">
+
+                        <i class="bi bi-person-vcard"></i>
+
+                        Mis datos
+
+                    </div>
+
+
+                    <div class="dato">
+
+                        <i class="bi bi-person-fill"></i>
+
+                        <div>
+
+                            <span>
+                                Nombre
+                            </span>
+
+                            <strong id="nombre">
+                                Lucía
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="dato">
+
+                        <i class="bi bi-envelope-fill"></i>
+
+                        <div>
+
+                            <span>
+                                Correo electrónico
+                            </span>
+
+                            <strong id="correo">
+                                usuario@email.com
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="dato">
+
+                        <i class="bi bi-telephone-fill"></i>
+
+                        <div>
+
+                            <span>
+                                Teléfono
+                            </span>
+
+                            <strong id="telefono">
+                                099 123 456
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <button
+                        class="editar"
+                        data-bs-toggle="modal"
+                        data-bs-target="#modalEditar">
+
+                        <i class="bi bi-pencil"></i>
+
+                        Editar mis datos
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- AUTO -->
+
+            <div class="bloque">
+
+
+                <div class="bloque-titulo">
+
+                    <i class="bi bi-car-front-fill"></i>
+
+                    Mi auto
+
+                </div>
+
+
+                <div class="auto">
+
+
+                    <div class="auto-info">
+
+
+                        <div class="auto-dato">
+
+                            <strong>
+                                Vehículo
+                            </strong>
+
+                            Volkswagen Gol
+
+                        </div>
+
+
+                        <div class="auto-dato">
+
+                            <strong>
+                                Matrícula
+                            </strong>
+
+                            ABC 1234
+
+                        </div>
+
+
+                        <div class="auto-dato">
+
+                            <strong>
+                                Color actual
+                            </strong>
+
+                            <span id="colorTexto">
+                                Azul
+                            </span>
+
+                        </div>
+
+
+                    </div>
+
+
+                    <div class="auto-visual">
+
+                        <i
+                            class="bi bi-car-front-fill auto-icono"
+                            id="autoIcono">
+                        </i>
+
+                    </div>
+
+                </div>
+
+
+                <div class="texto-color">
+
+                    Cambiar color del auto
+
+                </div>
+
+
+                <div class="colores-auto">
+
+
+                    <span
+                        class="color-auto auto-azul"
+                        onclick="cambiarAuto('#238bff', 'Azul')">
+                    </span>
+
+
+                    <span
+                        class="color-auto auto-rojo"
+                        onclick="cambiarAuto('#e85d75', 'Rojo')">
+                    </span>
+
+
+                    <span
+                        class="color-auto auto-verde"
+                        onclick="cambiarAuto('#43b883', 'Verde')">
+                    </span>
+
+
+                    <span
+                        class="color-auto auto-negro"
+                        onclick="cambiarAuto('#263238', 'Negro')">
+                    </span>
+
+
+                    <span
+                        class="color-auto auto-blanco"
+                        onclick="cambiarAuto('#ffffff', 'Blanco')">
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- BOTÓN VOLVER A INICIO -->
+
+            <div class="botones">
+
+                <a
+                    href="../inicio/index.html"
+                    class="volver">
+
+                    <i class="bi bi-house"></i>
+
+                    Volver a Inicio
+
+                </a>
+
+            </div>
+
+
+        </section>
+
+    </main>
+
+
+    <!-- MODAL EDITAR DATOS -->
+
+    <div
+        class="modal fade"
+        id="modalEditar"
+        tabindex="-1">
+
+        <div class="modal-dialog modal-dialog-centered">
+
+            <div class="modal-content modal-contenido">
+
+
+                <div class="modal-header">
+
+                    <h5 class="modal-titulo">
+
+                        Editar mis datos
+
+                    </h5>
+
+
+                    <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal">
+                    </button>
+
+                </div>
+
+
+                <div class="modal-body">
+
+
+                    <div class="mb-3">
+
+                        <label class="form-label">
+                            Nombre
+                        </label>
+
+                        <input
+                            type="text"
+                            id="editarNombre"
+                            class="form-control"
+                            value="Lucía">
+
+                    </div>
+
+
+                    <div class="mb-3">
+
+                        <label class="form-label">
+                            Correo electrónico
+                        </label>
+
+                        <input
+                            type="email"
+                            id="editarCorreo"
+                            class="form-control"
+                            value="usuario@email.com">
+
+                    </div>
+
+
+                    <div class="mb-3">
+
+                        <label class="form-label">
+                            Teléfono
+                        </label>
+
+                        <input
+                            type="text"
+                            id="editarTelefono"
+                            class="form-control"
+                            value="099 123 456">
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="modal-footer">
+
+                    <button
+                        type="button"
+                        class="btn btn-secondary"
+                        data-bs-dismiss="modal">
+
+                        Cancelar
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="guardar"
+                        onclick="guardarDatos()">
+
+                        Guardar cambios
+
+                    </button>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- BOOTSTRAP JS -->
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js">
+    </script>
+
+
+    <script>
+
+        /* CAMBIAR COLOR DEL AVATAR */
+
+        function cambiarFondo(color) {
+
+            document
+                .getElementById("avatar")
+                .style.backgroundColor = color;
+
+        }
+
+
+        /* CAMBIAR AVATAR */
+
+        function cambiarAvatar() {
+
+            const avatar =
+                document.getElementById("avatar");
+
+            const avatares = [
+                "🐵",
+                "🙈",
+                "🙉",
+                "🙊"
+            ];
+
+            let actual =
+                avatares.indexOf(
+                    avatar.textContent.trim()
+                );
+
+            actual++;
+
+            if (actual >= avatares.length) {
+                actual = 0;
+            }
+
+            avatar.textContent =
+                avatares[actual];
+
+        }
+
+
+        /* CAMBIAR COLOR DEL AUTO */
+
+        function cambiarAuto(color, nombre) {
+
+            document
+                .getElementById("autoIcono")
+                .style.color = color;
+
+            document
+                .getElementById("colorTexto")
+                .textContent = nombre;
+
+        }
+
+
+        /* GUARDAR DATOS */
+
+        function guardarDatos() {
+
+            const nombre =
+                document
+                .getElementById("editarNombre")
+                .value;
+
+            const correo =
+                document
+                .getElementById("editarCorreo")
+                .value;
+
+            const telefono =
+                document
+                .getElementById("editarTelefono")
+                .value;
+
+
+            document
+                .getElementById("nombre")
+                .textContent = nombre;
+
+            document
+                .getElementById("correo")
+                .textContent = correo;
+
+            document
+                .getElementById("telefono")
+                .textContent = telefono;
+
+
+            const modal =
+                bootstrap.Modal
+                .getInstance(
+                    document.getElementById(
+                        "modalEditar"
+                    )
+                );
+
+            modal.hide();
+
+        }
+
+    </script>
+
+
+</body>
+
+</html>

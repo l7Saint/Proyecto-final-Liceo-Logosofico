@@ -2,11 +2,24 @@
 <html lang="es">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crear Cuenta</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Urbanaut | Datos del Auto</title>
+
+    <!-- Bootstrap -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+
 
     <style>
 
@@ -16,255 +29,603 @@
             box-sizing: border-box;
         }
 
-        body {
-            background: url("../imagenes/imagen2.jpg") center center / cover no-repeat fixed;
-            font-family: 'Lucida Sans', 'Lucida Sans Regular',
-                         'Lucida Grande', 'Lucida Sans Unicode',
-                         Geneva, Verdana, sans-serif;
 
-            display: flex;
-            justify-content: center;
-            align-items: center;
+        body {
 
             min-height: 100vh;
-        }
-
-
-        .contenedorPrincipal {
-            width: 40%;
-            min-width: 400px;
-            height: 600px;
-
-            display: flex;
-            justify-content: center;
-            align-items: center;
-
-            background: rgba(82, 124, 184, .45);
-            backdrop-filter: blur(12px);
-
-            border-radius: 20px;
-            border: 1px solid rgba(164, 231, 150, .699);
-
-            box-shadow: 0 0 20px rgba(0, 0, 0, .3);
 
             overflow: hidden;
-        }
 
+            font-family:
+                "Segoe UI",
+                Arial,
+                sans-serif;
 
-        .contenido {
-            width: 100%;
-            height: 100%;
-
-            padding: 30px;
-
-            color: white;
+            background:
+                url("../imagenes/imagen2.jpg")
+                center center / cover
+                no-repeat fixed;
 
             display: flex;
-            justify-content: center;
+
             align-items: center;
+
+            justify-content: center;
+
+            position: relative;
         }
 
 
-        form {
-            width: 100%;
+        body::before {
+
+            content: "";
+
+            position: fixed;
+
+            inset: 0;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(0,180,255,.15),
+                    rgba(0,255,170,.08)
+                );
+
+            backdrop-filter: blur(2px);
+
+            z-index: -1;
+        }
+
+
+        .contenedor {
+
+            width: min(95%, 900px);
+
+            min-height: 100vh;
 
             display: flex;
+
             justify-content: center;
+
+            align-items: center;
+
+            padding: 15px;
         }
 
-        #cajaDatosUsuario {
-            width: 80%;
-            text-align: center;
+
+        .card-urbanaut {
+
+            width: 560px;
+
+            max-width: 100%;
+
+            padding: 20px 50px 25px;
+
+            border-radius: 30px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(255,255,255,.72),
+                    rgba(230,250,255,.45)
+                );
+
+            border:
+                1px solid
+                rgba(255,255,255,.8);
+
+            box-shadow:
+
+                0 25px 70px
+                rgba(0,40,70,.30),
+
+                inset 0 1px 0
+                rgba(255,255,255,.8);
+
+            backdrop-filter:
+                blur(22px);
+
+            -webkit-backdrop-filter:
+                blur(22px);
+
+            animation:
+                aparecer .8s ease;
         }
+
+
+        @keyframes aparecer {
+
+            from {
+
+                opacity: 0;
+
+                transform:
+                    translateY(25px)
+                    scale(.97);
+            }
+
+            to {
+
+                opacity: 1;
+
+                transform:
+                    translateY(0)
+                    scale(1);
+            }
+        }
+
+
+        .logo {
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            margin-bottom: 5px;
+        }
+
+
+        .logo img {
+
+            width: 150px;
+
+            max-height: 65px;
+
+            object-fit: contain;
+        }
+
+
         .titulo {
-            font-family: 'Lucida Sans', 'Lucida Sans Regular',
-                         'Lucida Grande', 'Lucida Sans Unicode',
-                         Geneva, Verdana, sans-serif;
 
-            font-weight: bold;
-            margin-bottom: 25px;
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 8px;
         }
+
+
+        .titulo i {
+
+            color: #238bff;
+
+            font-size: 30px;
+        }
+
+
+        h1 {
+
+            text-align: center;
+
+            color: #123d69;
+
+            font-size: 36px;
+
+            font-weight: 750;
+
+            margin-bottom: 3px;
+        }
+
 
         .subtitulo {
+
             text-align: center;
+
+            color: #58738e;
+
+            font-size: 15px;
+
+            margin-bottom: 16px;
+        }
+
+
+        /* =========================
+           CAMPOS
+           ========================= */
+
+        .campo {
+
+            position: relative;
+
+            margin-bottom: 10px;
+        }
+
+
+        .campo > i {
+
+            position: absolute;
+
+            left: 18px;
+
+            top: 50%;
+
+            transform:
+                translateY(-50%);
+
+            color: #2772b8;
+
+            font-size: 19px;
+
+            z-index: 2;
+
+            pointer-events: none;
+        }
+
+
+        .campo input,
+        .campo select {
+
+            width: 100%;
+
+            height: 52px;
+
+            border-radius: 15px;
+
+            border:
+                1px solid
+                rgba(60,120,170,.15);
+
+            background:
+                rgba(255,255,255,.72);
+
+            padding:
+                0 18px 0 52px;
 
             font-size: 16px;
 
-            margin-bottom: 30px;
+            color: #163f62;
 
-            color: #d9f7ff;
-        }
-        .form-group {
-            width: 100%;
-        }
+            outline: none;
 
-        .datos {
-            width: 70%;
-            height: 40px;
-
-            margin: 10px auto;
-
-            border: none;
-            border-radius: 10px;
-
-            background: #77acd8;
-
-             color: rgb(8, 82, 92);
-
-            cursor: text;
-            transition: .2s;
-
-            text-align: center;
+            transition: all .25s ease;
         }
 
-        .datos:focus {
-            background: #8bc2e8;
-            box-shadow: 0 0 8px rgba(166, 241, 185, .7);
+
+        .campo input::placeholder {
+
+            color: #7790a8;
         }
 
-        input::placeholder {
-            color: rgb(8, 82, 92);
-            opacity: 1;
+
+        .campo input:focus,
+        .campo select:focus {
+
+            background: white;
+
+            border-color: #3b9cff;
+
+            box-shadow:
+                0 0 0 4px
+                rgba(59,156,255,.12);
+
+            transform:
+                translateY(-1px);
         }
 
-        /* BOTÓN */
 
-        .btn-menu {
-            width: 50%;
-            height: 40px;
-
-            border: none;
-            border-radius: 10px;
-
-            background: #1e7489;
-            color: rgb(172, 234, 206);
+        .campo select {
 
             cursor: pointer;
-            transition: .2s;
-
-            margin: 20px auto;
-
-            display: block;
-        }
-
-        .btn-menu:hover {
-            background: #58b57d;
-            transform: scale(1.03);
         }
 
 
-        .texto {
-            font-family: 'Lucida Sans', 'Lucida Sans Regular',
-                         'Lucida Grande', 'Lucida Sans Unicode',
-                         Geneva, Verdana, sans-serif;
+        /* =========================
+           BOTÓN
+           ========================= */
+
+        .btn-continuar {
+
+            width: 100%;
+
+            height: 54px;
+
+            border: none;
+
+            border-radius: 16px;
+
+            margin-top: 5px;
+
+            background:
+                linear-gradient(
+                    100deg,
+                    #238bff,
+                    #19b7c9,
+                    #63d85f
+                );
+
+            background-size: 200% auto;
+
+            color: white;
+
+            font-size: 17px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition: .25s ease;
+
+            box-shadow:
+                0 10px 25px
+                rgba(30,145,220,.25);
         }
 
 
-        @media (max-width: 800px) {
+        .btn-continuar:hover {
 
-            .contenedorPrincipal {
-                width: 90%;
-                min-width: 0;
+            transform:
+                translateY(-2px);
+
+            background-position:
+                right center;
+
+            box-shadow:
+                0 15px 30px
+                rgba(30,145,220,.35);
+        }
+
+
+        .flecha {
+
+            margin-left: 8px;
+
+            font-size: 21px;
+        }
+
+
+        .info {
+
+            text-align: center;
+
+            color: #607991;
+
+            font-size: 12px;
+
+            margin-top: 9px;
+        }
+
+
+        .info i {
+
+            color: #238bff;
+
+            margin-right: 4px;
+        }
+
+
+        @media (max-width: 650px) {
+
+            body {
+                overflow-y: auto;
             }
 
-            #cajaDatosUsuario {
-                width: 100%;
+            .card-urbanaut {
+
+                width: 94%;
+
+                padding:
+                    25px;
+
+                border-radius: 24px;
             }
 
-            .datos {
-                width: 85%;
+            h1 {
+
+                font-size: 32px;
             }
 
-            .btn-menu {
-                width: 65%;
+        }
+
+
+        @media (max-width: 430px) {
+
+            .card-urbanaut {
+
+                padding:
+                    25px 18px 22px;
             }
+
+            h1 {
+
+                font-size: 29px;
+            }
+
         }
 
     </style>
 
 </head>
 
+
 <body>
 
-<?php
-// credenciales
-$apiKey = '';
-$apiSecret = '';
 
-$url = 'https://carapi.app/api/makes/v2';
-$url = 'https://carapi.app/api/exterior-colors/v2'
+<main class="contenedor">
 
 
+<section class="card-urbanaut">
 
 
-curl_setopt_array($ch, [
-CURLOPT_URL => $url,
-CURLOPT_RETURNTRANSFER => true, // Para recibir la respuesta en una variable
-CURLOPT_HTTPHEADER => [
-'Accept: application/json',
-'api-key: ' . $apiKey,
-'api-secret: ' . $apiSecret
-]
-]);
+    <!-- LOGO -->
 
-$respuesta = curl_exec($ch);
-$httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    <div class="logo">
 
-if ($httpCode !== 200) {
-die("Error en la petición: Código " . $httpCode);
-}
+        <img src="../imagenes/logoNuevo2.png" alt="Logo Urbanaut">
 
-// Decodificamos el JSON a un array de PHP
-$datos = json_decode($respuesta, true);
-$marcas = $datos['data'] ?? [];
-$colores = $datos
-
-
-?>
-
-<div class="contenedorPrincipal">
-        <div class="contenido">
-            <form action="auto.php" method="POST">
-                <div id="cajaDatosUsuario">
-                    <h1 class="titulo">Ingresa a tu Auto</h1>
-                     <p class="subtitulo">Aquí podes poner los datos de tu auto.</p>
-                    <div id="cajaCamposUsuario">
-                      <br>
-                        <select id="marcaAuto" name="marcaAuto" class="datos">
-                            <option value="">Seleccioná una marca</option>
-
-                            <?php foreach ($marcas as $marca): ?>
-                                <option value="<?= htmlspecialchars($marca['name']) ?>">
-                                    <?= htmlspecialchars($marca['name']) ?>
-                                </option>
-                            <?php endforeach; ?>
-                        </select>
-                        <select id="color" name="color" class="datos">
-                            <option value="">Seleccioná un color</option>
-
-                            <?php foreach ($colores as $color): ?>
-                                <option value="<?= htmlspecialchars($color['name']) ?>">
-                                    <?= htmlspecialchars($color['name']) ?>
-                                </option>
-                            <?php endforeach; ?>
-                        </select>
-
-                    
-                     
-                        <button type="submit" class="btn-menu">Crear Cuenta</button>
-                    </div>
-                </div>
-            </form>
-        </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js">
+
+    <!-- TÍTULO -->
+
+    <div class="titulo">
+
+        <i class="bi bi-car-front-fill"></i>
+
+        <h1>
+            Datos del Auto
+        </h1>
+
+    </div>
 
 
+    <p class="subtitulo">
+
+        Ingresá los datos de tu vehículo.
+
+    </p>
 
 
+    <!-- FORMULARIO -->
 
-    </script>
+    <form
+        id="formularioAuto">
+
+
+        <!-- MARCA -->
+
+        <div class="campo">
+
+            <i class="bi bi-car-front"></i>
+
+            <input
+                type="text"
+                id="marca"
+                name="marca"
+                placeholder="Marca"
+                required>
+
+        </div>
+
+
+        <!-- MODELO -->
+
+        <div class="campo">
+
+            <i class="bi bi-car-front"></i>
+
+            <input
+                type="text"
+                id="modelo"
+                name="modelo"
+                placeholder="Modelo"
+                required>
+
+        </div>
+
+
+        <!-- COLOR -->
+
+        <div class="campo">
+
+            <i class="bi bi-palette"></i>
+
+            <select
+                id="color"
+                name="color"
+                required>
+
+                <option
+                    value=""
+                    selected
+                    disabled>
+
+                    Seleccioná el color
+
+                </option>
+
+                <option value="Negro">
+                    Negro
+                </option>
+
+                <option value="Blanco">
+                    Blanco
+                </option>
+
+                <option value="Gris">
+                    Gris
+                </option>
+
+                <option value="Azul">
+                    Azul
+                </option>
+
+                <option value="Rojo">
+                    Rojo
+                </option>
+
+                <option value="Verde">
+                    Verde
+                </option>
+
+                <option value="Amarillo">
+                    Amarillo
+                </option>
+
+                <option value="Naranja">
+                    Naranja
+                </option>
+
+                <option value="Otro">
+                    Otro
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <!-- BOTÓN -->
+
+        <button
+            type="button"
+            class="btn-continuar"
+            onclick="window.location.href='../inicio/index.html'">
+                Crear Cuenta
+            <span class="flecha">
+                ✓
+            </span>
+        </button>
+
+    </form>
+
+
+    <div class="info">
+
+        <i class="bi bi-shield-check"></i>
+
+        Completá los datos de tu vehículo.
+
+    </div>
+
+
+</section>
+
+</main>
+
+
+<script>
+
+    document
+        .getElementById("formularioAuto")
+        .addEventListener(
+            "submit",
+            function(event) {
+
+                event.preventDefault();
+
+                alert(
+                    "¡Datos del auto guardados correctamente!"
+                );
+
+            }
+        );
+
+</script>
+
 
 </body>
 

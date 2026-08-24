@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Urbanaut | Inicio</title>
+
+
+    <!-- =========================
+         BOOTSTRAP
+    ========================= -->
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+
+    <!-- =========================
+         BOOTSTRAP ICONS
+    ========================= -->
+
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+
+
+    <style>
+
+        /* =====================================================
+           CONFIGURACIÓN GENERAL
+        ===================================================== */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        body {
+
+            min-height: 100vh;
+
+            font-family:
+                "Segoe UI",
+                Arial,
+                sans-serif;
+
+            background:
+                url("imagenes/imagen2.jpg")
+                center center / cover
+                no-repeat fixed;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            position: relative;
+
+            overflow-x: hidden;
+
+        }
+
+
+        /* =====================================================
+           CAPA SOBRE EL FONDO
+        ===================================================== */
+
+        body::before {
+
+            content: "";
+
+            position: fixed;
+
+            inset: 0;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(0, 180, 255, 0.15),
+                    rgba(0, 255, 170, 0.08)
+                );
+
+            backdrop-filter: blur(2px);
+
+            -webkit-backdrop-filter: blur(2px);
+
+            z-index: -1;
+
+        }
+
+
+        /* =====================================================
+           CONTENEDOR PRINCIPAL
+        ===================================================== */
+
+        .contenedor {
+
+            width: min(95%, 1000px);
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            padding: 30px 0;
+
+        }
+
+
+        /* =====================================================
+           TARJETA GLASSMORPHISM
+        ===================================================== */
+
+        .card-urbanaut {
+
+            width: 100%;
+
+            padding:
+                38px 55px 35px;
+
+            border-radius: 30px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(255,255,255,0.72),
+                    rgba(230,250,255,0.45)
+                );
+
+            border:
+                1px solid rgba(255,255,255,0.8);
+
+            box-shadow:
+
+                0 25px 70px
+                rgba(0, 40, 70, 0.30),
+
+                inset 0 1px 0
+                rgba(255,255,255,0.8);
+
+            backdrop-filter:
+                blur(22px);
+
+            -webkit-backdrop-filter:
+                blur(22px);
+
+            position: relative;
+
+            animation:
+                aparecer 0.8s ease;
+
+        }
+
+
+        /* =====================================================
+           ANIMACIÓN
+        ===================================================== */
+
+        @keyframes aparecer {
+
+            from {
+
+                opacity: 0;
+
+                transform:
+                    translateY(25px)
+                    scale(0.97);
+
+            }
+
+            to {
+
+                opacity: 1;
+
+                transform:
+                    translateY(0)
+                    scale(1);
+
+            }
+
+        }
+
+
+        /* =====================================================
+           LOGO
+        ===================================================== */
+
+        #logo {
+
+            width: 150px;
+
+            height: auto;
+
+            display: block;
+
+            margin:
+                0 auto 15px;
+
+        }
+
+
+        /* =====================================================
+           TÍTULO
+        ===================================================== */
+
+        h1 {
+
+            text-align: center;
+
+            color: #123d69;
+
+            font-size: 42px;
+
+            font-weight: 750;
+
+            margin-bottom: 8px;
+
+            letter-spacing: -1.5px;
+
+        }
+
+
+        /* =====================================================
+           SUBTÍTULO
+        ===================================================== */
+
+        .subtitulo {
+
+            text-align: center;
+
+            color: #58738e;
+
+            font-size: 17px;
+
+            line-height: 1.5;
+
+            margin-bottom: 20px;
+
+        }
+
+
+        /* =====================================================
+           DESCRIPCIÓN
+        ===================================================== */
+
+        .texto {
+
+            text-align: center;
+
+            color: #354b60;
+
+            font-size: 16px;
+
+            line-height: 1.6;
+
+            max-width: 800px;
+
+            margin:
+                0 auto 28px;
+
+        }
+
+
+        /* =====================================================
+           NAVEGACIÓN
+        ===================================================== */
+
+        .navegacion {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 15px;
+
+            margin-top: 25px;
+
+        }
+
+
+        /* =====================================================
+           BOTONES DE NAVEGACIÓN
+        ===================================================== */
+
+        .btn-nav {
+
+            text-decoration: none;
+
+            text-align: center;
+
+            padding:
+                16px 10px;
+
+            border-radius: 17px;
+
+            background:
+                rgba(255,255,255,0.65);
+
+            border:
+                1px solid
+                rgba(255,255,255,0.85);
+
+            color: #246294;
+
+            font-size: 15px;
+
+            font-weight: 700;
+
+            box-shadow:
+                0 8px 20px
+                rgba(30,100,150,0.12);
+
+            transition:
+                all 0.25s ease;
+
+            backdrop-filter:
+                blur(10px);
+
+            -webkit-backdrop-filter:
+                blur(10px);
+
+        }
+
+
+        /* =====================================================
+           ICONOS
+        ===================================================== */
+
+        .btn-nav i {
+
+            display: block;
+
+            font-size: 24px;
+
+            margin-bottom: 6px;
+
+            transition:
+                transform 0.25s ease;
+
+        }
+
+
+        /* =====================================================
+           HOVER
+        ===================================================== */
+
+        .btn-nav:hover {
+
+            transform:
+                translateY(-4px);
+
+            background:
+                rgba(255,255,255,0.92);
+
+            color: #1683e9;
+
+            box-shadow:
+                0 12px 27px
+                rgba(30,130,200,0.22);
+
+        }
+
+
+        .btn-nav:hover i {
+
+            transform:
+                scale(1.15);
+
+        }
+
+
+        /* =====================================================
+           COLORES DE LOS ICONOS
+        ===================================================== */
+
+        .btn-nosotros i {
+
+            color: #238bff;
+
+        }
+
+
+        .btn-contacto i {
+
+            color: #19b7c9;
+
+        }
+
+
+        .btn-proceso i {
+
+            color: #63c95f;
+
+        }
+
+
+        /* =====================================================
+           INVITACIÓN
+        ===================================================== */
+
+        .invitacion {
+
+            text-align: center;
+
+            color: #526f88;
+
+            font-size: 16px;
+
+            font-weight: 600;
+
+            margin-top: 28px;
+
+            margin-bottom: 14px;
+
+        }
+
+
+        /* =====================================================
+           BOTÓN COMENZAR
+        ===================================================== */
+
+        .botonComenzar {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 10px;
+
+            margin:
+                0 auto;
+
+            padding:
+                15px 45px;
+
+            min-width: 220px;
+
+            border: none;
+
+            border-radius: 17px;
+
+            background:
+                linear-gradient(
+                    100deg,
+                    #238bff,
+                    #19b7c9,
+                    #63d85f
+                );
+
+            background-size:
+                200% auto;
+
+            color: white;
+
+            font-size: 18px;
+
+            font-weight: 750;
+
+            letter-spacing: 0.3px;
+
+            cursor: pointer;
+
+            position: relative;
+
+            overflow: hidden;
+
+            box-shadow:
+                0 10px 25px
+                rgba(30,145,220,0.28);
+
+            transition:
+                transform 0.25s ease,
+                box-shadow 0.25s ease,
+                background-position 0.4s ease;
+
+        }
+
+
+        /* =====================================================
+           BRILLO DEL BOTÓN
+        ===================================================== */
+
+        .botonComenzar::before {
+
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+
+            left: -100%;
+
+            width: 70%;
+
+            height: 100%;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    rgba(255,255,255,0.45),
+                    transparent
+                );
+
+            transform:
+                skewX(-20deg);
+
+            transition:
+                left 0.6s ease;
+
+        }
+
+
+        .botonComenzar:hover {
+
+            transform:
+                translateY(-4px)
+                scale(1.03);
+
+            background-position:
+                right center;
+
+            box-shadow:
+                0 16px 32px
+                rgba(30,145,220,0.35);
+
+        }
+
+
+        .botonComenzar:hover::before {
+
+            left: 130%;
+
+        }
+
+
+        .botonComenzar i {
+
+            font-size: 20px;
+
+            transition:
+                transform 0.25s ease;
+
+        }
+
+
+        .botonComenzar:hover i {
+
+            transform:
+                translateX(5px);
+
+        }
+
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media (max-width: 650px) {
+
+            .contenedor {
+
+                width: 94%;
+
+                padding: 20px 0;
+
+            }
+
+
+            .card-urbanaut {
+
+                padding:
+                    30px 25px;
+
+                border-radius: 24px;
+
+            }
+
+
+            #logo {
+
+                width: 120px;
+
+            }
+
+
+            h1 {
+
+                font-size: 34px;
+
+            }
+
+
+            .subtitulo {
+
+                font-size: 15px;
+
+            }
+
+
+            .texto {
+
+                font-size: 14px;
+
+            }
+
+
+            .navegacion {
+
+                grid-template-columns: 1fr;
+
+                gap: 10px;
+
+            }
+
+
+            .btn-nav {
+
+                padding: 14px;
+
+            }
+
+
+            .botonComenzar {
+
+                width: 100%;
+
+            }
+
+        }
+
+
+        /* =====================================================
+           CELULARES PEQUEÑOS
+        ===================================================== */
+
+        @media (max-width: 430px) {
+
+            .card-urbanaut {
+
+                padding:
+                    25px 18px;
+
+            }
+
+
+            #logo {
+
+                width: 100px;
+
+            }
+
+
+            h1 {
+
+                font-size: 30px;
+
+            }
+
+
+            .subtitulo {
+
+                font-size: 14px;
+
+            }
+
+
+            .texto {
+
+                font-size: 13px;
+
+            }
+
+
+            .btn-nav {
+
+                font-size: 14px;
+
+            }
+
+
+            .btn-nav i {
+
+                font-size: 21px;
+
+            }
+
+
+            .botonComenzar {
+
+                font-size: 16px;
+
+                padding:
+                    14px 30px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         CONTENEDOR PRINCIPAL
+    ===================================================== -->
+
+    <main class="contenedor">
+
+
+        <section class="card-urbanaut">
+
+
+            <!-- =========================
+                 LOGO
+            ========================= -->
+
+            <img
+                id="logo"
+                src="imagenes/logoNuevo2.png"
+                alt="Logo Urbanaut">
+
+
+            <!-- =========================
+                 TÍTULO
+            ========================= -->
+
+            <h1>
+
+                Bienvenido a Urbanaut
+
+            </h1>
+
+
+            <!-- =========================
+                 SUBTÍTULO
+            ========================= -->
+
+            <h4 class="subtitulo">
+
+                La aplicación que hace más fácil
+                encontrar dónde estacionar.
+
+            </h4>
+
+
+            <!-- =========================
+                 DESCRIPCIÓN
+            ========================= -->
+
+            <p class="texto">
+
+                En Urbanaut, los docentes pueden
+                encontrar estacionamientos disponibles
+                cerca de su institución de forma rápida,
+                sencilla y segura.
+
+                <br>
+
+                Elegí tu lugar, conocé las opciones
+                disponibles y comenzá a estacionar
+                sin perder tiempo.
+
+            </p>
+
+
+            <!-- =========================
+                 BOTONES
+            ========================= -->
+
+            <div class="navegacion">
+
+
+                <!-- NOSOTROS -->
+
+                <a
+                    href="#"
+                    class="btn-nav btn-nosotros">
+
+                    <i class="bi bi-people-fill"></i>
+
+                    Nosotros
+
+                </a>
+
+
+                <!-- CONTACTO -->
+
+                <a
+                    href="#"
+                    class="btn-nav btn-contacto">
+
+                    <i class="bi bi-envelope-fill"></i>
+
+                    Contacto
+
+                </a>
+
+
+                <!-- PROCESO -->
+
+                <a
+                    href="#"
+                    class="btn-nav btn-proceso">
+
+                    <i class="bi bi-gear-fill"></i>
+
+                    Proceso
+
+                </a>
+
+
+            </div>
+
+
+            <!-- =========================
+                 INVITACIÓN
+            ========================= -->
+
+            <p class="invitacion">
+
+                ¡Unite a la comunidad Urbanaut!
+
+            </p>
+
+
+            <!-- =========================
+                 BOTÓN COMENZAR
+            ========================= -->
+
+            <button
+                class="botonComenzar"
+                onclick="comenzar()">
+
+                Comenzar
+
+                <i class="bi bi-arrow-right"></i>
+
+            </button>
+
+
+        </section>
+
+    </main>
+
+
+    <!-- =========================
+         JAVASCRIPT
+    ========================= -->
+
+    <script>
+
+        function comenzar() {
+
+            /*
+             * Cambiá esta dirección por la página
+             * de creación de cuenta.
+             */
+
+            window.location.href =
+                "crearCuenta.html";
+
+        }
+
+
+    </script>
+
+
+    <!-- =========================
+         BOOTSTRAP JS
+    ========================= -->
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js">
+    </script>
+
+
+</body>
+
+</html>
