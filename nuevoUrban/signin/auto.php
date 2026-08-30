@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 
 <html lang="es">
@@ -34,6 +35,7 @@
             min-height: 100vh;
             overflow-x: hidden;
             overflow-y: auto;
+
             font-family:
                 "Segoe UI",
                 Arial,
@@ -47,11 +49,13 @@
             display: flex;
             align-items: center;
             justify-content: center;
+
             position: relative;
         }
 
         body::before {
             content: "";
+
             position: fixed;
             inset: 0;
 
@@ -63,6 +67,7 @@
                 );
 
             backdrop-filter: blur(2px);
+
             z-index: -1;
         }
 
@@ -960,14 +965,11 @@ document
 
 
             /* =====================================
-               IR A CARGA.HTML
-
-               carga.html está AFUERA de la carpeta
-               donde está este archivo.
-            ===================================== */
+               IR AL INICIO
+               ===================================== */
 
             window.location.href =
-                "../carga.html";
+                "../inicio/index.html";
 
         }
     );
@@ -977,3 +979,4 @@ document
 </body>
 
 </html>
+```
