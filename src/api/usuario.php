@@ -1,7 +1,14 @@
 <?php
+//error handling ini
 ini_set('display_errors', 0);
 ini_set('display_startup_errors', 0);
 error_reporting(E_ALL);
+
+//session ini
+ini_set('session.cookie_httponly', 1);
+ini_set('session.use_only_cookies', 1);
+ini_set('session.cookie_samesite', 'Strict');
+ini_set('session.gc_maxlifetime', 3600); 
 
 require_once 'api.php';
 require_once '../handlers/UsuarioHandler.php';
@@ -43,8 +50,6 @@ function login($method, $usrhnd) {
 			sendUnauthorized('Invalid email or password');
 		}
 
-		setSession();
-
 		http_response_code(200);
 		echo json_encode([
 		    'success' => true,
@@ -56,7 +61,9 @@ function login($method, $usrhnd) {
 			'fechaRegistro' => $usuario->fechaRegistro
 		    ]
 		]);
+		setSession($usuario);
 		exit;
+
 	} catch (Exception $e) {
 		error_log("Error en api.usuario.login: " . $e);
 		sendServerError();
