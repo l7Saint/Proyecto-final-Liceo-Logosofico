@@ -60,12 +60,18 @@ function checkParameters($data, $parametros){
 	return $error;
 }
 
-function setSession($usuario){
+function startSession($usuario){
 	session_start();
 	session_regenerate_id(true);
 	$_SESSION['user_id'] = $usuario->id;
 	$_SESSION['ip'] = $_SERVER['REMOTE_ADDR'];
 	$_SESSION['user-agent'] = $_SERVER['HTTP_USER_AGENT'];
+	error_log("Session Started for user_id: ".$usuario->id." ; ip address: ".$_SERVER['REMOTE_ADDR']);
+}
+
+function destroySession(){
+	session_start();
+	session_destroy();
 }
 
 function checkSession(){
@@ -76,18 +82,15 @@ function checkSession(){
 	}
 	if($_SESSION['ip'] !== $_SERVER['REMOTE_ADDR']){
 		error_log("Session hijacking detected reason: ip address mismatch, session ip = ".$_SESSION['ip']." | remote ip = ".$_SERVER['REMOTE_ADDR']);
+		destroySession();
 		return false;
 	}
 	if($_SESSION['user-agent'] !== $_SERVER['HTTP_USER_AGENT']){
-		error_log("Session hijacking detected reason: user-agent mismatch; session user-agent = ".$_SESSION['user-agent']." | remote user-agent = ".$_SERVER['HTTP_USER_AGENT']);
+		error_log("Session hijacking detected reason: user-agent mismatch; session user-agent = ".$_SESSION['user-agent']." ; remote user-agent = ".$_SERVER['HTTP_USER_AGENT']);
+		destroySession();
 		return false;
 	}
 
 	//si ningun error salto
 	return true;
-}
-
-function destroySession(){
-	session_start();
-	session_destroy();
 }

@@ -61,7 +61,7 @@ function login($method, $usrhnd) {
 			'fechaRegistro' => $usuario->fechaRegistro
 		    ]
 		]);
-		setSession($usuario);
+		startSession($usuario);
 		exit;
 
 	} catch (Exception $e) {
