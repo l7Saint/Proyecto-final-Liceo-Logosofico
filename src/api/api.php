@@ -1,7 +1,6 @@
 <?php
 function sendBadRequest($message = 'Bad Request', $errors = null) {
 	http_response_code(400);
-	header('Content-Type: application/json');
 
 	$response = [
 		'success' => false,
@@ -19,7 +18,6 @@ function sendBadRequest($message = 'Bad Request', $errors = null) {
 
 function sendBadMethod($allow){
 	http_response_code(405);
-	header('Content-Type: application/json');
 	header("Allow: $allow");
 	exit;
 }
@@ -35,7 +33,6 @@ function sendServerError(){
 
 function sendUnauthorized($message = 'Unauthorized', $errors = null){
 	http_response_code(401);
-	header('Content-Type: application/json');
 
 	$response = [
 		'success' => false,
@@ -52,10 +49,13 @@ function sendUnauthorized($message = 'Unauthorized', $errors = null){
 }
 
 function checkParameters($data, $parametros){
-	$error = '';
-	foreach ($p as $parametros){
-		if(!isset($data[$p]))
-			$error += "Missing parameter $p";
+	$error = null;
+	foreach ($parametros as $p){
+		if(!isset($data[$p])){
+			if (!isset($error))
+				$error = '';
+			$error = $error . "Missing parameter: $p ";
+		}
 	}
 	return $error;
 }
