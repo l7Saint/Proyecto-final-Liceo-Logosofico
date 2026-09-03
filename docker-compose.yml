@@ -14,10 +14,12 @@ services:
       MARIADB_DATABASE: urbanaut
       MARIADB_USER: urbanaut_user
       MARIADB_PASSWORD: urbanaut123
+      MARIADB_ROOT_HOST: '172.%'
     ports:
     - "3306:3306"
     volumes:
       - db_data:/var/lib/mysql
+      - ./sql/init.sql:/docker-entrypoint-initdb.d/init.sql
 
 volumes:
   db_data:

@@ -1,8 +1,8 @@
 <?php
-$host = "127.0.0.1";
+$host = "mariadb";
 $bd = "urbanaut";
 $usuario = "root";
-$password = "";
+$password = "root";
 
 try {
 	$conexion = new PDO(
@@ -17,4 +17,5 @@ try {
 	);
 } catch(PDOException $e){
 	die("Error de conexion:" . $e->getMessage());
+	var_dump($e);
 }
