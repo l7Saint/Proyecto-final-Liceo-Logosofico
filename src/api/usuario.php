@@ -9,6 +9,10 @@ ini_set('session.cookie_httponly', 1);
 ini_set('session.use_only_cookies', 1);
 ini_set('session.cookie_samesite', 'Strict');
 ini_set('session.gc_maxlifetime', 3600); 
+ini_set('session.cookie_path', '/');  
+ini_set('session.save_path', '/tmp'); 
+ini_set('session.cookie_domain', '');
+session_name('PHPSESSID');            
 
 require_once 'api.php';
 require_once '../handlers/UsuarioHandler.php';
@@ -50,6 +54,7 @@ function login($method, $usrhnd) {
 			sendUnauthorized('Invalid email or password');
 		}
 
+		startSession($usuario);
 		http_response_code(200);
 		echo json_encode([
 		    'success' => true,
@@ -61,13 +66,73 @@ function login($method, $usrhnd) {
 			'fechaRegistro' => $usuario->fechaRegistro
 		    ]
 		]);
-		startSession($usuario);
 		exit;
 
 	} catch (Exception $e) {
 		error_log("Error en api.usuario.login: " . $e);
 		sendServerError();
 	}
+}
+
+function user($method, $usrhnd){
+	if($method != 'GET'){
+		error_log("Bad Method en api.usuario.user: " . $method);
+		sendBadMethod('GET');
+	}
+	if(!checkSession()){
+		//sendUnauthorized
+		error_log("Unauthorized en api.usuario.user: ip: " . $_SERVER['REMOTE_ADDR'])
+		http_response_code(401);
+		echo json_encode([
+		    'success' => false,
+		    'message' => 'Session inactive',
+		]);
+		exit;
+	}
+	http_response_code(200);
+	echo json_encode([
+	    'success' => true,
+	    'message' => 'Login successful',
+	    'usuario' => [
+		'nombre' => $usuario->nombre,
+		'apellido' => $usuario->apellido,
+		'email' => $usuario->email,
+		'fechaRegistro' => $usuario->fechaRegistro
+	    ]
+	]);
+}
+
+function check($method){
+	if($method != 'GET'){
+		error_log("Bad Method en api.usuario.check: " . $method);
+		sendBadMethod('GET');
+	}
+	if(checkSession()){
+		http_response_code(200);
+		echo json_encode([
+		    'success' => true,
+		    'message' => 'Session active',
+		]);
+	} else {
+		http_response_code(401);
+		echo json_encode([
+		    'success' => false,
+		    'message' => 'Unauthorized',
+		]);
+	}
+}
+
+function logout($method){
+	if($method != 'GET'){
+		error_log("Bad Method en api.usuario.logout: " . $method);
+		sendBadMethod('GET');
+	}
+	destroySession();	
+	http_response_code(200);
+	echo json_encode([
+	    'success' => true,
+	    'message' => 'Logout successful'
+	]);
 }
 
 function signin($method, $usrhnd) {
@@ -137,6 +202,14 @@ switch($endpoint){
 	case 'signin':
 		error_log("Call a api.usuario.signin");
 		signin($method, $usrhnd);	
+		break;
+	case 'logout':
+		error_log("Call a api.usuario.logout");
+		logout($method);	
+		break;
+	case 'check':
+		error_log("Call a api.usuario.check");
+		check($method);
 		break;
 	default:
 		error_log("Endpoint inexistente en api.usuario: " . $request);
