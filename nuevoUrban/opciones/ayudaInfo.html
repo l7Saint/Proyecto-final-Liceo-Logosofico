@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>Urbanaut | Ayuda e Información</title>
+
+
+    <!-- Bootstrap -->
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+
+    <!-- Bootstrap Icons -->
+
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        body {
+
+            min-height: 100vh;
+
+            font-family:
+                "Segoe UI",
+                Arial,
+                sans-serif;
+
+            background:
+                url("../imagenes/imagen2.jpg")
+                center center / cover
+                no-repeat fixed;
+
+            overflow: hidden;
+        }
+
+
+        body::before {
+
+            content: "";
+
+            position: fixed;
+
+            inset: 0;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(0,180,255,0.15),
+                    rgba(0,255,170,0.08)
+                );
+
+            backdrop-filter: blur(2px);
+
+            z-index: -1;
+        }
+
+
+        /* CONTENEDOR */
+
+        .contenedor {
+
+            width: 100%;
+
+            height: 100vh;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding: 10px;
+        }
+
+
+        /* TARJETA PRINCIPAL */
+
+        .card-urbanaut {
+
+            width: min(92vw, 720px);
+
+            max-height: calc(100vh - 20px);
+
+            padding: 20px;
+
+            border-radius: 28px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(255,255,255,0.74),
+                    rgba(230,250,255,0.48)
+                );
+
+            border:
+                1px solid
+                rgba(255,255,255,0.85);
+
+            box-shadow:
+                0 20px 60px
+                rgba(0,40,70,0.28);
+
+            backdrop-filter: blur(22px);
+
+            overflow-y: auto;
+        }
+
+
+        /* TÍTULO */
+
+        .titulo {
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            gap: 8px;
+
+            margin-bottom: 3px;
+        }
+
+
+        .titulo i {
+
+            color: #238bff;
+
+            font-size: 27px;
+        }
+
+
+        h1 {
+
+            color: #123d69;
+
+            font-size: 27px;
+
+            font-weight: 750;
+
+            margin: 0;
+        }
+
+
+        .subtitulo {
+
+            text-align: center;
+
+            color: #58738e;
+
+            font-size: 12px;
+
+            margin-bottom: 13px;
+        }
+
+
+        /* GRID */
+
+        .informacion {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 10px;
+        }
+
+
+        /* TARJETAS */
+
+        .info-card {
+
+            background:
+                rgba(255,255,255,0.60);
+
+            border:
+                1px solid
+                rgba(255,255,255,0.82);
+
+            border-radius: 17px;
+
+            padding: 13px;
+
+            box-shadow:
+                0 6px 15px
+                rgba(0,40,70,0.08);
+        }
+
+
+        .info-titulo {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 7px;
+
+            color: #123d69;
+
+            font-size: 15px;
+
+            font-weight: 750;
+
+            margin-bottom: 5px;
+        }
+
+
+        .info-titulo i {
+
+            color: #238bff;
+
+            font-size: 20px;
+        }
+
+
+        .info-card p {
+
+            color: #58738e;
+
+            font-size: 10px;
+
+            line-height: 1.4;
+
+            margin: 0;
+        }
+
+
+        /* BOTÓN MANUAL */
+
+        .btn-manual {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 6px;
+
+            margin-top: 8px;
+
+            padding: 7px 10px;
+
+            border-radius: 10px;
+
+            background: #238bff;
+
+            color: white;
+
+            text-decoration: none;
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            transition: 0.2s;
+        }
+
+
+        .btn-manual:hover {
+
+            background: #126dcc;
+
+            color: white;
+        }
+
+
+        /* EMAIL */
+
+        .email {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 6px;
+
+            margin-top: 7px;
+
+            color: #246294;
+
+            text-decoration: none;
+
+            font-size: 10px;
+
+            font-weight: 700;
+        }
+
+
+        .email i {
+
+            color: #238bff;
+
+            font-size: 14px;
+        }
+
+
+        /* EQUIPO */
+
+        .info-completa {
+
+            grid-column: 1 / -1;
+        }
+
+
+        .equipo {
+
+            display: flex;
+
+            justify-content: center;
+
+            gap: 25px;
+
+            margin-top: 8px;
+        }
+
+
+        .integrante {
+
+            text-align: center;
+        }
+
+
+        .integrante-icono {
+
+            width: 38px;
+
+            height: 38px;
+
+            margin: auto;
+
+            border-radius: 50%;
+
+            background: #bde9ff;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            color: #238bff;
+
+            font-size: 18px;
+
+            margin-bottom: 3px;
+        }
+
+
+        .integrante strong {
+
+            display: block;
+
+            color: #123d69;
+
+            font-size: 9px;
+        }
+
+
+        .integrante span {
+
+            color: #58738e;
+
+            font-size: 8px;
+        }
+
+
+        /* BOTÓN PREGUNTAS */
+
+        .btn-preguntas {
+
+            width: 100%;
+
+            margin-top: 10px;
+
+            padding: 9px;
+
+            border: none;
+
+            border-radius: 12px;
+
+            background:
+                rgba(255,255,255,0.70);
+
+            color: #246294;
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+            box-shadow:
+                0 5px 12px
+                rgba(30,90,120,0.08);
+
+            transition: 0.2s;
+        }
+
+
+        .btn-preguntas i {
+
+            color: #238bff;
+
+            margin-right: 5px;
+        }
+
+
+        .btn-preguntas:hover {
+
+            background: white;
+
+            color: #1683e9;
+
+            transform:
+                translateY(-2px);
+        }
+
+
+        /* VOLVER */
+
+        .botones {
+
+            display: flex;
+
+            justify-content: center;
+
+            margin-top: 11px;
+        }
+
+
+        .volver {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 6px;
+
+            padding: 8px 18px;
+
+            border-radius: 11px;
+
+            background: #1b3237;
+
+            color: white;
+
+            text-decoration: none;
+
+            font-weight: 700;
+
+            font-size: 11px;
+
+            transition: 0.2s;
+        }
+
+
+        .volver:hover {
+
+            background: #238bff;
+
+            color: white;
+        }
+
+
+        /* VENTANA DE PREGUNTAS */
+
+        .modal {
+
+            background:
+                rgba(0,0,0,0.25);
+        }
+
+
+        .modal-content {
+
+            border: none;
+
+            border-radius: 22px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(255,255,255,0.95),
+                    rgba(230,250,255,0.94)
+                );
+
+            box-shadow:
+                0 20px 60px
+                rgba(0,40,70,0.30);
+
+            backdrop-filter: blur(20px);
+        }
+
+
+        .modal-header {
+
+            border-bottom:
+                1px solid
+                rgba(35,139,255,0.12);
+
+            padding: 15px 18px;
+        }
+
+
+        .modal-title {
+
+            color: #123d69;
+
+            font-size: 20px;
+
+            font-weight: 750;
+        }
+
+
+        .modal-title i {
+
+            color: #238bff;
+
+            margin-right: 6px;
+        }
+
+
+        .modal-body {
+
+            padding: 16px 18px;
+        }
+
+
+        .pregunta {
+
+            margin-bottom: 12px;
+
+            padding: 10px 12px;
+
+            border-radius: 13px;
+
+            background:
+                rgba(255,255,255,0.65);
+        }
+
+
+        .pregunta strong {
+
+            display: block;
+
+            color: #123d69;
+
+            font-size: 12px;
+
+            margin-bottom: 3px;
+        }
+
+
+        .pregunta p {
+
+            color: #58738e;
+
+            font-size: 10px;
+
+            margin: 0;
+
+            line-height: 1.4;
+        }
+
+
+        .modal-footer {
+
+            border-top:
+                1px solid
+                rgba(35,139,255,0.12);
+        }
+
+
+        /* CELULAR */
+
+        @media (max-width: 600px) {
+
+            body {
+
+                overflow: auto;
+            }
+
+
+            .contenedor {
+
+                min-height: 100vh;
+
+                height: auto;
+
+                padding: 7px;
+            }
+
+
+            .card-urbanaut {
+
+                width: 100%;
+
+                max-height: none;
+
+                padding: 15px;
+
+                border-radius: 22px;
+            }
+
+
+            h1 {
+
+                font-size: 23px;
+            }
+
+
+            .titulo i {
+
+                font-size: 24px;
+            }
+
+
+            .subtitulo {
+
+                font-size: 10px;
+
+                margin-bottom: 10px;
+            }
+
+
+            .informacion {
+
+                grid-template-columns: 1fr 1fr;
+
+                gap: 8px;
+            }
+
+
+            .info-card {
+
+                padding: 10px;
+
+                border-radius: 14px;
+            }
+
+
+            .info-titulo {
+
+                font-size: 12px;
+            }
+
+
+            .info-titulo i {
+
+                font-size: 17px;
+            }
+
+
+            .info-card p {
+
+                font-size: 9px;
+            }
+
+
+            .info-completa {
+
+                grid-column: 1 / -1;
+            }
+
+
+            .equipo {
+
+                gap: 18px;
+            }
+
+        }
+
+
+        /* CELULARES MUY CHICOS */
+
+        @media (max-width: 380px) {
+
+            .informacion {
+
+                grid-template-columns: 1fr;
+            }
+
+
+            .info-completa {
+
+                grid-column: auto;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <main class="contenedor">
+
+
+        <section class="card-urbanaut">
+
+
+            <!-- TÍTULO -->
+
+            <div class="titulo">
+
+                <i class="bi bi-info-circle-fill"></i>
+
+                <h1>
+                    Ayuda e Información
+                </h1>
+
+            </div>
+
+
+            <p class="subtitulo">
+
+                Todo lo necesario para usar Urbanaut.
+
+            </p>
+
+
+            <div class="informacion">
+
+
+                <!-- MANUAL -->
+
+                <div class="info-card">
+
+                    <div class="info-titulo">
+
+                        <i class="bi bi-book-fill"></i>
+
+                        Manual
+
+                    </div>
+
+
+                    <p>
+
+                        Guía rápida para aprender a usar Urbanaut.
+
+                    </p>
+
+
+                    <a
+                        href="manual.pdf"
+                        target="_blank"
+                        class="btn-manual">
+
+                        <i class="bi bi-file-earmark-pdf-fill"></i>
+
+                        Abrir PDF
+
+                    </a>
+
+                </div>
+
+
+                <!-- ACERCA DE -->
+
+                <div class="info-card">
+
+                    <div class="info-titulo">
+
+                        <i class="bi bi-app-indicator"></i>
+
+                        Acerca de Urbanaut
+
+                    </div>
+
+
+                    <p>
+
+                        Aplicación para organizar y consultar
+                        tus estacionamientos.
+
+                    </p>
+
+
+                    <a
+                        href="mailto:craft.solutions@gmail.com"
+                        class="email">
+
+                        <i class="bi bi-envelope-fill"></i>
+
+                        craft.solutions@gmail.com
+
+                    </a>
+
+                </div>
+
+
+                <!-- PRIVACIDAD -->
+
+                <div class="info-card">
+
+                    <div class="info-titulo">
+
+                        <i class="bi bi-shield-lock-fill"></i>
+
+                        Privacidad
+
+                    </div>
+
+
+                    <p>
+
+                        Mantené tus datos seguros y no compartas
+                        tu contraseña.
+
+                    </p>
+
+                </div>
+
+
+                <!-- EQUIPO -->
+
+                <div class="info-card">
+
+                    <div class="info-titulo">
+
+                        <i class="bi bi-people-fill"></i>
+
+                        Equipo
+
+                    </div>
+
+
+                    <p>
+
+                        Proyecto educativo desarrollado por
+                        nuestro equipo.
+
+                    </p>
+
+                </div>
+
+
+            </div>
+
+
+            <!-- BOTÓN PREGUNTAS FRECUENTES -->
+
+            <button
+                type="button"
+                class="btn-preguntas"
+                data-bs-toggle="modal"
+                data-bs-target="#modalPreguntas">
+
+                <i class="bi bi-question-circle-fill"></i>
+
+                Preguntas frecuentes
+
+            </button>
+
+
+            <!-- VOLVER -->
+
+            <div class="botones">
+
+                <a
+                    href="../inicio/index.html"
+                    class="volver">
+
+                    <i class="bi bi-house-fill"></i>
+
+                    Volver a Inicio
+
+                </a>
+
+            </div>
+
+
+        </section>
+
+
+    </main>
+
+
+    <!-- MODAL PREGUNTAS FRECUENTES -->
+
+    <div
+        class="modal fade"
+        id="modalPreguntas"
+        tabindex="-1"
+        aria-hidden="true">
+
+        <div class="modal-dialog modal-dialog-centered">
+
+            <div class="modal-content">
+
+
+                <div class="modal-header">
+
+                    <h2 class="modal-title">
+
+                        <i class="bi bi-question-circle-fill"></i>
+
+                        Preguntas frecuentes
+
+                    </h2>
+
+
+                    <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Cerrar">
+                    </button>
+
+                </div>
+
+
+                <div class="modal-body">
+
+
+                    <div class="pregunta">
+
+                        <strong>
+                            ¿Dónde veo mi historial?
+                        </strong>
+
+                        <p>
+                            Entrá en la sección "Historial"
+                            desde la pantalla principal.
+                        </p>
+
+                    </div>
+
+
+                    <div class="pregunta">
+
+                        <strong>
+                            ¿Dónde veo mis estadísticas?
+                        </strong>
+
+                        <p>
+                            Seleccioná "Estadísticas" para
+                            consultar tu actividad.
+                        </p>
+
+                    </div>
+
+
+                    <div class="pregunta">
+
+                        <strong>
+                            ¿Puedo cambiar mis datos?
+                        </strong>
+
+                        <p>
+                            Sí. Podés modificarlos desde
+                            la sección "Perfil".
+                        </p>
+
+                    </div>
+
+
+                    <div class="pregunta">
+
+                        <strong>
+                            ¿Puedo cambiar los datos de mi auto?
+                        </strong>
+
+                        <p>
+                            Sí. Desde tu perfil podés modificar
+                            la información del vehículo.
+                        </p>
+
+                    </div>
+
+
+                    <div class="pregunta">
+
+                        <strong>
+                            ¿Dónde puedo encontrar el manual?
+                        </strong>
+
+                        <p>
+                            Está disponible en la sección
+                            "Manual" de esta página.
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="modal-footer">
+
+                    <button
+                        type="button"
+                        class="btn btn-sm btn-secondary"
+                        data-bs-dismiss="modal">
+
+                        Cerrar
+
+                    </button>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Bootstrap JS -->
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js">
+    </script>
+
+
+</body>
+
+</html>

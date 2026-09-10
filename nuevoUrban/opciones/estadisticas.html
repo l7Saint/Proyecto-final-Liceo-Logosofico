@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Urbanaut | Estadísticas</title>
+
+    <!-- Bootstrap -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            width: 100%;
+            min-height: 100%;
+        }
+
+        body {
+            min-height: 100vh;
+
+            font-family:
+                "Segoe UI",
+                Arial,
+                sans-serif;
+
+            background:
+                url("../imagenes/imagen2.jpg")
+                center center / cover
+                no-repeat fixed;
+        }
+
+        body::before {
+            content: "";
+
+            position: fixed;
+            inset: 0;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(0, 180, 255, 0.15),
+                    rgba(0, 255, 170, 0.08)
+                );
+
+            backdrop-filter: blur(2px);
+
+            z-index: -1;
+        }
+
+
+        /* CONTENEDOR */
+
+        .contenedor {
+
+            width: 100%;
+            min-height: 100vh;
+
+            display: flex;
+
+            justify-content: center;
+            align-items: center;
+
+            padding: 8px;
+        }
+
+
+        /* CONTENEDOR PRINCIPAL MÁS COMPACTO */
+
+        .card-urbanaut {
+
+            width: min(90vw, 950px);
+
+            padding: 18px 22px;
+
+            border-radius: 25px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(255, 255, 255, 0.72),
+                    rgba(230, 250, 255, 0.45)
+                );
+
+            border:
+                1px solid
+                rgba(255, 255, 255, 0.8);
+
+            box-shadow:
+                0 20px 55px
+                rgba(0, 40, 70, 0.28);
+
+            backdrop-filter: blur(22px);
+        }
+
+
+        /* TÍTULO */
+
+        .titulo {
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            gap: 8px;
+
+            margin-bottom: 2px;
+        }
+
+        .titulo i {
+
+            color: #238bff;
+
+            font-size: 30px;
+        }
+
+        h1 {
+
+            color: #123d69;
+
+            font-size: 29px;
+
+            font-weight: 750;
+
+            margin: 0;
+        }
+
+        .subtitulo {
+
+            text-align: center;
+
+            color: #58738e;
+
+            margin-bottom: 13px;
+
+            font-size: 14px;
+        }
+
+
+        /* ESTADÍSTICAS */
+
+        .estadisticas {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 10px;
+
+            margin-bottom: 13px;
+        }
+
+        .estadistica-card {
+
+            min-height: 90px;
+
+            padding: 12px 10px;
+
+            display: flex;
+
+            flex-direction: column;
+
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 17px;
+
+            background:
+                rgba(255, 255, 255, 0.55);
+
+            border:
+                1px solid
+                rgba(255, 255, 255, 0.8);
+
+            text-align: center;
+
+            box-shadow:
+                0 7px 18px
+                rgba(0, 40, 70, 0.10);
+        }
+
+        .estadistica-card i {
+
+            font-size: 24px;
+
+            color: #238bff;
+
+            margin-bottom: 3px;
+        }
+
+        .numero {
+
+            display: block;
+
+            font-size: 23px;
+
+            font-weight: 800;
+
+            line-height: 1.1;
+
+            color: #123d69;
+        }
+
+        .texto {
+
+            color: #58738e;
+
+            font-size: 12px;
+
+            margin-top: 3px;
+        }
+
+
+        /* GRÁFICO */
+
+        .grafico-contenedor {
+
+            background:
+                rgba(255, 255, 255, 0.55);
+
+            border-radius: 18px;
+
+            padding: 13px 15px 12px;
+
+            border:
+                1px solid
+                rgba(255, 255, 255, 0.8);
+
+            box-shadow:
+                0 7px 18px
+                rgba(0, 40, 70, 0.10);
+
+            margin-bottom: 13px;
+        }
+
+        .grafico-contenedor h2 {
+
+            color: #123d69;
+
+            font-size: 18px;
+
+            margin-bottom: 5px;
+
+            text-align: center;
+        }
+
+        .grafico {
+
+            position: relative;
+
+            height: 185px;
+        }
+
+
+        /* INFORMACIÓN */
+
+        .info-extra {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 10px;
+
+            margin-bottom: 13px;
+        }
+
+        .info-card {
+
+            min-height: 65px;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            padding: 11px;
+
+            border-radius: 15px;
+
+            background:
+                rgba(255, 255, 255, 0.55);
+
+            border:
+                1px solid
+                rgba(255, 255, 255, 0.8);
+        }
+
+        .info-card i {
+
+            font-size: 24px;
+
+            color: #238bff;
+        }
+
+        .info-card h3 {
+
+            color: #123d69;
+
+            font-size: 14px;
+
+            margin-bottom: 1px;
+        }
+
+        .info-card p {
+
+            color: #58738e;
+
+            margin: 0;
+
+            font-size: 12px;
+        }
+
+
+        /* BOTÓN */
+
+        .botones {
+
+            display: flex;
+
+            justify-content: center;
+
+            margin-top: 0;
+        }
+
+        .volver {
+
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            gap: 7px;
+
+            padding: 9px 20px;
+
+            border-radius: 12px;
+
+            background: #1b3237;
+
+            color: white;
+
+            text-decoration: none;
+
+            font-weight: 700;
+
+            font-size: 13px;
+
+            transition: 0.25s;
+        }
+
+        .volver:hover {
+
+            background: #238bff;
+
+            color: white;
+
+            transform:
+                translateY(-2px);
+        }
+
+
+        /* RESPONSIVE */
+
+        @media (max-width: 900px) {
+
+            .card-urbanaut {
+
+                width: min(94vw, 750px);
+            }
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            .contenedor {
+
+                align-items: flex-start;
+
+                padding: 8px;
+            }
+
+            .card-urbanaut {
+
+                width: 100%;
+
+                margin-top: 5px;
+
+                padding: 16px 13px;
+            }
+
+            h1 {
+
+                font-size: 25px;
+            }
+
+            .titulo i {
+
+                font-size: 26px;
+            }
+
+            .estadisticas {
+
+                grid-template-columns: 1fr;
+            }
+
+            .info-extra {
+
+                grid-template-columns: 1fr;
+            }
+
+            .grafico {
+
+                height: 200px;
+            }
+
+            .volver {
+
+                width: 100%;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    <main class="contenedor">
+
+        <section class="card-urbanaut">
+
+
+            <!-- TÍTULO -->
+
+            <div class="titulo">
+
+                <i class="bi bi-bar-chart-line-fill"></i>
+
+                <h1>
+                    Mis Estadísticas
+                </h1>
+
+            </div>
+
+
+            <p class="subtitulo">
+
+                Revisá tu actividad y uso de estacionamientos.
+
+            </p>
+
+
+            <!-- ESTADÍSTICAS -->
+
+            <div class="estadisticas">
+
+                <div class="estadistica-card">
+
+                    <i class="bi bi-car-front-fill"></i>
+
+                    <span class="numero">
+                        6
+                    </span>
+
+                    <span class="texto">
+                        Veces que estacionó en la semana
+                    </span>
+
+                </div>
+
+
+                <div class="estadistica-card">
+
+                    <i class="bi bi-calendar-check-fill"></i>
+
+                    <span class="numero">
+                        24
+                    </span>
+
+                    <span class="texto">
+                        Veces que estacionó en el mes
+                    </span>
+
+                </div>
+
+
+                <div class="estadistica-card">
+
+                    <i class="bi bi-clock-history"></i>
+
+                    <span class="numero">
+                        18 h
+                    </span>
+
+                    <span class="texto">
+                        Horas estacionado
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- GRÁFICO -->
+
+            <div class="grafico-contenedor">
+
+                <h2>
+                    Actividad de estacionamiento
+                </h2>
+
+                <div class="grafico">
+
+                    <canvas
+                        id="graficoEstacionamiento">
+                    </canvas>
+
+                </div>
+
+            </div>
+
+
+            <!-- INFORMACIÓN EXTRA -->
+
+            <div class="info-extra">
+
+                <div class="info-card">
+
+                    <i class="bi bi-geo-alt-fill"></i>
+
+                    <div>
+
+                        <h3>
+                            Zona más utilizada
+                        </h3>
+
+                        <p>
+                            Centro de Montevideo
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="info-card">
+
+                    <i class="bi bi-stopwatch-fill"></i>
+
+                    <div>
+
+                        <h3>
+                            Tiempo promedio
+                        </h3>
+
+                        <p>
+                            45 minutos por estacionamiento
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- BOTÓN -->
+
+            <div class="botones">
+
+                <a
+                    href="../inicio/index.html"
+                    class="volver">
+
+                    <i class="bi bi-house"></i>
+
+                    Volver a Inicio
+
+                </a>
+
+            </div>
+
+
+        </section>
+
+    </main>
+
+
+    <!-- CHART.JS -->
+
+    <script>
+
+        const ctx =
+            document.getElementById(
+                "graficoEstacionamiento"
+            );
+
+
+        new Chart(ctx, {
+
+            type: "bar",
+
+            data: {
+
+                labels: [
+
+                    "Lun",
+                    "Mar",
+                    "Mié",
+                    "Jue",
+                    "Vie",
+                    "Sáb"
+
+                ],
+
+                datasets: [
+
+                    {
+
+                        label:
+                            "Horas estacionadas",
+
+                        data: [
+
+                            2,
+                            4,
+                            1,
+                            3,
+                            5,
+                            2
+
+                        ],
+
+                        backgroundColor:
+                            "rgba(35, 139, 255, 0.65)",
+
+                        borderColor:
+                            "#238bff",
+
+                        borderWidth: 2,
+
+                        borderRadius: 10
+
+                    }
+
+                ]
+
+            },
+
+            options: {
+
+                responsive: true,
+
+                maintainAspectRatio: false,
+
+                plugins: {
+
+                    legend: {
+
+                        display: false
+
+                    }
+
+                },
+
+                scales: {
+
+                    y: {
+
+                        beginAtZero: true,
+
+                        ticks: {
+
+                            stepSize: 1
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        });
+
+    </script>
+
+</body>
+
+</html>
