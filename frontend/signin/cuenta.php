@@ -586,7 +586,7 @@ $url     = 'http://' . $backend . ':' . $port;
         <div class="login">
           ¿Ya tenés una cuenta?
 
-          <a href="../login/index.html"> Iniciá sesión </a>
+          <a href="../login/login.php"> Iniciá sesión </a>
         </div>
 
         <!-- BENEFICIOS -->
