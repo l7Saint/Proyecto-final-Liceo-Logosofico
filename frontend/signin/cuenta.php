@@ -1,3 +1,8 @@
+<?php
+$backend = rtrim(getenv('BACKEND_HOST') ?: '', '/');
+$port    = getenv('BACKEND_PORT') ?: '';
+$url     = 'http://' . $backend . ':' . $port;
+?>
 <!doctype html>
 <html lang="es">
   <head>
@@ -536,7 +541,7 @@
             <button
               type="button"
               class="mostrar-password"
-              onclick="mostrarPassword('password', this)"
+              onclick="mostrarPassword('contrasena', this)"
             >
               <i class="bi bi-eye"></i>
             </button>
@@ -569,7 +574,6 @@
           <button
             type="submit"
             class="btn-continuar"
-            onclick="enviarDatos(obtenerDatos())"
           >
             Continuar
 
@@ -651,24 +655,21 @@
         document
           .getElementById("formulario")
           .addEventListener("submit", function (event) {
+            event.preventDefault();
             const contrasena = document.getElementById("contrasena").value;
-
             const confirmar = document.getElementById("confirmar").value;
-
-            if (password !== confirmar) {
-              event.preventDefault();
-
+            if (contrasena !== confirmar) {
               alert("Las contraseñas no coinciden.");
+              return;
             }
+
+	    enviarDatos(obtenerDatos());
           });
 
         function obtenerDatos() {
           const nombre = document.getElementById("nombre").value.trim();
-
           const apellido = document.getElementById("apellido").value.trim();
-
           const email = document.getElementById("email").value.trim();
-
           const contrasena = document.getElementById("contrasena").value;
 
           const datos = {
@@ -681,10 +682,10 @@
           return datos;
         }
 
-        function enviarDatos(datos) {
+        async function enviarDatos(datos) {
           try {
                const response = await fetch(
-                  "/api/usuario.php/signin",
+	       <?= "\"".$url.'/api/usuario.php/signin'."\"" ?>,
                   {
                       method: "POST",
 
@@ -695,7 +696,7 @@
                       body: JSON.stringify(datos)
                   }
               );
-              const data = await response.json();
+              let data = await response.json();
 
                 if (response.status === 200) {
 

@@ -1,14 +1,29 @@
+name: urbanaut
 services:
-  apache:
-    build: src/
+  urbanaut_frontend:
+    build: frontend/
+    container_name: urbanaut_frontend
+    environment:
+      #variables por si el backend esta en otro server
+      BACKEND_HOST: 127.0.0.1
+      BACKEND_PORT: 30000
     ports:
       - "80:80"
     depends_on:
-      - mariadb
+      - urbanaut_backend
 
-  mariadb:
+  urbanaut_backend:
+    build: backend/
+    container_name: urbanaut_backend
+    ports:
+      # Por ahora mappear el 80 al 30000 porque el frontend y el backend estan en la misma maquina
+      - "30000:80"
+    depends_on:
+      - urbanaut_mariadb
+
+  urbanaut_mariadb:
     image: mariadb:11
-    container_name: mariadb
+    container_name: urbanaut_mariadb
     environment:
       MARIADB_ROOT_PASSWORD: root
       MARIADB_DATABASE: urbanaut

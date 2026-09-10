@@ -1,5 +1,5 @@
 <?php
-$host = "mariadb";
+$host = "urbanaut_mariadb";
 $bd = "urbanaut";
 $usuario = "root";
 $password = "root";
@@ -16,6 +16,7 @@ try {
 		PDO::ERRMODE_EXCEPTION
 	);
 } catch(PDOException $e){
-	die("Error de conexion:" . $e->getMessage());
-	var_dump($e);
+	error_log("Error en config.conexion: ".$e->getMessage());
+	http_response_code(500);
+	die();
 }
