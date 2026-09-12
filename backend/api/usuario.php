@@ -64,7 +64,7 @@ function login($method, $usrhnd) {
 		$usuario = $usrhnd->obtenerPorEmail($data['email']);
 		if(
 			$usuario === false ||
-			!password_verify($data['contrasena'], $usuario->contrasenaHash)
+			!password_verify($data['contrasena'], $usuario->contrasena_hash)
 		){
 			error_log("Unauthorized en api.usuario.login: email: " . $data['email']);
 			sendUnauthorized('Invalid email or password');
@@ -79,7 +79,7 @@ function login($method, $usrhnd) {
 			'nombre' => $usuario->nombre,
 			'apellido' => $usuario->apellido,
 			'email' => $usuario->email,
-			'fechaRegistro' => $usuario->fechaRegistro
+			'fecha_registro' => $usuario->fecha_registro
 		    ]
 		]);
 		exit;
@@ -113,7 +113,7 @@ function user($method, $usrhnd){
 		'nombre' => $usuario->nombre,
 		'apellido' => $usuario->apellido,
 		'email' => $usuario->email,
-		'fechaRegistro' => $usuario->fechaRegistro
+		'fecha_registro' => $usuario->fecha_registro
 	    ]
 	]);
 }
@@ -189,8 +189,8 @@ function signin($method, $usrhnd) {
 			$data['nombre'], //$nombre
 			$data['apellido'], //$apellido
 			$data['email'], //$email
-			password_hash($data['contrasena'], PASSWORD_DEFAULT), //$contrasenaHash
-			null //$fechaRegistro
+			password_hash($data['contrasena'], PASSWORD_DEFAULT), //$contrasena_hash
+			null //$fecha_registro
 		);	
 		if($usrhnd->crearUsuario($usuario)){
 			http_response_code(200);
