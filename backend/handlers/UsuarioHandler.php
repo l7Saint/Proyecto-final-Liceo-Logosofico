@@ -33,7 +33,7 @@ class UsuarioHandler {
 	}
 
 	/**
-	 * Crea un nuevo usuario en la base de datos
+	 * Crea un nuevo usuario en la base de datos (No admin)
 	 * 
 	 * @param Usuario $usuario Un objeto Usuario que contiene los datos del usuario a insertar
 	 * @return int|false Retorna el ID del usuario recién creado en caso de éxito, false en caso de fallo
@@ -45,7 +45,7 @@ class UsuarioHandler {
 				$usuario->nombre,
 				$usuario->apellido,
 				$usuario->email,
-				$usuario->contrasenaHash,
+				$usuario->contrasena_hash,
 			]);
 			if($success){
 				return $this->db->lastInsertId();
@@ -94,8 +94,10 @@ class UsuarioHandler {
 			$fetch['nombre'],
 			$fetch['apellido'],
 			$fetch['email'],
-			$fetch['contrasenaHash'],
-			$fetch['fechaRegistro']
+			$fetch['contrasena_hash'],
+			$fetch['inactivo'],
+			$fetch['es_admin'],
+			$fetch['fecha_registro']
 		);
 	}
 
@@ -131,7 +133,7 @@ class UsuarioHandler {
 		$this->db = $db;
 		try {
 			$this->stmt_obtenerPorId = $this->db->prepare("SELECT * FROM Usuario WHERE id = ?;");
-			$this->stmt_crearUsuario = $this->db->prepare("INSERT INTO Usuario (nombre, apellido, email, contrasenaHash) VALUES (?,?,?,?);");
+			$this->stmt_crearUsuario = $this->db->prepare("INSERT INTO Usuario (nombre, apellido, email, contrasena_hash) VALUES (?,?,?,?);");
 			$this->stmt_eliminarUsuario = $this->db->prepare("DELETE FROM Usuario WHERE id = ?;");
 			$this->stmt_obtenerPorEmail = $this->db->prepare("SELECT * FROM Usuario WHERE email = ?;");
 		} catch (PDOException $e){
