@@ -1,455 +1,392 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <title>Urbanaut | Administrador</title>
 
     <!-- Bootstrap Icons -->
     <link
-        rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"
-    >
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"
+    />
 
     <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+      body {
+        min-height: 100vh;
+        font-family: "Segoe UI", Arial, sans-serif;
 
-        body {
-            min-height: 100vh;
-            font-family: "Segoe UI", Arial, sans-serif;
+        background: url("../imagenes/fondoHacker.jpg") center center / cover
+          no-repeat fixed;
 
-            background:
-                url("../imagenes/fondoHacker.jpg")
-                center center / cover
-                no-repeat fixed;
+        display: flex;
+        align-items: center;
+        justify-content: center;
 
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        color: #d8ffe8;
+      }
 
-            color: #d8ffe8;
-        }
+      /* Capa oscura sobre la imagen */
 
-        /* Capa oscura sobre la imagen */
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
 
-        body::before {
-            content: "";
-            position: fixed;
-            inset: 0;
+        background: rgba(3, 15, 10, 0.55);
 
-            background:
-                rgba(3, 15, 10, 0.55);
+        z-index: -1;
+      }
 
-            z-index: -1;
-        }
+      /* CONTENEDOR */
 
-        /* CONTENEDOR */
+      .contenedor {
+        width: 100%;
+        min-height: 100vh;
 
-        .contenedor {
-            width: 100%;
-            min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
 
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        padding: 20px;
+      }
 
-            padding: 20px;
-        }
+      /* TARJETA */
 
-        /* TARJETA */
+      .card-admin {
+        width: 430px;
+        max-width: 100%;
 
+        padding: 35px;
+
+        background: rgba(10, 25, 18, 0.88);
+
+        border: 1px solid #36d66f;
+
+        border-radius: 18px;
+
+        box-shadow: 0 0 25px rgba(54, 214, 111, 0.18);
+
+        backdrop-filter: blur(8px);
+      }
+
+      /* ENCABEZADO */
+
+      .icono {
+        width: 60px;
+        height: 60px;
+
+        margin: 0 auto 15px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 12px;
+
+        background: rgba(54, 214, 111, 0.1);
+
+        border: 1px solid #36d66f;
+
+        color: #36d66f;
+
+        font-size: 28px;
+      }
+
+      h1 {
+        text-align: center;
+
+        color: #ffffff;
+
+        font-size: 28px;
+
+        margin-bottom: 6px;
+      }
+
+      .subtitulo {
+        text-align: center;
+
+        color: #91b59f;
+
+        font-size: 13px;
+
+        margin-bottom: 25px;
+      }
+
+      /* WARNING */
+
+      .warning {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+
+        padding: 12px;
+
+        margin-bottom: 22px;
+
+        border-radius: 10px;
+
+        background: rgba(255, 193, 7, 0.08);
+
+        border: 1px solid rgba(255, 193, 7, 0.55);
+
+        color: #ffe39a;
+
+        font-size: 12px;
+
+        line-height: 1.4;
+      }
+
+      .warning i {
+        font-size: 17px;
+        color: #ffc107;
+      }
+
+      /* CAMPOS */
+
+      .campo {
+        margin-bottom: 17px;
+      }
+
+      .campo label {
+        display: block;
+
+        margin-bottom: 7px;
+
+        color: #b8e8c7;
+
+        font-size: 13px;
+
+        font-weight: 600;
+      }
+
+      .input-contenedor {
+        position: relative;
+      }
+
+      .input-contenedor i {
+        position: absolute;
+
+        left: 13px;
+        top: 50%;
+
+        transform: translateY(-50%);
+
+        color: #36d66f;
+
+        font-size: 16px;
+      }
+
+      .input-contenedor input {
+        width: 100%;
+        height: 45px;
+
+        padding: 0 13px 0 40px;
+
+        border-radius: 10px;
+
+        border: 1px solid #31563f;
+
+        background: #0b1b12;
+
+        color: white;
+
+        outline: none;
+
+        font-size: 13px;
+
+        transition: 0.2s;
+      }
+
+      .input-contenedor input::placeholder {
+        color: #688474;
+      }
+
+      .input-contenedor input:focus {
+        border-color: #36d66f;
+
+        box-shadow: 0 0 0 2px rgba(54, 214, 111, 0.12);
+      }
+
+      /* BOTÓN */
+
+      .btn-entrar {
+        width: 100%;
+        height: 45px;
+
+        margin-top: 5px;
+
+        border: none;
+        border-radius: 10px;
+
+        background: #36d66f;
+
+        color: #07120b;
+
+        font-size: 14px;
+        font-weight: 700;
+
+        cursor: pointer;
+
+        transition: 0.2s;
+      }
+
+      .btn-entrar:hover {
+        background: #52ed87;
+
+        transform: translateY(-1px);
+
+        box-shadow: 0 5px 15px rgba(54, 214, 111, 0.2);
+      }
+
+      /* VOLVER */
+
+      .volver {
+        display: block;
+
+        text-align: center;
+
+        margin-top: 20px;
+
+        color: #789b85;
+
+        font-size: 12px;
+
+        text-decoration: none;
+      }
+
+      .volver:hover {
+        color: #36d66f;
+      }
+
+      /* TEXTO INFERIOR */
+
+      .estado {
+        margin-top: 20px;
+
+        text-align: center;
+
+        color: #537561;
+
+        font-size: 10px;
+      }
+
+      .estado span {
+        color: #36d66f;
+      }
+
+      /* CELULAR */
+
+      @media (max-width: 500px) {
         .card-admin {
-            width: 430px;
-            max-width: 100%;
-
-            padding: 35px;
-
-            background:
-                rgba(10, 25, 18, 0.88);
-
-            border: 1px solid #36d66f;
-
-            border-radius: 18px;
-
-            box-shadow:
-                0 0 25px rgba(54, 214, 111, 0.18);
-
-            backdrop-filter: blur(8px);
-        }
-
-        /* ENCABEZADO */
-
-        .icono {
-            width: 60px;
-            height: 60px;
-
-            margin: 0 auto 15px;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            border-radius: 12px;
-
-            background: rgba(54, 214, 111, 0.10);
-
-            border: 1px solid #36d66f;
-
-            color: #36d66f;
-
-            font-size: 28px;
+          padding: 25px 22px;
         }
 
         h1 {
-            text-align: center;
-
-            color: #ffffff;
-
-            font-size: 28px;
-
-            margin-bottom: 6px;
+          font-size: 24px;
         }
-
-        .subtitulo {
-            text-align: center;
-
-            color: #91b59f;
-
-            font-size: 13px;
-
-            margin-bottom: 25px;
-        }
-
-        /* WARNING */
-
-        .warning {
-            display: flex;
-            align-items: flex-start;
-            gap: 10px;
-
-            padding: 12px;
-
-            margin-bottom: 22px;
-
-            border-radius: 10px;
-
-            background: rgba(255, 193, 7, 0.08);
-
-            border: 1px solid rgba(255, 193, 7, 0.55);
-
-            color: #ffe39a;
-
-            font-size: 12px;
-
-            line-height: 1.4;
-        }
-
-        .warning i {
-            font-size: 17px;
-            color: #ffc107;
-        }
-
-        /* CAMPOS */
-
-        .campo {
-            margin-bottom: 17px;
-        }
-
-        .campo label {
-            display: block;
-
-            margin-bottom: 7px;
-
-            color: #b8e8c7;
-
-            font-size: 13px;
-
-            font-weight: 600;
-        }
-
-        .input-contenedor {
-            position: relative;
-        }
-
-        .input-contenedor i {
-            position: absolute;
-
-            left: 13px;
-            top: 50%;
-
-            transform: translateY(-50%);
-
-            color: #36d66f;
-
-            font-size: 16px;
-        }
-
-        .input-contenedor input {
-            width: 100%;
-            height: 45px;
-
-            padding: 0 13px 0 40px;
-
-            border-radius: 10px;
-
-            border: 1px solid #31563f;
-
-            background: #0b1b12;
-
-            color: white;
-
-            outline: none;
-
-            font-size: 13px;
-
-            transition: 0.2s;
-        }
-
-        .input-contenedor input::placeholder {
-            color: #688474;
-        }
-
-        .input-contenedor input:focus {
-            border-color: #36d66f;
-
-            box-shadow:
-                0 0 0 2px rgba(54, 214, 111, 0.12);
-        }
-
-        /* BOTÓN */
-
-        .btn-entrar {
-            width: 100%;
-            height: 45px;
-
-            margin-top: 5px;
-
-            border: none;
-            border-radius: 10px;
-
-            background: #36d66f;
-
-            color: #07120b;
-
-            font-size: 14px;
-            font-weight: 700;
-
-            cursor: pointer;
-
-            transition: 0.2s;
-        }
-
-        .btn-entrar:hover {
-            background: #52ed87;
-
-            transform: translateY(-1px);
-
-            box-shadow:
-                0 5px 15px rgba(54, 214, 111, 0.20);
-        }
-
-        /* VOLVER */
-
-        .volver {
-            display: block;
-
-            text-align: center;
-
-            margin-top: 20px;
-
-            color: #789b85;
-
-            font-size: 12px;
-
-            text-decoration: none;
-        }
-
-        .volver:hover {
-            color: #36d66f;
-        }
-
-        /* TEXTO INFERIOR */
-
-        .estado {
-            margin-top: 20px;
-
-            text-align: center;
-
-            color: #537561;
-
-            font-size: 10px;
-        }
-
-        .estado span {
-            color: #36d66f;
-        }
-
-        /* CELULAR */
-
-        @media (max-width: 500px) {
-
-            .card-admin {
-                padding: 25px 22px;
-            }
-
-            h1 {
-                font-size: 24px;
-            }
-        }
-
+      }
     </style>
+  </head>
 
-</head>
-
-
-<body>
-
+  <body>
     <main class="contenedor">
+      <section class="card-admin">
+        <!-- ICONO -->
 
-        <section class="card-admin">
+        <div class="icono">
+          <i class="bi bi-terminal"></i>
+        </div>
 
-            <!-- ICONO -->
+        <!-- TÍTULO -->
 
-            <div class="icono">
-                <i class="bi bi-terminal"></i>
+        <h1>Panel de Administrador</h1>
+
+        <p class="subtitulo">Acceso restringido</p>
+
+        <!-- WARNING -->
+
+        <div class="warning">
+          <i class="bi bi-exclamation-triangle-fill"></i>
+
+          <span>
+            <strong>WARNING:</strong>
+            Esta sección es exclusiva para administradores. No ingreses si no
+            tenés autorización.
+          </span>
+        </div>
+
+        <!-- FORMULARIO -->
+
+        <form onsubmit="entrarAdministrador(event)">
+          <!-- NOMBRE -->
+
+          <div class="campo">
+            <label for="admin"> Nombre de administrador </label>
+
+            <div class="input-contenedor">
+              <i class="bi bi-person-fill"></i>
+
+              <input
+                type="text"
+                id="admin"
+                placeholder="Ingresá tu usuario"
+                required
+              />
             </div>
+          </div>
 
+          <!-- CONTRASEÑA -->
 
-            <!-- TÍTULO -->
+          <div class="campo">
+            <label for="password"> Contraseña </label>
 
-            <h1>
-                Panel de Administrador
-            </h1>
+            <div class="input-contenedor">
+              <i class="bi bi-key-fill"></i>
 
-            <p class="subtitulo">
-                Acceso restringido
-            </p>
-
-
-            <!-- WARNING -->
-
-            <div class="warning">
-
-                <i class="bi bi-exclamation-triangle-fill"></i>
-
-                <span>
-                    <strong>WARNING:</strong>
-                    Esta sección es exclusiva para administradores.
-                    No ingreses si no tenés autorización.
-                </span>
-
+              <input
+                type="password"
+                id="password"
+                placeholder="Ingresá tu contraseña"
+                required
+              />
             </div>
+          </div>
 
+          <!-- BOTÓN -->
 
-            <!-- FORMULARIO -->
+          <button type="submit" class="btn-entrar">Ingresar al panel</button>
+        </form>
 
-            <form
-                onsubmit="entrarAdministrador(event)"
-            >
+        <!-- VOLVER -->
 
-                <!-- NOMBRE -->
+        <a href="../login/login.php" class="volver">
+          <i class="bi bi-arrow-left"></i>
+          Volver al inicio de sesión
+        </a>
 
-                <div class="campo">
+        <!-- ESTADO -->
 
-                    <label for="admin">
-                        Nombre de administrador
-                    </label>
-
-                    <div class="input-contenedor">
-
-                        <i class="bi bi-person-fill"></i>
-
-                        <input
-                            type="text"
-                            id="admin"
-                            placeholder="Ingresá tu usuario"
-                            required
-                        >
-
-                    </div>
-
-                </div>
-
-
-                <!-- CONTRASEÑA -->
-
-                <div class="campo">
-
-                    <label for="password">
-                        Contraseña
-                    </label>
-
-                    <div class="input-contenedor">
-
-                        <i class="bi bi-key-fill"></i>
-
-                        <input
-                            type="password"
-                            id="password"
-                            placeholder="Ingresá tu contraseña"
-                            required
-                        >
-
-                    </div>
-
-                </div>
-
-
-                <!-- BOTÓN -->
-
-                <button
-                    type="submit"
-                    class="btn-entrar"
-                >
-                    Ingresar al panel
-                </button>
-
-            </form>
-
-
-            <!-- VOLVER -->
-
-            <a
-                href="../login/index.html"
-                class="volver"
-            >
-                <i class="bi bi-arrow-left"></i>
-                Volver al inicio de sesión
-            </a>
-
-
-            <!-- ESTADO -->
-
-            <div class="estado">
-                SISTEMA <span>●</span> ACTIVO
-            </div>
-
-        </section>
-
+        <div class="estado">SISTEMA <span>●</span> ACTIVO</div>
+      </section>
     </main>
 
-
     <script>
+      function entrarAdministrador(event) {
+        event.preventDefault();
 
-        function entrarAdministrador(event) {
+        const usuario = document.getElementById("admin").value;
 
-            event.preventDefault();
+        const password = document.getElementById("password").value;
 
-            const usuario =
-                document.getElementById("admin").value;
-
-            const password =
-                document.getElementById("password").value;
-
-
-            /*
+        /*
                 POR AHORA solamente comprobamos
                 que haya datos.
 
@@ -457,17 +394,10 @@
                 con PHP y una base de datos.
             */
 
-            if (usuario !== "" && password !== "") {
-
-                window.location.href =
-                    "../adminitrador/index.html";
-
-            }
-
+        if (usuario !== "" && password !== "") {
+          window.location.href = "../adminitrador/index.html";
         }
-
+      }
     </script>
-
-</body>
-
+  </body>
 </html>

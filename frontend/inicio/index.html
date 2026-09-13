@@ -1,440 +1,331 @@
-<!DOCTYPE html>
+<!doctype html>
 
 <html lang="es">
-
-<head>
-    <meta charset="UTF-8">
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <title>Urbanaut | Inicio</title>
 
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
 
     <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
-        rel="stylesheet">
-
-
-    <link
-        rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
-
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"
+    />
 
     <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+      body {
+        min-height: 100vh;
+        font-family: "Segoe UI", Arial, sans-serif;
 
+        background: url("../imagenes/imagen2.jpg") center center / cover
+          no-repeat fixed;
 
-        body {
-            min-height: 100vh;
-            font-family:
-                "Segoe UI",
-                Arial,
-                sans-serif;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
 
-            background:
-                url("../imagenes/imagen2.jpg")
-                center center / cover
-                no-repeat fixed;
+      body::before {
+        content: "";
 
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+        position: fixed;
+        inset: 0;
 
+        background: linear-gradient(
+          135deg,
+          rgba(0, 180, 255, 0.15),
+          rgba(0, 255, 170, 0.08)
+        );
 
-        body::before {
-            content: "";
+        backdrop-filter: blur(2px);
 
-            position: fixed;
-            inset: 0;
+        z-index: -1;
+      }
 
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(0, 180, 255, 0.15),
-                    rgba(0, 255, 170, 0.08)
-                );
+      .contenedor {
+        width: min(95%, 900px);
+        min-height: 100vh;
 
-            backdrop-filter: blur(2px);
+        display: flex;
+        justify-content: center;
+        align-items: center;
 
-            z-index: -1;
-        }
+        padding: 15px;
+      }
 
+      .card-urbanaut {
+        width: 600px;
+        max-width: 100%;
 
-        .contenedor {
-            width: min(95%, 900px);
-            min-height: 100vh;
+        padding: 30px 40px;
 
-            display: flex;
-            justify-content: center;
-            align-items: center;
+        border-radius: 30px;
 
-            padding: 15px;
-        }
+        background: linear-gradient(
+          135deg,
+          rgba(255, 255, 255, 0.72),
+          rgba(230, 250, 255, 0.45)
+        );
 
+        border: 1px solid rgba(255, 255, 255, 0.8);
 
+        box-shadow:
+          0 25px 70px rgba(0, 40, 70, 0.3),
+          inset 0 1px 0 rgba(255, 255, 255, 0.8);
+
+        backdrop-filter: blur(22px);
+      }
+
+      .logo {
+        text-align: center;
+        margin-bottom: 10px;
+      }
+
+      .logo img {
+        width: 150px;
+        max-height: 65px;
+
+        object-fit: contain;
+      }
+
+      h1 {
+        text-align: center;
+
+        color: #123d69;
+
+        font-size: 38px;
+        font-weight: 750;
+
+        margin-bottom: 5px;
+      }
+
+      .subtitulo {
+        text-align: center;
+
+        color: #58738e;
+
+        font-size: 15px;
+
+        margin-bottom: 25px;
+      }
+
+      .botones {
+        display: grid;
+
+        grid-template-columns: repeat(2, 1fr);
+
+        gap: 15px;
+      }
+
+      .btn-opcion {
+        height: 100px;
+
+        border: none;
+
+        border-radius: 20px;
+
+        background: rgba(255, 255, 255, 0.72);
+
+        color: #246294;
+
+        font-size: 17px;
+        font-weight: 700;
+
+        text-decoration: none;
+
+        display: flex;
+        flex-direction: column;
+
+        align-items: center;
+        justify-content: center;
+
+        gap: 8px;
+
+        box-shadow: 0 5px 15px rgba(30, 90, 120, 0.08);
+
+        transition: all 0.25s ease;
+      }
+
+      .btn-opcion i {
+        font-size: 30px;
+        color: #238bff;
+      }
+
+      .btn-opcion:hover {
+        transform: translateY(-4px);
+
+        background: white;
+
+        color: #1683e9;
+
+        box-shadow: 0 10px 25px rgba(30, 120, 180, 0.18);
+      }
+
+      /* BOTÓN AYUDA CENTRADO */
+
+      .btn-ayuda {
+        grid-column: 1 / -1;
+
+        width: 50%;
+
+        justify-self: center;
+      }
+
+      /* BOTÓN CERRAR SESIÓN */
+
+      .btn-cerrar {
+        grid-column: 1 / -1;
+
+        width: 45%;
+
+        justify-self: center;
+
+        height: 42px;
+
+        margin-top: 5px;
+
+        border: none;
+
+        border-radius: 13px;
+
+        background: rgba(255, 255, 255, 0.45);
+
+        color: #6c8295;
+
+        font-size: 12px;
+
+        font-weight: 600;
+
+        text-decoration: none;
+
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        gap: 7px;
+
+        transition: all 0.25s ease;
+      }
+
+      .btn-cerrar i {
+        font-size: 15px;
+
+        color: #7890a5;
+      }
+
+      .btn-cerrar:hover {
+        background: rgba(255, 255, 255, 0.8);
+
+        color: #d9534f;
+
+        transform: translateY(-2px);
+      }
+
+      .btn-cerrar:hover i {
+        color: #d9534f;
+      }
+
+      @media (max-width: 500px) {
         .card-urbanaut {
-            width: 600px;
-            max-width: 100%;
-
-            padding: 30px 40px;
-
-            border-radius: 30px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(255,255,255,0.72),
-                    rgba(230,250,255,0.45)
-                );
-
-            border:
-                1px solid
-                rgba(255,255,255,0.8);
-
-            box-shadow:
-                0 25px 70px
-                rgba(0,40,70,0.30),
-
-                inset 0 1px 0
-                rgba(255,255,255,0.8);
-
-            backdrop-filter: blur(22px);
+          padding: 25px 20px;
         }
-
-
-        .logo {
-            text-align: center;
-            margin-bottom: 10px;
-        }
-
-
-        .logo img {
-            width: 150px;
-            max-height: 65px;
-
-            object-fit: contain;
-        }
-
-
-        h1 {
-            text-align: center;
-
-            color: #123d69;
-
-            font-size: 38px;
-            font-weight: 750;
-
-            margin-bottom: 5px;
-        }
-
-
-        .subtitulo {
-            text-align: center;
-
-            color: #58738e;
-
-            font-size: 15px;
-
-            margin-bottom: 25px;
-        }
-
 
         .botones {
-            display: grid;
-
-            grid-template-columns:
-                repeat(2, 1fr);
-
-            gap: 15px;
+          grid-template-columns: 1fr;
         }
-
-
-        .btn-opcion {
-            height: 100px;
-
-            border: none;
-
-            border-radius: 20px;
-
-            background:
-                rgba(255,255,255,0.72);
-
-            color: #246294;
-
-            font-size: 17px;
-            font-weight: 700;
-
-            text-decoration: none;
-
-            display: flex;
-            flex-direction: column;
-
-            align-items: center;
-            justify-content: center;
-
-            gap: 8px;
-
-            box-shadow:
-                0 5px 15px
-                rgba(30,90,120,0.08);
-
-            transition:
-                all 0.25s ease;
-        }
-
-
-        .btn-opcion i {
-            font-size: 30px;
-            color: #238bff;
-        }
-
-
-        .btn-opcion:hover {
-            transform:
-                translateY(-4px);
-
-            background: white;
-
-            color: #1683e9;
-
-            box-shadow:
-                0 10px 25px
-                rgba(30,120,180,0.18);
-        }
-
-
-        /* BOTÓN AYUDA CENTRADO */
 
         .btn-ayuda {
-            grid-column: 1 / -1;
+          grid-column: auto;
 
-            width: 50%;
-
-            justify-self: center;
+          width: 100%;
         }
-
-
-        /* BOTÓN CERRAR SESIÓN */
 
         .btn-cerrar {
-            grid-column: 1 / -1;
+          grid-column: auto;
 
-            width: 45%;
-
-            justify-self: center;
-
-            height: 42px;
-
-            margin-top: 5px;
-
-            border: none;
-
-            border-radius: 13px;
-
-            background:
-                rgba(255,255,255,0.45);
-
-            color: #6c8295;
-
-            font-size: 12px;
-
-            font-weight: 600;
-
-            text-decoration: none;
-
-            display: flex;
-
-            align-items: center;
-            justify-content: center;
-
-            gap: 7px;
-
-            transition: all 0.25s ease;
+          width: 100%;
         }
 
-
-        .btn-cerrar i {
-            font-size: 15px;
-
-            color: #7890a5;
+        h1 {
+          font-size: 30px;
         }
-
-
-        .btn-cerrar:hover {
-            background: rgba(255,255,255,0.8);
-
-            color: #d9534f;
-
-            transform: translateY(-2px);
-        }
-
-
-        .btn-cerrar:hover i {
-            color: #d9534f;
-        }
-
-
-        @media (max-width: 500px) {
-
-            .card-urbanaut {
-                padding: 25px 20px;
-            }
-
-
-            .botones {
-                grid-template-columns: 1fr;
-            }
-
-
-            .btn-ayuda {
-                grid-column: auto;
-
-                width: 100%;
-            }
-
-
-            .btn-cerrar {
-                grid-column: auto;
-
-                width: 100%;
-            }
-
-
-            h1 {
-                font-size: 30px;
-            }
-        }
-
+      }
     </style>
+  </head>
 
-</head>
-
-
-<body>
-
-
+  <body>
     <main class="contenedor">
+      <section class="card-urbanaut">
+        <div class="logo">
+          <img src="../imagenes/logoNuevo2.png" alt="Logo Urbanaut" />
+        </div>
 
+        <h1>Urbanaut</h1>
 
-        <section class="card-urbanaut">
+        <p class="subtitulo">¿Qué querés hacer?</p>
 
+        <div class="botones">
+          <!-- MAPA -->
 
-            <div class="logo">
+          <a href="../mapa/index.html" class="btn-opcion">
+            <i class="bi bi-map"></i>
 
-                <img
-                    src="../imagenes/logoNuevo2.png"
-                    alt="Logo Urbanaut">
+            Mapa
+          </a>
 
-            </div>
+          <!-- ESTADÍSTICAS -->
 
+          <a href="../opciones/estadisticas.html" class="btn-opcion">
+            <i class="bi bi-bar-chart"></i>
 
-            <h1>
-                Urbanaut
-            </h1>
+            Estadísticas
+          </a>
 
+          <!-- HISTORIAL -->
 
-            <p class="subtitulo">
-                ¿Qué querés hacer?
-            </p>
+          <a href="../opciones/historial.html" class="btn-opcion">
+            <i class="bi bi-clock-history"></i>
 
+            Historial
+          </a>
 
-            <div class="botones">
+          <!-- PERFIL -->
 
+          <a href="../opciones/cuenta.html" class="btn-opcion">
+            <i class="bi bi-person"></i>
 
-                <!-- MAPA -->
+            Perfil
+          </a>
 
-                <a
-                    href="../mapa/index.html"
-                    class="btn-opcion">
+          <!-- AYUDA E INFORMACIÓN -->
 
-                    <i class="bi bi-map"></i>
+          <a href="../opciones/ayudaInfo.html" class="btn-opcion btn-ayuda">
+            <i class="bi bi-info-circle"></i>
 
-                    Mapa
+            Ayuda e Información
+          </a>
 
-                </a>
+          <!-- CERRAR SESIÓN -->
 
+          <a href="../login/login.php" class="btn-cerrar">
+            <i class="bi bi-box-arrow-right"></i>
 
-                <!-- ESTADÍSTICAS -->
-
-                <a
-                    href="../opciones/estadisticas.html"
-                    class="btn-opcion">
-
-                    <i class="bi bi-bar-chart"></i>
-
-                    Estadísticas
-
-                </a>
-
-
-                <!-- HISTORIAL -->
-
-                <a
-                    href="../opciones/historial.html"
-                    class="btn-opcion">
-
-                    <i class="bi bi-clock-history"></i>
-
-                    Historial
-
-                </a>
-
-
-                <!-- PERFIL -->
-
-                <a
-                    href="../opciones/cuenta.html"
-                    class="btn-opcion">
-
-                    <i class="bi bi-person"></i>
-
-                    Perfil
-
-                </a>
-
-
-                <!-- AYUDA E INFORMACIÓN -->
-
-                <a
-                    href="../opciones/ayudaInfo.html"
-                    class="btn-opcion btn-ayuda">
-
-                    <i class="bi bi-info-circle"></i>
-
-                    Ayuda e Información
-
-                </a>
-
-
-                <!-- CERRAR SESIÓN -->
-
-                <a
-                    href="../login/index.html"
-                    class="btn-cerrar">
-
-                    <i class="bi bi-box-arrow-right"></i>
-
-                    Cerrar sesión
-
-                </a>
-
-
-            </div>
-
-
-        </section>
-
-
+            Cerrar sesión
+          </a>
+        </div>
+      </section>
     </main>
-
-
-</body>
-
+  </body>
 </html>
