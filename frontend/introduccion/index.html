@@ -1,1001 +1,705 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
+  <head>
+    <meta charset="UTF-8" />
 
-<head>
-
-    <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <title>Urbanaut | Bienvenido</title>
-
 
     <!-- Bootstrap -->
 
     <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
-        rel="stylesheet">
-
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
 
     <!-- Bootstrap Icons -->
 
     <link
-        rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
-
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"
+    />
 
     <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+      body {
+        min-height: 100vh;
+
+        font-family: "Segoe UI", Arial, sans-serif;
+
+        background: url("../imagenes/imagen2.jpg") center center / cover
+          no-repeat fixed;
+
+        position: relative;
+
+        overflow-x: hidden;
+        overflow-y: auto;
+      }
+
+      /* CAPA DE COLOR SOBRE EL FONDO */
+
+      body::before {
+        content: "";
+
+        position: fixed;
+
+        inset: 0;
+
+        background: linear-gradient(
+          135deg,
+          rgba(0, 180, 255, 0.18),
+          rgba(0, 255, 170, 0.1)
+        );
+
+        backdrop-filter: blur(2px);
+
+        z-index: -1;
+      }
+
+      /* CONTENEDOR PRINCIPAL */
+
+      .contenedor {
+        width: 100%;
+
+        min-height: 100vh;
+
+        display: flex;
+
+        justify-content: center;
+        align-items: center;
+
+        padding: 25px;
+      }
+
+      /* TARJETA */
+
+      .card-urbanaut {
+        width: 100%;
+
+        max-width: 900px;
+
+        min-height: 520px;
+
+        border-radius: 35px;
+
+        background: linear-gradient(
+          135deg,
+          rgba(255, 255, 255, 0.8),
+          rgba(230, 250, 255, 0.52)
+        );
+
+        border: 1px solid rgba(255, 255, 255, 0.85);
+
+        box-shadow:
+          0 25px 70px rgba(0, 40, 70, 0.3),
+          inset 0 1px 0 rgba(255, 255, 255, 0.8);
+
+        backdrop-filter: blur(22px);
+
+        -webkit-backdrop-filter: blur(22px);
+
+        display: grid;
+
+        grid-template-columns: 1.1fr 0.9fr;
+
+        overflow: hidden;
+
+        animation: aparecer 0.7s ease;
+      }
+
+      /* ANIMACIÓN DE ENTRADA */
+
+      @keyframes aparecer {
+        from {
+          opacity: 0;
+
+          transform: translateY(25px) scale(0.98);
         }
 
+        to {
+          opacity: 1;
 
-        body {
-
-            min-height: 100vh;
-
-            font-family:
-                "Segoe UI",
-                Arial,
-                sans-serif;
-
-            background:
-                url("../imagenes/imagen2.jpg")
-                center center / cover
-                no-repeat fixed;
-
-            position: relative;
-
-            overflow-x: hidden;
-            overflow-y: auto;
+          transform: translateY(0) scale(1);
         }
+      }
 
-
-        /* CAPA DE COLOR SOBRE EL FONDO */
-
-        body::before {
-
-            content: "";
-
-            position: fixed;
-
-            inset: 0;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(0, 180, 255, 0.18),
-                    rgba(0, 255, 170, 0.10)
-                );
-
-            backdrop-filter: blur(2px);
-
-            z-index: -1;
-        }
-
-
-        /* CONTENEDOR PRINCIPAL */
-
-        .contenedor {
-
-            width: 100%;
-
-            min-height: 100vh;
-
-            display: flex;
-
-            justify-content: center;
-            align-items: center;
-
-            padding: 25px;
-        }
-
-
-        /* TARJETA */
-
-        .card-urbanaut {
-
-            width: 100%;
-
-            max-width: 900px;
-
-            min-height: 520px;
-
-            border-radius: 35px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(255, 255, 255, 0.80),
-                    rgba(230, 250, 255, 0.52)
-                );
-
-            border:
-                1px solid
-                rgba(255, 255, 255, 0.85);
-
-            box-shadow:
-                0 25px 70px
-                rgba(0, 40, 70, 0.30),
-
-                inset 0 1px 0
-                rgba(255, 255, 255, 0.8);
-
-            backdrop-filter: blur(22px);
-
-            -webkit-backdrop-filter: blur(22px);
-
-            display: grid;
-
-            grid-template-columns:
-                1.1fr 0.9fr;
-
-            overflow: hidden;
-
-            animation:
-                aparecer
-                0.7s
-                ease;
-        }
-
-
-        /* ANIMACIÓN DE ENTRADA */
-
-        @keyframes aparecer {
-
-            from {
-
-                opacity: 0;
-
-                transform:
-                    translateY(25px)
-                    scale(0.98);
-            }
-
-
-            to {
-
-                opacity: 1;
-
-                transform:
-                    translateY(0)
-                    scale(1);
-            }
-        }
-
-
-        /* =========================
+      /* =========================
            PARTE IZQUIERDA
         ========================= */
 
-        .bienvenida {
+      .bienvenida {
+        padding: 55px;
 
-            padding:
-                55px;
+        display: flex;
 
-            display: flex;
+        flex-direction: column;
 
-            flex-direction: column;
+        justify-content: center;
+      }
 
-            justify-content: center;
-        }
+      /* LOGO */
 
+      .logo {
+        margin-bottom: 22px;
+      }
 
-        /* LOGO */
+      .logo img {
+        width: 170px;
 
-        .logo {
+        height: auto;
 
-            margin-bottom: 22px;
-        }
+        max-width: 100%;
 
+        object-fit: contain;
 
-        .logo img {
+        display: block;
+      }
 
-            width: 170px;
+      /* TITULO */
 
-            height: auto;
+      h1 {
+        color: #123d69;
 
-            max-width: 100%;
+        font-size: 48px;
 
-            object-fit: contain;
+        font-weight: 750;
 
-            display: block;
-        }
+        letter-spacing: -2px;
 
+        line-height: 1.08;
 
-        /* TITULO */
+        margin-bottom: 18px;
+      }
 
-        h1 {
+      h1 span {
+        background: linear-gradient(90deg, #238bff, #19b7c9, #63d85f);
 
-            color: #123d69;
+        -webkit-background-clip: text;
 
-            font-size: 48px;
+        background-clip: text;
 
-            font-weight: 750;
+        -webkit-text-fill-color: transparent;
 
-            letter-spacing: -2px;
+        color: #238bff;
+      }
 
-            line-height: 1.08;
+      /* SUBTITULO */
 
-            margin-bottom: 18px;
-        }
+      .subtitulo {
+        color: #58738e;
 
+        font-size: 17px;
 
-        h1 span {
+        line-height: 1.6;
 
-            background:
-                linear-gradient(
-                    90deg,
-                    #238bff,
-                    #19b7c9,
-                    #63d85f
-                );
+        margin-bottom: 30px;
 
-            -webkit-background-clip: text;
+        max-width: 430px;
+      }
 
-            background-clip: text;
+      /* BOTONES */
 
-            -webkit-text-fill-color:
-                transparent;
+      .botones {
+        display: flex;
 
-            color: #238bff;
-        }
+        flex-direction: column;
 
+        gap: 12px;
 
-        /* SUBTITULO */
+        width: 100%;
 
-        .subtitulo {
+        max-width: 340px;
+      }
 
-            color: #58738e;
+      /* BOTON PRINCIPAL */
 
-            font-size: 17px;
+      .btn-empezar {
+        width: 100%;
 
-            line-height: 1.6;
+        height: 56px;
 
-            margin-bottom: 30px;
+        border: none;
 
-            max-width: 430px;
-        }
+        border-radius: 17px;
 
+        background: linear-gradient(100deg, #238bff, #19b7c9, #63d85f);
 
-        /* BOTONES */
+        background-size: 200% auto;
 
-        .botones {
+        color: white;
 
-            display: flex;
+        font-size: 17px;
 
-            flex-direction: column;
+        font-weight: 700;
 
-            gap: 12px;
+        text-decoration: none;
 
-            width: 100%;
+        display: flex;
 
-            max-width: 340px;
-        }
+        align-items: center;
+        justify-content: center;
 
+        gap: 10px;
 
-        /* BOTON PRINCIPAL */
+        box-shadow: 0 10px 25px rgba(30, 145, 220, 0.25);
 
-        .btn-empezar {
+        transition:
+          transform 0.25s ease,
+          box-shadow 0.25s ease,
+          background-position 0.4s ease;
+      }
 
-            width: 100%;
+      .btn-empezar:hover {
+        color: white;
 
-            height: 56px;
+        transform: translateY(-2px);
 
-            border: none;
+        background-position: right center;
 
-            border-radius: 17px;
+        box-shadow: 0 15px 30px rgba(30, 145, 220, 0.35);
+      }
 
-            background:
-                linear-gradient(
-                    100deg,
-                    #238bff,
-                    #19b7c9,
-                    #63d85f
-                );
+      /* BOTON LOGIN */
 
-            background-size: 200% auto;
+      .btn-login {
+        width: 100%;
 
-            color: white;
+        height: 52px;
 
-            font-size: 17px;
+        border-radius: 17px;
 
-            font-weight: 700;
+        border: 1px solid rgba(35, 139, 255, 0.25);
 
-            text-decoration: none;
+        background: rgba(255, 255, 255, 0.6);
 
-            display: flex;
+        color: #1879c9;
 
-            align-items: center;
-            justify-content: center;
+        font-size: 16px;
 
-            gap: 10px;
+        font-weight: 700;
 
-            box-shadow:
-                0 10px 25px
-                rgba(30, 145, 220, 0.25);
+        text-decoration: none;
 
-            transition:
-                transform 0.25s ease,
-                box-shadow 0.25s ease,
-                background-position 0.4s ease;
-        }
+        display: flex;
 
+        align-items: center;
+        justify-content: center;
 
-        .btn-empezar:hover {
+        gap: 8px;
 
-            color: white;
+        transition: all 0.25s ease;
+      }
 
-            transform:
-                translateY(-2px);
+      .btn-login:hover {
+        background: rgba(255, 255, 255, 0.95);
 
-            background-position:
-                right center;
+        color: #123d69;
 
-            box-shadow:
-                0 15px 30px
-                rgba(30, 145, 220, 0.35);
-        }
+        transform: translateY(-2px);
+      }
 
-
-        /* BOTON LOGIN */
-
-        .btn-login {
-
-            width: 100%;
-
-            height: 52px;
-
-            border-radius: 17px;
-
-            border:
-                1px solid
-                rgba(35, 139, 255, 0.25);
-
-            background:
-                rgba(255, 255, 255, 0.60);
-
-            color: #1879c9;
-
-            font-size: 16px;
-
-            font-weight: 700;
-
-            text-decoration: none;
-
-            display: flex;
-
-            align-items: center;
-            justify-content: center;
-
-            gap: 8px;
-
-            transition:
-                all 0.25s ease;
-        }
-
-
-        .btn-login:hover {
-
-            background:
-                rgba(255, 255, 255, 0.95);
-
-            color: #123d69;
-
-            transform:
-                translateY(-2px);
-        }
-
-
-        /* =========================
+      /* =========================
            PARTE DERECHA
         ========================= */
 
-        .visual {
+      .visual {
+        position: relative;
 
-            position: relative;
+        display: flex;
 
-            display: flex;
+        align-items: center;
+        justify-content: center;
 
-            align-items: center;
-            justify-content: center;
+        min-height: 520px;
 
-            min-height: 520px;
+        padding: 40px;
 
-            padding: 40px;
+        background: linear-gradient(
+          160deg,
+          rgba(35, 139, 255, 0.1),
+          rgba(25, 183, 201, 0.12),
+          rgba(99, 216, 95, 0.1)
+        );
+      }
 
-            background:
-                linear-gradient(
-                    160deg,
-                    rgba(35, 139, 255, 0.10),
-                    rgba(25, 183, 201, 0.12),
-                    rgba(99, 216, 95, 0.10)
-                );
+      /* CIRCULO */
+
+      .circulo-principal {
+        width: 260px;
+
+        height: 260px;
+
+        border-radius: 50%;
+
+        background: rgba(255, 255, 255, 0.55);
+
+        backdrop-filter: blur(15px);
+
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        box-shadow: 0 20px 50px rgba(20, 100, 150, 0.15);
+
+        animation: flotar 4s ease-in-out infinite;
+      }
+
+      /* ANIMACION */
+
+      @keyframes flotar {
+        0%,
+        100% {
+          transform: translateY(0);
         }
 
-
-        /* CIRCULO */
-
-        .circulo-principal {
-
-            width: 260px;
-
-            height: 260px;
-
-            border-radius: 50%;
-
-            background:
-                rgba(255, 255, 255, 0.55);
-
-            backdrop-filter:
-                blur(15px);
-
-            display: flex;
-
-            align-items: center;
-            justify-content: center;
-
-            box-shadow:
-                0 20px 50px
-                rgba(20, 100, 150, 0.15);
-
-            animation:
-                flotar
-                4s
-                ease-in-out
-                infinite;
+        50% {
+          transform: translateY(-10px);
         }
+      }
 
+      /* ICONO DEL AUTO */
 
-        /* ANIMACION */
+      .icono-auto {
+        width: 140px;
 
-        @keyframes flotar {
+        height: 140px;
 
-            0%,
-            100% {
+        border-radius: 38px;
 
-                transform:
-                    translateY(0);
-            }
+        background: linear-gradient(135deg, #238bff, #19b7c9, #63d85f);
 
+        display: flex;
 
-            50% {
+        align-items: center;
+        justify-content: center;
 
-                transform:
-                    translateY(-10px);
-            }
-        }
+        color: white;
 
+        font-size: 70px;
 
-        /* ICONO DEL AUTO */
+        box-shadow: 0 15px 35px rgba(30, 145, 220, 0.3);
+      }
 
-        .icono-auto {
+      /* TARJETAS FLOTANTES */
 
-            width: 140px;
+      .mini-card {
+        position: absolute;
 
-            height: 140px;
+        background: rgba(255, 255, 255, 0.8);
 
-            border-radius: 38px;
+        backdrop-filter: blur(15px);
 
-            background:
-                linear-gradient(
-                    135deg,
-                    #238bff,
-                    #19b7c9,
-                    #63d85f
-                );
+        border: 1px solid rgba(255, 255, 255, 0.9);
 
-            display: flex;
+        border-radius: 18px;
 
-            align-items: center;
-            justify-content: center;
+        padding: 12px 15px;
 
-            color: white;
+        display: flex;
 
-            font-size: 70px;
+        align-items: center;
 
-            box-shadow:
-                0 15px 35px
-                rgba(30, 145, 220, 0.30);
-        }
+        gap: 10px;
 
+        color: #315a7a;
 
-        /* TARJETAS FLOTANTES */
+        box-shadow: 0 10px 25px rgba(30, 90, 120, 0.12);
 
-        .mini-card {
+        white-space: nowrap;
+      }
 
-            position: absolute;
+      .mini-card i {
+        color: #1683e9;
 
-            background:
-                rgba(255, 255, 255, 0.80);
+        font-size: 21px;
+      }
 
-            backdrop-filter:
-                blur(15px);
+      .mini-card strong {
+        display: block;
 
-            border:
-                1px solid
-                rgba(255, 255, 255, 0.9);
+        color: #246294;
 
-            border-radius: 18px;
+        font-size: 13px;
+      }
 
-            padding:
-                12px
-                15px;
+      .mini-card span {
+        font-size: 11px;
 
-            display: flex;
+        color: #718aa0;
+      }
 
-            align-items: center;
+      /* POSICIONES */
 
-            gap: 10px;
+      .card-ubicacion {
+        top: 65px;
 
-            color: #315a7a;
+        right: 20px;
+      }
 
-            box-shadow:
-                0 10px 25px
-                rgba(30, 90, 120, 0.12);
+      .card-rapido {
+        bottom: 65px;
 
-            white-space: nowrap;
-        }
+        left: 20px;
+      }
 
-
-        .mini-card i {
-
-            color: #1683e9;
-
-            font-size: 21px;
-        }
-
-
-        .mini-card strong {
-
-            display: block;
-
-            color: #246294;
-
-            font-size: 13px;
-        }
-
-
-        .mini-card span {
-
-            font-size: 11px;
-
-            color: #718aa0;
-        }
-
-
-        /* POSICIONES */
-
-        .card-ubicacion {
-
-            top: 65px;
-
-            right: 20px;
-        }
-
-
-        .card-rapido {
-
-            bottom: 65px;
-
-            left: 20px;
-        }
-
-
-        /* =========================
+      /* =========================
            TABLET Y CELULAR
         ========================= */
 
-        @media (max-width: 750px) {
-
-            body {
-
-                background-attachment:
-                    scroll;
-            }
-
-
-            .contenedor {
-
-                padding: 15px;
-            }
-
-
-            .card-urbanaut {
-
-                grid-template-columns:
-                    1fr;
-
-                min-height: auto;
-
-                border-radius: 28px;
-            }
-
-
-            .bienvenida {
-
-                padding:
-                    40px
-                    30px;
-
-                text-align: center;
-
-                align-items: center;
-            }
-
-
-            .logo {
-
-                display: flex;
-
-                justify-content: center;
-            }
-
-
-            h1 {
-
-                font-size: 40px;
-            }
-
-
-            .subtitulo {
-
-                font-size: 16px;
-
-                max-width: 500px;
-            }
-
-
-            .botones {
-
-                max-width: 400px;
-            }
-
-
-            .visual {
-
-                min-height: 330px;
-
-                padding: 30px;
-            }
-
-
-            .circulo-principal {
-
-                width: 220px;
-
-                height: 220px;
-            }
-
-
-            .icono-auto {
-
-                width: 120px;
-
-                height: 120px;
-
-                font-size: 60px;
-            }
-
-
-            .card-ubicacion {
-
-                top: 30px;
-
-                right: 20px;
-            }
-
-
-            .card-rapido {
-
-                bottom: 30px;
-
-                left: 20px;
-            }
+      @media (max-width: 750px) {
+        body {
+          background-attachment: scroll;
         }
 
-
-        /* CELULARES CHICOS */
-
-        @media (max-width: 430px) {
-
-            .contenedor {
-
-                padding: 10px;
-            }
-
-
-            .card-urbanaut {
-
-                border-radius: 24px;
-            }
-
-
-            .bienvenida {
-
-                padding:
-                    35px
-                    20px;
-            }
-
-
-            .logo img {
-
-                width: 145px;
-            }
-
-
-            h1 {
-
-                font-size: 34px;
-
-                letter-spacing: -1.5px;
-            }
-
-
-            .subtitulo {
-
-                font-size: 15px;
-            }
-
-
-            .visual {
-
-                min-height: 280px;
-
-                padding: 20px;
-            }
-
-
-            .circulo-principal {
-
-                width: 185px;
-
-                height: 185px;
-            }
-
-
-            .icono-auto {
-
-                width: 105px;
-
-                height: 105px;
-
-                font-size: 50px;
-            }
-
-
-            .mini-card {
-
-                padding:
-                    9px
-                    11px;
-
-                gap: 7px;
-            }
-
-
-            .mini-card strong {
-
-                font-size: 11px;
-            }
-
-
-            .mini-card span {
-
-                font-size: 9px;
-            }
-
-
-            .mini-card i {
-
-                font-size: 17px;
-            }
-
-
-            .card-ubicacion {
-
-                top: 20px;
-
-                right: 8px;
-            }
-
-
-            .card-rapido {
-
-                bottom: 20px;
-
-                left: 8px;
-            }
+        .contenedor {
+          padding: 15px;
         }
 
+        .card-urbanaut {
+          grid-template-columns: 1fr;
+
+          min-height: auto;
+
+          border-radius: 28px;
+        }
+
+        .bienvenida {
+          padding: 40px 30px;
+
+          text-align: center;
+
+          align-items: center;
+        }
+
+        .logo {
+          display: flex;
+
+          justify-content: center;
+        }
+
+        h1 {
+          font-size: 40px;
+        }
+
+        .subtitulo {
+          font-size: 16px;
+
+          max-width: 500px;
+        }
+
+        .botones {
+          max-width: 400px;
+        }
+
+        .visual {
+          min-height: 330px;
+
+          padding: 30px;
+        }
+
+        .circulo-principal {
+          width: 220px;
+
+          height: 220px;
+        }
+
+        .icono-auto {
+          width: 120px;
+
+          height: 120px;
+
+          font-size: 60px;
+        }
+
+        .card-ubicacion {
+          top: 30px;
+
+          right: 20px;
+        }
+
+        .card-rapido {
+          bottom: 30px;
+
+          left: 20px;
+        }
+      }
+
+      /* CELULARES CHICOS */
+
+      @media (max-width: 430px) {
+        .contenedor {
+          padding: 10px;
+        }
+
+        .card-urbanaut {
+          border-radius: 24px;
+        }
+
+        .bienvenida {
+          padding: 35px 20px;
+        }
+
+        .logo img {
+          width: 145px;
+        }
+
+        h1 {
+          font-size: 34px;
+
+          letter-spacing: -1.5px;
+        }
+
+        .subtitulo {
+          font-size: 15px;
+        }
+
+        .visual {
+          min-height: 280px;
+
+          padding: 20px;
+        }
+
+        .circulo-principal {
+          width: 185px;
+
+          height: 185px;
+        }
+
+        .icono-auto {
+          width: 105px;
+
+          height: 105px;
+
+          font-size: 50px;
+        }
+
+        .mini-card {
+          padding: 9px 11px;
+
+          gap: 7px;
+        }
+
+        .mini-card strong {
+          font-size: 11px;
+        }
+
+        .mini-card span {
+          font-size: 9px;
+        }
+
+        .mini-card i {
+          font-size: 17px;
+        }
+
+        .card-ubicacion {
+          top: 20px;
+
+          right: 8px;
+        }
+
+        .card-rapido {
+          bottom: 20px;
+
+          left: 8px;
+        }
+      }
     </style>
+  </head>
 
-</head>
-
-
-<body>
-
-
+  <body>
     <main class="contenedor">
-
-
-        <section class="card-urbanaut">
-
-
-            <!-- =========================
+      <section class="card-urbanaut">
+        <!-- =========================
                  BIENVENIDA
             ========================= -->
 
-            <div class="bienvenida">
+        <div class="bienvenida">
+          <!-- LOGO -->
 
+          <div class="logo">
+            <img src="../imagenes/logoNuevo2.png" alt="Logo Urbanaut" />
+          </div>
 
-                <!-- LOGO -->
+          <!-- TITULO -->
 
-                <div class="logo">
+          <h1>
+            Tu lugar te está
+            <span>esperando.</span>
+          </h1>
 
-                    <img
-                        src="../imagenes/logoNuevo2.png"
-                        alt="Logo Urbanaut">
+          <!-- DESCRIPCION -->
 
-                </div>
+          <p class="subtitulo">
+            Encontrá espacios de estacionamiento cerca del Liceo en los horarios
+            que vos necesites.
+          </p>
 
+          <!-- BOTONES -->
 
-                <!-- TITULO -->
+          <div class="botones">
+            <!-- CREAR CUENTA -->
 
-                <h1>
+            <a href="../signin/cuenta.php" class="btn-empezar">
+              Empezar ahora
 
-                    Tu lugar te está
-                    <span>esperando.</span>
+              <i class="bi bi-arrow-right"></i>
+            </a>
 
-                </h1>
+            <!-- INICIAR SESION -->
 
+            <a href="../login/login.php" class="btn-login">
+              <i class="bi bi-box-arrow-in-right"></i>
 
-                <!-- DESCRIPCION -->
+              Ya tengo una cuenta
+            </a>
+          </div>
+        </div>
 
-                <p class="subtitulo">
-
-                    Encontrá espacios de estacionamiento
-                    cerca del Liceo en los horarios que
-                    vos necesites.
-
-                </p>
-
-
-                <!-- BOTONES -->
-
-                <div class="botones">
-
-
-                    <!-- CREAR CUENTA -->
-
-                    <a
-                        href="../signin/cuenta.html"
-                        class="btn-empezar">
-
-                        Empezar ahora
-
-                        <i class="bi bi-arrow-right"></i>
-
-                    </a>
-
-
-                    <!-- INICIAR SESION -->
-
-                    <a
-                        href="../login/index.html"
-                        class="btn-login">
-
-                        <i class="bi bi-box-arrow-in-right"></i>
-
-                        Ya tengo una cuenta
-
-                    </a>
-
-
-                </div>
-
-
-            </div>
-
-
-
-            <!-- =========================
+        <!-- =========================
                  PARTE VISUAL
             ========================= -->
 
-            <div class="visual">
+        <div class="visual">
+          <!-- TARJETA UBICACION -->
 
+          <div class="mini-card card-ubicacion">
+            <i class="bi bi-geo-alt-fill"> </i>
 
-                <!-- TARJETA UBICACION -->
+            <div>
+              <strong> Encontrá tu lugar </strong>
 
-                <div
-                    class="mini-card card-ubicacion">
-
-                    <i
-                        class="bi bi-geo-alt-fill">
-                    </i>
-
-
-                    <div>
-
-                        <strong>
-
-                            Encontrá tu lugar
-
-                        </strong>
-
-
-                        <span>
-
-                            Cerca de vos
-
-                        </span>
-
-                    </div>
-
-                </div>
-
-
-                <!-- CIRCULO CENTRAL -->
-
-                <div class="circulo-principal">
-
-                    <div class="icono-auto">
-
-                        <i
-                            class="bi bi-car-front-fill">
-                        </i>
-
-                    </div>
-
-                </div>
-
-
-                <!-- TARJETA RAPIDEZ -->
-
-                <div
-                    class="mini-card card-rapido">
-
-                    <i
-                        class="bi bi-clock-fill">
-                    </i>
-
-
-                    <div>
-
-                        <strong>
-
-                            Ahorrá tiempo
-
-                        </strong>
-
-
-                        <span>
-
-                            Estacioná más fácil
-
-                        </span>
-
-                    </div>
-
-                </div>
-
-
+              <span> Cerca de vos </span>
             </div>
+          </div>
 
+          <!-- CIRCULO CENTRAL -->
 
-        </section>
+          <div class="circulo-principal">
+            <div class="icono-auto">
+              <i class="bi bi-car-front-fill"> </i>
+            </div>
+          </div>
 
+          <!-- TARJETA RAPIDEZ -->
 
+          <div class="mini-card card-rapido">
+            <i class="bi bi-clock-fill"> </i>
+
+            <div>
+              <strong> Ahorrá tiempo </strong>
+
+              <span> Estacioná más fácil </span>
+            </div>
+          </div>
+        </div>
+      </section>
     </main>
-
-
-</body>
-
+  </body>
 </html>
