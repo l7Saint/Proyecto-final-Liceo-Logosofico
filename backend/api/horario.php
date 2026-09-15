@@ -70,10 +70,75 @@ function create($method, $horhnd) {
 	}
 
 	$horario = new Horario(
-		$data->numero_hora,
-		$data->dia_semana,
-		$data->horario
+		$data["numero_hora"],
+		$data["dia_semana"],
+		$data["horario"]
 	);
+	try {
+		$horhnd->crearHorario($horario);
+		http_response_code(200);
+		echo json_encode([
+		    'success' => true
+		]);
+		exit;
+	} catch(Exception $e) {
+		error_log("Error en api.horario.create: " . $e);
+		sendServerError();
+	}
+}
+
+
+function read($method, $horhnd) {
+	$data = json_decode(file_get_contents('php://input'), true);
+
+	if($method != 'GET')
+		sendBadMethod($allow = 'GET');
+	if(!$verificarAdministrador($usrhnd))
+		sendUnauthorized();	
+
+	try {
+		http_response_code(200);
+		$payload = $horhnd->obtenerTodos();
+		echo var_dump($payload);
+		echo json_encode([
+			'success' => true,
+			'body' => json_encode($payload)
+		]);
+		exit;
+	} catch(Exception $e) {
+		error_log("Error en api.horario.read: " . $e);
+		sendServerError();
+	}
+}
+
+function delete($method, $horhnd) {
+	$data = json_decode(file_get_contents('php://input'), true);
+	$parametros = [
+		'numero_hora',
+		'dia_semana'
+	];
+
+	if($method != 'POST')
+		sendBadMethod($allow = 'POST');
+	if(!$verificarAdministrador($usrhnd))
+		sendUnauthorized();	
+	$error = checkParameters($data, $parametros);
+	if($error){
+		error_log("Bad Request en api.horario.delete: " . $error);
+		sendBadRequest('Bad Request', $error);
+	}
+
+	try {
+		$horhnd->elminarHorario($numero_hora, $dia_semana);
+		http_response_code(200);
+		echo json_encode([
+		    'success' => true
+		]);
+		exit;
+	} catch(Exception $e) {
+		error_log("Error en api.horario.delete: " . $e);
+		sendServerError();
+	}
 }
 
 $endpoint = $request[0] ?? '';
@@ -86,10 +151,10 @@ switch($endpoint){
 		error_log("Call a api.horario.read");
 		read($method, $horhnd);	
 		break;
-	case 'update':
-		error_log("Call a api.horario.update");
-		update($method, $horhnd);	
-		break;
+////////case 'update':
+////////	error_log("Call a api.horario.update");
+////////	update($method, $horhnd);	
+////////	break;
 	case 'delete':
 		error_log("Call a api.horario.delete");
 		delete($method, $horhnd);

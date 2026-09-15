@@ -74,7 +74,6 @@ function login($method, $usrhnd) {
 		http_response_code(200);
 		echo json_encode([
 		    'success' => true,
-		    'message' => 'Login successful',
 		    'usuario' => [
 			'nombre' => $usuario->nombre,
 			'apellido' => $usuario->apellido,
@@ -100,15 +99,13 @@ function user($method, $usrhnd){
 		error_log("Unauthorized en api.usuario.user: ip: " . $_SERVER['REMOTE_ADDR']);
 		http_response_code(401);
 		echo json_encode([
-		    'success' => false,
-		    'message' => 'Session inactive',
+		    'success' => false
 		]);
 		exit;
 	}
 	http_response_code(200);
 	echo json_encode([
 	    'success' => true,
-	    'message' => 'Login successful',
 	    'usuario' => [
 		'nombre' => $usuario->nombre,
 		'apellido' => $usuario->apellido,
@@ -127,13 +124,11 @@ function check($method){
 		http_response_code(200);
 		echo json_encode([
 		    'success' => true,
-		    'message' => 'Session active',
 		]);
 	} else {
 		http_response_code(401);
 		echo json_encode([
 		    'success' => false,
-		    'message' => 'Unauthorized',
 		]);
 	}
 }
@@ -147,7 +142,6 @@ function logout($method){
 	http_response_code(200);
 	echo json_encode([
 	    'success' => true,
-	    'message' => 'Logout successful'
 	]);
 }
 
@@ -198,7 +192,6 @@ function signin($method, $usrhnd) {
 			http_response_code(200);
 			echo json_encode([
 			    'success' => true,
-			    'message' => 'Signin successful',
 			]);
 			error_log("Nuevo registro de usuario, email: ".$data['email']);
 			exit;

@@ -111,10 +111,11 @@ class HorarioHandler {
 	 * @return true|false true en caso de eliminacion exitosa, false en caso de fallo
 	 * @throws Exception Si ocurre un error en la base de datos
 	 */
-	public function eliminarHorario($numero_hora){
+	public function eliminarHorario($numero_hora, $dia_semana){
 		try {
 			$success = $this->stmt_eliminarHorario->execute([
-				$numero_hora
+				$numero_hora,
+				$dia_semana,
 			]);
 			if($success){
 				return true;
@@ -159,7 +160,7 @@ class HorarioHandler {
 			$this->stmt_obtenerPorNumeroHora = $this->db->prepare("SELECT * FROM Horario WHERE numero_hora = ?;");
 			$this->stmt_crearHorario = $this->db->prepare("INSERT INTO Horario (numero_hora, dia_semana, horario) VALUES (?,?,?);");
 			$this->stmt_actualizarHorario = $this->db->prepare("UPDATE Horario SET dia_semana = ?, horario = ? WHERE numero_hora = ?;");
-			$this->stmt_eliminarHorario = $this->db->prepare("DELETE FROM Horario WHERE numero_hora = ?;");
+			$this->stmt_eliminarHorario = $this->db->prepare("DELETE FROM Horario WHERE numero_hora = ? AND dia_semana = ?;");
 		} catch (PDOException $e){
 			throw new Exception("Error en HorarioHandler.prepare");
 		}
