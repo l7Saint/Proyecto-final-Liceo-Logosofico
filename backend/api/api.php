@@ -1,4 +1,15 @@
 <?php
+function verificarAdministrador($usrhnd){
+	if(!checkSession())	
+		return false;
+	$id = $_SESSION['user_id'];
+	$user = $usrhnd->obtenerPorId($id);
+	if(!$user)
+		return false;
+	return $user->es_admin;
+}
+
+
 function sendBadRequest($message = 'Bad Request', $errors = null) {
 	http_response_code(400);
 

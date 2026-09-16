@@ -11,10 +11,12 @@ class UsuarioHandler {
 	private $stmt_crearUsuario;
 	private $stmt_eliminarUsuario;
 	private $stmt_obtenerPorEmail;
+	private $stmt_obtenerTodos;
+	private $stmt_actualizarUsuario;
 
 	/**
 	 * Obtiene un usuario por su ID
-	 * 
+	 *
 	 * @param int $id El ID del usuario a buscar
 	 * @return Usuario|false Retorna un objeto Usuario si se encuentra, false si no se encuentra
 	 * @throws Exception Si ocurre un error en la base de datos
@@ -34,7 +36,7 @@ class UsuarioHandler {
 
 	/**
 	 * Crea un nuevo usuario en la base de datos (No admin)
-	 * 
+	 *
 	 * @param Usuario $usuario Un objeto Usuario que contiene los datos del usuario a insertar
 	 * @return int|false Retorna el ID del usuario recién creado en caso de éxito, false en caso de fallo
 	 * @throws Exception Si ocurre un error en la base de datos
@@ -60,7 +62,7 @@ class UsuarioHandler {
 
 	/**
 	 * Crea un nuevo usuario en la base de datos
-	 * 
+	 *
 	 * @param int $id El ID del usuario a eliminar
 	 * @return true|false true en caso de eliminacion exitosa, false en caso de fallo
 	 * @throws Exception Si ocurre un error en la base de datos
@@ -82,8 +84,58 @@ class UsuarioHandler {
 	}
 
 	/**
+	 * Obtiene todos los usuarios de la base de datos
+	 *
+	 * @return Usuario[] Retorna un arreglo de objetos Usuario (vacío si no hay usuarios)
+	 * @throws Exception Si ocurre un error en la base de datos
+	 */
+	public function obtenerTodos(){
+		try {
+			$this->stmt_obtenerTodos->execute();
+			$usuarios = [];
+			while ($fetch = $this->stmt_obtenerTodos->fetch(PDO::FETCH_ASSOC)) {
+				$usuarios[] = $this->fetchToUsuario($fetch);
+			}
+			return $usuarios;
+		} catch(PDOException $e) {
+			error_log("Error en UsuarioHandler.obtenerTodos: " . $e);
+			throw new Exception("Error en UsuarioHandler.obtenerTodos.");
+		}
+	}
+
+	/**
+	 * Modifica los datos de un usuario existente en la base de datos
+	 *
+	 * @param int $id El ID del usuario a modificar
+	 * @param Usuario $usuario Un objeto Usuario que contiene los datos actualizados
+	 * @return true|false true en caso de modificacion exitosa, false en caso de fallo
+	 * @throws Exception Si ocurre un error en la base de datos
+	 */
+	public function modificarUsuario($id, $usuario){
+		try {
+			$success = $this->stmt_actualizarUsuario->execute([
+				$usuario->nombre,
+				$usuario->apellido,
+				$usuario->email,
+				$usuario->contrasena_hash,
+				$usuario->inactivo,
+				$usuario->es_admin,
+				$id
+			]);
+			if($success){
+				return true;
+			} else {
+				return false;
+			}
+		} catch(PDOException $e) {
+			error_log("Error en UsuarioHandler.modificarUsuario: " . $e);
+			throw new Exception("Error en UsuarioHandler.modificarUsuario.");
+		}
+	}
+
+	/**
 	 * Convierte un arreglo de consulta de base de datos a un objeto Usuario
-	 * 
+	 *
 	 * @param array $fetch Un arreglo asociativo que contiene los datos del usuario desde la base de datos
 	 * @return Usuario Retorna un nuevo objeto Usuario poblado con los datos del arreglo
 	 * @private Este es un método auxiliar usado internamente por la clase
@@ -121,7 +173,7 @@ class UsuarioHandler {
 
 	/**
 	 * Constructor - Inicializa el manejador con una conexión a la base de datos y prepara las sentencias
-	 * 
+	 *
 	 * @param PDO $db Un objeto PDO válido de conexión a la base de datos
 	 * @throws InvalidArgumentException Si el $db proporcionado no es una instancia de PDO
 	 * @throws Exception Si ocurre un error al preparar las sentencias SQL
@@ -136,6 +188,8 @@ class UsuarioHandler {
 			$this->stmt_crearUsuario = $this->db->prepare("INSERT INTO Usuario (nombre, apellido, email, contrasena_hash) VALUES (?,?,?,?);");
 			$this->stmt_eliminarUsuario = $this->db->prepare("DELETE FROM Usuario WHERE id = ?;");
 			$this->stmt_obtenerPorEmail = $this->db->prepare("SELECT * FROM Usuario WHERE email = ?;");
+			$this->stmt_obtenerTodos = $this->db->prepare("SELECT * FROM Usuario;");
+			$this->stmt_actualizarUsuario = $this->db->prepare("UPDATE Usuario SET nombre = ?, apellido = ?, email = ?, contrasena_hash = ?, inactivo = ?, es_admin = ? WHERE id = ?;");
 		} catch (PDOException $e){
 			throw new Exception("Error en UsuarioHandler.prepare");
 		}
