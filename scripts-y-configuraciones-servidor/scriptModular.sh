@@ -6,7 +6,7 @@ echo -e "1)Gestión de usuarios y grupos\n2)Configuración de firewall\n3)Respal
 read -p "Escriba un número para acceder al script:" opcionScript
 }
 
-while [[ $opcionUser != 5 ]];do
+while [[ $opcionScript != 5 ]];do
 menuOpciones
 case $opcionScript in
 1)gestion_usuarios.sh;;
