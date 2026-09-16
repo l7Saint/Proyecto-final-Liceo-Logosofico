@@ -149,6 +149,6 @@ switch($endpoint){
 		eliminar($method, $horhnd);
 		break;
 	default:
-		error_log("Endpoint inexistente en api.usuario: " . $request[0]);
+		error_log("Endpoint inexistente en api.horario: " . $request[0]);
 		sendBadRequest();
 }

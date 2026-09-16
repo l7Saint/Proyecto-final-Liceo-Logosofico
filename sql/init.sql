@@ -14,10 +14,12 @@ CREATE TABLE IF NOT EXISTS Usuario (
 
 CREATE TABLE IF NOT EXISTS Vehiculo (
 	id INT AUTO_INCREMENT PRIMARY KEY,
+	id_usuario INT NOT NULL,
 	marca VARCHAR(40) NOT NULL, 
 	modelo VARCHAR(100) NOT NULL,
 	color VARCHAR(15) NOT NULL,
-	tamano VARCHAR(15) NOT NULL
+	tamano VARCHAR(15) NOT NULL,
+	FOREIGN KEY(id_usuario) REFERENCES Usuario(id)
 );
 
 CREATE TABLE IF NOT EXISTS Horario (
@@ -38,20 +40,14 @@ CREATE TABLE IF NOT EXISTS Ubicacion (
 	CHECK (longitud BETWEEN -180 AND 180)
 );
 
-CREATE TABLE IF NOT EXISTS Posee (
-	id_usuario INT NOT NULL,
-	id_vehiculo INT NOT NULL,
-	FOREIGN KEY (id_usuario) REFERENCES Usuario(id),
-	FOREIGN KEY (id_vehiculo) REFERENCES Vehiculo(id),
-	PRIMARY KEY(id_usuario, id_vehiculo)
-);
-
 CREATE TABLE IF NOT EXISTS Tiene (
 	id_usuario INT NOT NULL,
 	numero_hora INT NOT NULL,
+	dia_semana INT NOT NULL,
 	FOREIGN KEY (id_usuario) REFERENCES Usuario(id),
 	FOREIGN KEY (numero_hora) REFERENCES Horario(numero_hora),
-	PRIMARY KEY(id_usuario, numero_hora)
+	FOREIGN KEY (dia_semana) REFERENCES Horario(dia_semana),
+	PRIMARY KEY(id_usuario, numero_hora, dia_semana)
 );
 
 CREATE TABLE IF NOT EXISTS Estaciona_en (
