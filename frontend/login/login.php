@@ -160,7 +160,7 @@ $url     = 'http://' . $backend . ':' . $port;
                 <button
                     type="button"
                     class="admin-btn"
-                    onclick="window.location.href='../adminitrador/ingreso.html'">
+                    onclick="window.location.href='../administrador/ingreso.html'">
 
                     Soy administrador
 
