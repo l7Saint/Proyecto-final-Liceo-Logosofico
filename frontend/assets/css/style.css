@@ -1,0 +1,94 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+body {
+	min-height: 100vh;
+	overflow: hidden;
+	font-family: "Segoe UI", Arial, sans-serif;
+	background: url("../imagenes/imagen2.jpg") center center / cover
+	no-repeat fixed;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: relative;
+}
+body::before {
+	content: "";
+	position: fixed;
+	inset: 0;
+	background: linear-gradient(
+	135deg,
+	rgba(0, 180, 255, 0.15),
+	rgba(0, 255, 170, 0.08)
+	);
+	backdrop-filter: blur(2px);
+	z-index: -1;
+}
+.contenedor {
+	width: min(95%, 900px);
+	min-height: 100vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 15px;
+}
+.card-urbanaut {
+	width: 560px;
+	max-width: 100%;
+	max-height: calc(100vh - 30px);
+	padding: 18px 50px 15px;
+	border-radius: 30px;
+	background: linear-gradient(
+		135deg,
+		rgba(255, 255, 255, 0.72),
+		rgba(230, 250, 255, 0.45)
+	);
+	border: 
+		1px solid rgba(255, 255, 255, 0.8);
+	box-shadow:
+		0 25px 70px rgba(0, 40, 70, 0.3),
+		inset 0 1px 0 rgba(255, 255, 255, 0.8);
+	backdrop-filter: blur(22px);
+	-webkit-backdrop-filter: blur(22px);
+	animation: aparecer 0.8s ease;
+	overflow: hidden;
+}
+@keyframes aparecer {
+	from {
+		opacity: 0;
+		transform: translateY(25px) scale(0.97);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0) scale(1);
+	}
+}
+.logo {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-bottom: 4px;
+}
+.logo img {
+	width: 150px;
+	height: auto;
+	max-height: 65px;
+	object-fit: contain;
+	display: block;
+}
+h1 {
+	text-align: center;
+	color: #123d69;
+	font-size: 38px;
+	font-weight: 750;
+	margin-bottom: 3px;
+	letter-spacing: -1.5px;
+}
+.subtitulo {
+	text-align: center;
+	color: #58738e;
+	font-size: 15px;
+	margin-bottom: 13px;
+}

@@ -1,0 +1,158 @@
+.estadisticas {
+	display: grid;
+	grid-template-columns:
+	repeat(3, 1fr);
+	gap: 10px;
+	margin-bottom: 13px;
+}
+.estadistica-card {
+	min-height: 90px;
+	padding: 12px 10px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	border-radius: 17px;
+	background:
+	rgba(255, 255, 255, 0.55);
+	border:
+	1px solid
+	rgba(255, 255, 255, 0.8);
+	text-align: center;
+	box-shadow:
+	0 7px 18px
+	rgba(0, 40, 70, 0.10);
+}
+.estadistica-card i {
+	font-size: 24px;
+	color: #238bff;
+	margin-bottom: 3px;
+}
+.numero {
+	display: block;
+	font-size: 23px;
+	font-weight: 800;
+	line-height: 1.1;
+	color: #123d69;
+}
+.texto {
+	color: #58738e;
+	font-size: 12px;
+	margin-top: 3px;
+}
+.grafico-contenedor {
+	background:
+	rgba(255, 255, 255, 0.55);
+	border-radius: 18px;
+	padding: 13px 15px 12px;
+	border:
+	1px solid
+	rgba(255, 255, 255, 0.8);
+	box-shadow:
+	0 7px 18px
+	rgba(0, 40, 70, 0.10);
+	margin-bottom: 13px;
+}
+.grafico-contenedor h2 {
+	color: #123d69;
+	font-size: 18px;
+	margin-bottom: 5px;
+	text-align: center;
+}
+.grafico {
+	position: relative;
+	height: 185px;
+}
+.info-extra {
+	display: grid;
+	grid-template-columns:
+	repeat(2, 1fr);
+	gap: 10px;
+	margin-bottom: 13px;
+}
+.info-card {
+	min-height: 65px;
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	padding: 11px;
+	border-radius: 15px;
+	background:
+	rgba(255, 255, 255, 0.55);
+	border:
+	1px solid
+	rgba(255, 255, 255, 0.8);
+}
+.info-card i {
+	font-size: 24px;
+	color: #238bff;
+}
+.info-card h3 {
+	color: #123d69;
+	font-size: 14px;
+	margin-bottom: 1px;
+}
+.info-card p {
+	color: #58738e;
+	margin: 0;
+	font-size: 12px;
+}
+.botones {
+	display: flex;
+	justify-content: center;
+	margin-top: 0;
+}
+.volver {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 7px;
+	padding: 9px 20px;
+	border-radius: 12px;
+	background: #1b3237;
+	color: white;
+	text-decoration: none;
+	font-weight: 700;
+	font-size: 13px;
+	transition: 0.25s;
+}
+.volver:hover {
+	background: #238bff;
+	color: white;
+	transform:
+	translateY(-2px);
+}
+@media (max-width: 900px) {
+	.card-urbanaut {
+		width: min(94vw, 750px);
+	}
+}
+@media (max-width: 600px) {
+	.contenedor {
+		align-items: flex-start;
+		padding: 8px;
+	}
+	.card-urbanaut {
+		width: 100%;
+		margin-top: 5px;
+		padding: 16px 13px;
+	}
+	h1 {
+		font-size: 25px;
+	}
+	.titulo i {
+		font-size: 26px;
+	}
+	.estadisticas {
+		grid-template-columns: 1fr;
+	}
+	.info-extra {
+		grid-template-columns: 1fr;
+	}
+	.grafico {
+		height: 200px;
+	}
+	.volver {
+		width: 100%;
+	}
+}
