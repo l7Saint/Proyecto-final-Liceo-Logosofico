@@ -21,9 +21,16 @@ CREATE TABLE IF NOT EXISTS Vehiculo (
 );
 
 CREATE TABLE IF NOT EXISTS Horario (
+<<<<<<< HEAD
 	numero_hora INT PRIMARY KEY,
 	dia_semana ENUM('lunes','martes','miercoles','jueves','viernes','sabado') NOT NULL,
 	horario VARCHAR(15) NOT NULL
+=======
+	numero_hora INT,
+	dia_semana ENUM('lunes','martes','miercoles','jueves','viernes','sabado') NOT NULL,
+	horario VARCHAR(15) NOT NULL,
+	PRIMARY KEY(numero_hora, dia_semana)
+>>>>>>> feature-horarios
 );
 
 CREATE TABLE IF NOT EXISTS Ubicacion (

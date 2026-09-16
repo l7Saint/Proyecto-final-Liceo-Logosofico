@@ -33,7 +33,7 @@ class UsuarioHandler {
 	}
 
 	/**
-	 * Crea un nuevo usuario en la base de datos
+	 * Crea un nuevo usuario en la base de datos (No admin)
 	 * 
 	 * @param Usuario $usuario Un objeto Usuario que contiene los datos del usuario a insertar
 	 * @return int|false Retorna el ID del usuario recién creado en caso de éxito, false en caso de fallo
@@ -95,6 +95,11 @@ class UsuarioHandler {
 			$fetch['apellido'],
 			$fetch['email'],
 			$fetch['contrasena_hash'],
+<<<<<<< HEAD
+=======
+			$fetch['inactivo'],
+			$fetch['es_admin'],
+>>>>>>> feature-horarios
 			$fetch['fecha_registro']
 		);
 	}
