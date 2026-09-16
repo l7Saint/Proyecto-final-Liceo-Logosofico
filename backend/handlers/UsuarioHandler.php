@@ -95,11 +95,8 @@ class UsuarioHandler {
 			$fetch['apellido'],
 			$fetch['email'],
 			$fetch['contrasena_hash'],
-<<<<<<< HEAD
-=======
 			$fetch['inactivo'],
 			$fetch['es_admin'],
->>>>>>> feature-horarios
 			$fetch['fecha_registro']
 		);
 	}

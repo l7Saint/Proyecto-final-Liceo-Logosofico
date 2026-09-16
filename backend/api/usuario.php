@@ -184,11 +184,8 @@ function signin($method, $usrhnd) {
 			$data['apellido'], //$apellido
 			$data['email'], //$email
 			password_hash($data['contrasena'], PASSWORD_DEFAULT), //$contrasena_hash
-<<<<<<< HEAD
-=======
 			false, //$inactivo
 			false, //$es_admin
->>>>>>> feature-horarios
 			null //$fecha_registro
 		);	
 		if($usrhnd->crearUsuario($usuario)){
