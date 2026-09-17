@@ -1,5 +1,73 @@
-<!DOCTYPE html>
+<?php
+$apiKey = '';
+$apiSecret = '';
 
+
+if (isset($_GET['marca_id'])) {
+
+
+    $url = 'https://carapi.app/api/models/v2?make_id=' . $_GET['marca_id'];
+
+
+} else {
+
+
+    $url = 'https://carapi.app/api/makes/v2';
+
+
+}
+
+
+$ch = curl_init();
+
+
+curl_setopt_array($ch, [
+    CURLOPT_URL => $url,
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_HTTPHEADER => [
+        'Accept: application/json',
+        'api-key: ' . $apiKey,
+        'api-secret: ' . $apiSecret
+    ]
+]);
+
+
+$respuesta = curl_exec($ch);
+
+
+$httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+
+curl_close($ch);
+
+
+if ($httpCode !== 200) {
+    die("Error en la petición: Código " . $httpCode);
+}
+
+
+$datos = json_decode($respuesta, true);
+
+
+if (isset($_GET['marca_id'])) {
+
+
+    header('Content-Type: application/json');
+
+
+    echo json_encode($datos['data'] ?? []);
+
+
+    exit;
+}
+
+
+$marcas = $datos['data'] ?? [];
+
+
+?>
+
+<!DOCTYPE html>
 <html lang="es">
 
 <head>
@@ -138,12 +206,15 @@
 
                     <i class="bi bi-car-front"></i>
 
-                    <input
-                        type="text"
-                        id="marca1"
-                        name="marca1"
-                        placeholder="Marca"
-                        required>
+                    <select id="marca1" name="marca1" required>
+                       <option value="" selected disabled>Seleccione la marca del vehículo</option>
+                        <?php foreach ($marcas as $marca): ?>
+                         <option value="<?= htmlspecialchars($marca['id']) ?>">
+                        <?= htmlspecialchars($marca['name']) ?>
+                       </option>
+                        <?php endforeach; ?>
+
+                    </select>
 
                 </div>
 
@@ -152,12 +223,9 @@
 
                     <i class="bi bi-car-front"></i>
 
-                    <input
-                        type="text"
-                        id="modelo1"
-                        name="modelo1"
-                        placeholder="Modelo"
-                        required>
+                     <select id="modelo1" name="modelo1" required>
+                        <option value="" selected disabled> Seleccione primero una marca </option>
+                    </select>
 
                 </div>
 
@@ -217,11 +285,16 @@
 
                     <i class="bi bi-car-front"></i>
 
-                    <input
-                        type="text"
-                        id="marca2"
-                        name="marca2"
-                        placeholder="Marca">
+                    <select id="marca2" name="marca2" required>
+                        <option value="" selected disabled>Seleccione la marca del vehículo</option>
+
+                        <?php foreach ($marcas as $marca): ?>
+                            <option value="<?= htmlspecialchars($marca['id']) ?>">
+                                <?= htmlspecialchars($marca['name']) ?>
+                            </option>
+                        <?php endforeach; ?>
+
+                    </select>
 
                 </div>
 
@@ -230,12 +303,10 @@
 
                     <i class="bi bi-car-front"></i>
 
-                    <input
-                        type="text"
-                        id="modelo2"
-                        name="modelo2"
-                        placeholder="Modelo">
-
+                    <select id="modelo2" name="modelo2" required>
+                        <option value="" selected disabled> Seleccione primero una marca </option>
+                    
+                    </select>
                 </div>
 
 
@@ -440,6 +511,40 @@ document
 
         }
     );
+
+    
+    /*TRAER MODELOS SEGÚN MARCA SELECCIONADA*/
+    document.getElementById("marca1").addEventListener("change", function() {
+    cargarModelos(this.value, "modelo1");
+    });
+
+
+    document.getElementById("marca2").addEventListener("change", function() {
+    cargarModelos(this.value, "modelo2");
+    });
+
+    function cargarModelos(marcaId, modeloId) {
+    const selectModelo = document.getElementById(modeloId);
+    selectModelo.innerHTML = '<option value="" selected disabled>Cargando modelos...</option>';
+    fetch("?marca_id=" + marcaId)
+        .then(response => response.json())
+        .then(modelos => {
+            selectModelo.innerHTML = '<option value="" selected disabled>Seleccione el modelo</option>';
+
+            modelos.forEach(modelo => {
+                const option = document.createElement("option");
+                option.value = modelo.id;
+                option.textContent = modelo.name;
+                selectModelo.appendChild(option);
+            });
+
+        })
+        .catch(error => {
+            console.error(error);
+            selectModelo.innerHTML = '<option value="" selected disabled>Error al cargar modelos</option>';
+        });
+}
+
 
 </script>
 
