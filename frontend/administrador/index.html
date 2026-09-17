@@ -245,63 +245,6 @@
       </section>
     </main>
 
-    <!-- JAVASCRIPT -->
-
-    <script>
-      /* =========================
-           BORRAR USUARIO
-           ========================= */
-
-      function borrarUsuario(boton) {
-        const fila = boton.closest("tr");
-
-        const nombre = fila.querySelector(".nombre").textContent.trim();
-
-        const confirmar = confirm("¿Querés borrar al usuario " + nombre + "?");
-
-        if (confirmar) {
-          fila.remove();
-
-          actualizarCantidad();
-        }
-      }
-
-      /* =========================
-           ACTUALIZAR CANTIDAD
-           ========================= */
-
-      function actualizarCantidad() {
-        const filas = document.querySelectorAll("#tablaUsuarios tr");
-
-        document.getElementById("cantidadUsuarios").textContent = filas.length;
-      }
-
-      /* =========================
-           EVENTO ESPECIAL
-           ========================= */
-
-      function cambiarEventoEspecial(switchEvento) {
-        const estado = document.getElementById("estadoEvento");
-
-        if (switchEvento.checked) {
-          estado.textContent = "Activado";
-
-          estado.style.color = "#67ed9d";
-
-          alert(
-            "Evento especial activado.\n\n" +
-              "Los usuarios que participen " +
-              "podrán formar parte de las " +
-              "estadísticas del sábado.",
-          );
-        } else {
-          estado.textContent = "Desactivado";
-
-          estado.style.color = "#779488";
-
-          alert("Evento especial desactivado.");
-        }
-      }
-    </script>
+    <script src="/assets/js/admin.js"></script>
   </body>
 </html>
