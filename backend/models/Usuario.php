@@ -1,12 +1,12 @@
 <?php
 class Usuario {
-	public int $id;
-	public string $nombre;
-	public string $apellido;
-	public string $email;
-	public string $contrasena_hash;
-	public bool $inactivo;
-	public bool $es_admin;
+	public $id;
+	public $nombre;
+	public $apellido;
+	public $email;
+	public $contrasena_hash;
+	public $inactivo;
+	public $es_admin;
 	public $fecha_registro;
 
 	public function __construct($id, $nombre, $apellido, $email, $contrasena_hash, $inactivo, $es_admin, $fecha_registro) {

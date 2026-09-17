@@ -215,6 +215,7 @@ async function enviarDatos(datos){
 			<?= "\"".$url.'/api/usuario.php/login'."\"" ?>,
 			{
 				method: "POST",
+				credentials: "include",
 				headers: {
 					"Content-Type": "application/json"
 				},

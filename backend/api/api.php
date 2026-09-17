@@ -1,4 +1,41 @@
 <?php
+//error handling ini
+ini_set('display_errors', 0);
+ini_set('display_startup_errors', 0);
+error_reporting(E_ALL);
+
+//session ini
+ini_set('session.cookie_httponly', 1);
+ini_set('session.use_only_cookies', 1);
+ini_set('session.cookie_samesite', 'Strict');
+ini_set('session.gc_maxlifetime', 3600); 
+ini_set('session.cookie_path', '/');  
+ini_set('session.save_path', '/tmp'); 
+ini_set('session.cookie_domain', '');
+session_name('PHPSESSID');            
+
+// -- CORS -- ni idea que es
+$origin = $_SERVER['HTTP_ORIGIN'] ?? '*';
+
+header("Access-Control-Allow-Origin: $origin");
+header("Vary: Origin");
+header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
+header("Access-Control-Allow-Credentials: true");
+header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
+header("Access-Control-Max-Age: 86400");
+
+session_set_cookie_params([
+	'samesite' => 'None',
+	'secure'   => true,
+	'httponly' => true,
+]);
+
+// Respond to preflight and stop
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(204);
+    exit;
+}
+
 function verificarAdministrador($usrhnd){
 	if(!checkSession())	
 		return false;
@@ -85,7 +122,7 @@ function startSession($usuario){
 	//error_log("user_agent: " . $_SERVER['HTTP_USER_AGENT']);
 	//error_log("ip: " . $_SERVER['REMOTE_ADDR']);
 
-	error_log("Session Started for user_id: ".$usuario->id." ; ip address: ".$_SERVER['REMOTE_ADDR']);
+	error_log("Session Started for user_id: ".$_SESSION['user_id']." ; ip address: ".$_SERVER['REMOTE_ADDR']);
 }
 
 function destroySession(){
@@ -100,7 +137,7 @@ function checkSession(){
 	//error_log("SESSION DATA: " . print_r($_SESSION, true));
 
 	if(!isset($_SESSION['user_id'])){
-		//error_log("api.checkSession returned false: Session not opened.");
+		error_log("api.checkSession returned false: Session not opened.");
 		return false;
 	}
 ////////if($_SESSION['ip'] !== $_SERVER['REMOTE_ADDR']){
@@ -115,6 +152,6 @@ function checkSession(){
 	}
 
 	//si ningun error salto
-	//error_log("api.checkSession returned true.");
+	error_log("api.checkSession returned true.");
 	return true;
 }

@@ -15,18 +15,18 @@ CREATE TABLE IF NOT EXISTS Usuario (
 CREATE TABLE IF NOT EXISTS Vehiculo (
 	id INT AUTO_INCREMENT PRIMARY KEY,
 	id_usuario INT NOT NULL,
-	marca VARCHAR(40) NOT NULL, 
+	marca VARCHAR(40) NOT NULL,
 	modelo VARCHAR(100) NOT NULL,
 	color VARCHAR(15) NOT NULL,
 	tamano VARCHAR(15) NOT NULL,
-	FOREIGN KEY(id_usuario) REFERENCES Usuario(id)
+	FOREIGN KEY (id_usuario) REFERENCES Usuario(id)
 );
 
 CREATE TABLE IF NOT EXISTS Horario (
 	numero_hora INT,
 	dia_semana ENUM('lunes','martes','miercoles','jueves','viernes','sabado') NOT NULL,
 	horario VARCHAR(15) NOT NULL,
-	PRIMARY KEY(numero_hora, dia_semana)
+	PRIMARY KEY (numero_hora, dia_semana)
 );
 
 CREATE TABLE IF NOT EXISTS Ubicacion (
@@ -43,11 +43,18 @@ CREATE TABLE IF NOT EXISTS Ubicacion (
 CREATE TABLE IF NOT EXISTS Tiene (
 	id_usuario INT NOT NULL,
 	numero_hora INT NOT NULL,
-	dia_semana INT NOT NULL,
+	dia_semana ENUM('lunes','martes','miercoles','jueves','viernes','sabado') NOT NULL,
+	PRIMARY KEY (id_usuario, numero_hora, dia_semana),
 	FOREIGN KEY (id_usuario) REFERENCES Usuario(id),
-	FOREIGN KEY (numero_hora) REFERENCES Horario(numero_hora),
-	FOREIGN KEY (dia_semana) REFERENCES Horario(dia_semana),
-	PRIMARY KEY(id_usuario, numero_hora, dia_semana)
+	FOREIGN KEY (numero_hora, dia_semana) REFERENCES Horario(numero_hora, dia_semana)
+);
+
+CREATE TABLE IF NOT EXISTS Posee (
+	id_usuario INT NOT NULL,
+	id_vehiculo INT NOT NULL,
+	PRIMARY KEY (id_usuario, id_vehiculo),
+	FOREIGN KEY (id_usuario) REFERENCES Usuario(id),
+	FOREIGN KEY (id_vehiculo) REFERENCES Vehiculo(id)
 );
 
 CREATE TABLE IF NOT EXISTS Estaciona_en (
@@ -56,11 +63,12 @@ CREATE TABLE IF NOT EXISTS Estaciona_en (
 	id_vehiculo INT NOT NULL,
 	id_ubicacion INT NOT NULL,
 	numero_hora INT NOT NULL,
+	dia_semana ENUM('lunes','martes','miercoles','jueves','viernes','sabado') NOT NULL,
 	fecha DATE NOT NULL,
-	hora_inicio TIME NOT NULL DEFAULT CURRENT_TIME,
+	hora_inicio TIME NOT NULL DEFAULT (CURRENT_TIME),
 	hora_fin TIME,
 	FOREIGN KEY (id_usuario, id_vehiculo) REFERENCES Posee(id_usuario, id_vehiculo),
 	FOREIGN KEY (id_ubicacion) REFERENCES Ubicacion(id),
-	FOREIGN KEY (numero_hora) REFERENCES Horario(numero_hora),
+	FOREIGN KEY (numero_hora, dia_semana) REFERENCES Horario(numero_hora, dia_semana),
 	CHECK (hora_fin IS NULL OR hora_fin > hora_inicio)
 );

@@ -1,34 +1,4 @@
 <?php
-//error handling ini
-//ini_set('display_errors', 0);
-//ini_set('display_startup_errors', 0);
-error_reporting(E_ALL);
-
-//session ini
-ini_set('session.cookie_httponly', 1);
-ini_set('session.use_only_cookies', 1);
-ini_set('session.cookie_samesite', 'Strict');
-ini_set('session.gc_maxlifetime', 3600); 
-ini_set('session.cookie_path', '/');  
-ini_set('session.save_path', '/tmp'); 
-ini_set('session.cookie_domain', '');
-session_name('PHPSESSID');            
-
-// -- CORS -- ni idea que es
-$origin = $_SERVER['HTTP_ORIGIN'] ?? '*';
-
-header("Access-Control-Allow-Origin: $origin");
-header("Vary: Origin");
-header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
-header("Access-Control-Max-Age: 86400");
-
-// Respond to preflight and stop
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-    http_response_code(204);
-    exit;
-}
-
 require_once 'api.php';
 require_once '../handlers/TieneHandler.php';
 require_once '../config/conexion.php';
@@ -46,10 +16,12 @@ function asignar($method, $tiehnd) {
 		'dia_semana'
 	];
 
-	if($method != 'POST')
-		sendBadMethod($allow = 'POST');
 	if(!checkSession())
 		sendUnauthorized();
+
+	if($method != 'POST')
+		sendBadMethod($allow = 'POST');
+
 	$error = checkParameters($data, $parametros);
 	if($error){
 		error_log("Bad Request en api.tiene.asignar: " . $error);
@@ -144,6 +116,8 @@ function obtener($method, $tiehnd) {
 }
 
 $endpoint = $request[0] ?? '';
+error_log('COOKIES: ' . print_r($_COOKIE, true));
+error_log('SESSION: ' . print_r($_SESSION ?? null, true));
 switch($endpoint){
 	case 'asignar':
 		error_log("Call a api.tiene.asignar");
