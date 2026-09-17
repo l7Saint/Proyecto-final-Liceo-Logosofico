@@ -184,7 +184,7 @@ $url     = 'http://' . $backend . ':' . $port;
               return;
             }
 	    enviarDatos(obtenerDatos());
-	    //window.location.href = './horarios.php';
+	    window.location.href = './horarios.php';
           });
         function obtenerDatos() {
           const nombre = document.getElementById("nombre").value.trim();

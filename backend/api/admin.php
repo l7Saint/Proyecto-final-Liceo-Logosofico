@@ -50,18 +50,13 @@ function crear($method, $usrhnd){
 			$data['apellido'], //$apellido
 			$data['email'], //$email
 			password_hash($data['contrasena'], PASSWORD_DEFAULT), //$contrasena_hash
-			$data['inactivo'], //$es_admin
-			$data['es_admin'], //$inactivo
+			$data['inactivo'], //$inactivo
+			$data['es_admin'], //$es_admin
 			null //$fecha_registro
 		);
 
 		$newId = $usrhnd->crearUsuario($usuario);
 		if($newId){
-			//crearUsuario no persiste es_admin ni inactivo, se aplican con modificarUsuario
-			if($es_admin || $inactivo){
-				$usuario->id = $newId;
-				$usrhnd->modificarUsuario($newId, $usuario);
-			}
 			http_response_code(200);
 			echo json_encode([
 				'success' => true,
@@ -146,7 +141,6 @@ function modificar($method, $usrhnd){
 			exit;
 		}
 
-		//si el email cambia, verificar que no este en uso por otro usuario
 		if(isset($data['email']) && $data['email'] !== $usuario->email){
 			$existingUser = $usrhnd->obtenerPorEmail($data['email']);
 			if($existingUser !== false && $existingUser->id != $data['id']){
@@ -159,13 +153,12 @@ function modificar($method, $usrhnd){
 			}
 		}
 
-		//aplicar unicamente los parametros presentes en el body de la request
 		if(isset($data['nombre'])) $usuario->nombre = $data['nombre'];
 		if(isset($data['apellido'])) $usuario->apellido = $data['apellido'];
 		if(isset($data['email'])) $usuario->email = $data['email'];
 		if(isset($data['contrasena'])) $usuario->contrasena_hash = password_hash($data['contrasena'], PASSWORD_DEFAULT);
-		if(isset($data['inactivo'])) $usuario->inactivo = (bool)$data['inactivo'];
-		if(isset($data['es_admin'])) $usuario->es_admin = (bool)$data['es_admin'];
+		if(isset($data['inactivo'])) $usuario->inactivo = $data['inactivo'] ? 1 : 0;
+		if(isset($data['es_admin'])) $usuario->es_admin = $data['es_admin'] ? 1 : 0;
 
 		if($usrhnd->modificarUsuario($data['id'], $usuario)){
 			http_response_code(200);

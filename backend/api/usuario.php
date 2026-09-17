@@ -158,6 +158,7 @@ function signin($method, $usrhnd) {
 			null //$fecha_registro
 		);	
 		if($usrhnd->crearUsuario($usuario)){
+			startSession($usuario);
 			http_response_code(200);
 			echo json_encode([
 			    'success' => true,

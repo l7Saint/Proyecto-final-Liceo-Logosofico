@@ -1,5 +1,5 @@
 <?php
-require_once "../models/Usuario.php";
+require_once "/var/www/html/models/Usuario.php";
 
 /**
  * Clase UsuarioHandler
@@ -118,8 +118,8 @@ class UsuarioHandler {
 				$usuario->apellido,
 				$usuario->email,
 				$usuario->contrasena_hash,
-				$usuario->inactivo,
-				$usuario->es_admin,
+				(int)$usuario->inactivo,
+				(int)$usuario->es_admin,
 				$id
 			]);
 			if($success){
@@ -141,7 +141,7 @@ class UsuarioHandler {
 	 * @private Este es un método auxiliar usado internamente por la clase
 	 */
 	private function fetchToUsuario($fetch){
-		return new Usuario(
+		$u = new Usuario(
 			$fetch['id'],
 			$fetch['nombre'],
 			$fetch['apellido'],
@@ -151,6 +151,7 @@ class UsuarioHandler {
 			$fetch['es_admin'],
 			$fetch['fecha_registro']
 		);
+		return $u;
 	}
 
 	/**
