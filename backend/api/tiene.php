@@ -1,0 +1,137 @@
+<?php
+require_once 'api.php';
+require_once '../handlers/TieneHandler.php';
+require_once '../config/conexion.php';
+header('Content-Type: application/json');
+
+$method = $_SERVER['REQUEST_METHOD'];
+$request = explode('/', trim($_SERVER['PATH_INFO'] ?? '', '/'));
+
+$tiehnd = new TieneHandler($conexion);
+
+function asignar($method, $tiehnd) {
+	$data = json_decode(file_get_contents('php://input'), true);
+	$parametros = [
+		'numero_hora',
+		'dia_semana'
+	];
+
+	if(!checkSession())
+		sendUnauthorized();
+
+	if($method != 'POST')
+		sendBadMethod($allow = 'POST');
+
+	$error = checkParameters($data, $parametros);
+	if($error){
+		error_log("Bad Request en api.tiene.asignar: " . $error);
+		sendBadRequest('Bad Request', $error);
+	}
+
+	session_start();
+	$id_usuario = $_SESSION['user_id'];
+	try {
+		if($tiehnd->asignarHorario(
+			$id_usuario,
+			$data['numero_hora'],
+			$data['dia_semana']
+		)){
+			http_response_code(200);
+			echo json_encode([
+				'success' => true
+			]);
+			exit;
+		} else {
+			error_log("Error inesperado en api.tiene.asignar");
+			sendServerError();
+		}
+	} catch(Exception $e) {
+		error_log("Error en api.tiene.asignar: " . $e);
+		sendServerError();
+	}
+}
+
+function desasignar($method, $tiehnd) {
+	$data = json_decode(file_get_contents('php://input'), true);
+	$parametros = [
+		'numero_hora',
+		'dia_semana'
+	];
+
+	if($method != 'POST')
+		sendBadMethod($allow = 'POST');
+	if(!checkSession())
+		sendUnauthorized();
+	$error = checkParameters($data, $parametros);
+	if($error){
+		error_log("Bad Request en api.tiene.desasignar: " . $error);
+		sendBadRequest('Bad Request', $error);
+	}
+
+	session_start();
+	$id_usuario = $_SESSION['user_id'];
+	try {
+		if($tiehnd->desasignarHorario(
+			$id_usuario,
+			$data['numero_hora'],
+			$data['dia_semana']
+		)){
+			http_response_code(200);
+			echo json_encode([
+				'success' => true
+			]);
+			exit;
+		} else {
+			error_log("Error inesperado en api.tiene.desasignar.");
+			sendServerError();
+		}
+	} catch(Exception $e) {
+		error_log("Error en api.tiene.desasignar: " . $e);
+		sendServerError();
+	}
+}
+
+function obtener($method, $tiehnd) {
+	$data = json_decode(file_get_contents('php://input'), true);
+
+	if($method != 'GET')
+		sendBadMethod($allow = 'GET');
+	if(!checkSession())
+		sendUnauthorized();
+
+	session_start();
+	$id_usuario = $_SESSION['user_id'];
+	try {
+		$horarios = $tiehnd->obtenerPorIDUsuario($id_usuario);
+		http_response_code(200);
+		echo json_encode([
+			'success' => true,
+			'horarios' => $horarios
+		]);
+		exit;
+	} catch(Exception $e) {
+		error_log("Error en api.tiene.obtener: " . $e);
+		sendServerError();
+	}
+}
+
+$endpoint = $request[0] ?? '';
+error_log('COOKIES: ' . print_r($_COOKIE, true));
+error_log('SESSION: ' . print_r($_SESSION ?? null, true));
+switch($endpoint){
+	case 'asignar':
+		error_log("Call a api.tiene.asignar");
+		asignar($method, $tiehnd);	
+		break;
+	case 'desasignar':
+		error_log("Call a api.tiene.desasignar");
+		desasignar($method, $tiehnd);	
+		break;
+	case 'obtener':
+		error_log("Call a api.tiene.obtener");
+		obtener($method, $tiehnd);	
+		break;
+	default:
+		error_log("Endpoint inexistente en api.tiene: " . $request[0]);
+		sendBadRequest();
+}

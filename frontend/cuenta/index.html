@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Urbanaut | Cargando</title>
+
+    <!-- Bootstrap -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+
+    <link
+        rel="stylesheet"
+        href="/assets/css/cuentaIndex.css">
+
+</head>
+
+<body>
+
+    <!-- BURBUJAS -->
+
+    <div class="bubble one"></div>
+    <div class="bubble two"></div>
+    <div class="bubble three"></div>
+    <div class="bubble four"></div>
+
+    <main class="contenedor">
+
+        <section class="card-urbanaut">
+
+            <!-- LOGO -->
+
+            <div class="logo">
+
+                <img
+                    src="../imagenes/logoNuevo2.png"
+                    alt="Logo Urbanaut">
+
+            </div>
+
+            <!-- TITULO -->
+
+            <div class="titulo">
+
+                <i class="bi bi-geo-alt-fill"></i>
+
+                <h1>Preparando tu viaje</h1>
+
+            </div>
+
+            <p class="subtitulo">
+                Urbanaut está organizando todo para vos
+            </p>
+
+            <!-- MAPA -->
+
+            <div class="mapa">
+
+                <!-- CALLES -->
+
+                <div class="calle calle-h1"></div>
+                <div class="calle calle-h2"></div>
+                <div class="calle calle-v1"></div>
+                <div class="calle calle-v2"></div>
+                <div class="calle calle-v3"></div>
+
+                <!-- AVENIDA -->
+
+                <div class="avenida"></div>
+
+                <!-- EDIFICIOS -->
+
+                <div class="edificio e1"></div>
+                <div class="edificio e2"></div>
+                <div class="edificio e3"></div>
+                <div class="edificio e4"></div>
+                <div class="edificio e5"></div>
+                <div class="edificio e6"></div>
+
+                <!-- ICONOS -->
+
+                <i class="bi bi-p-square-fill map-icon parking"></i>
+
+                <i class="bi bi-cup-hot-fill map-icon restaurant"></i>
+
+                <i class="bi bi-fuel-pump-fill map-icon gas"></i>
+
+                <!-- RUTA -->
+
+                <div class="ruta">
+
+                    <svg viewBox="0 0 430 190">
+
+                        <path
+                            d="
+                            M 20 155
+                            C 65 155, 75 110, 115 120
+                            C 160 132, 165 165, 215 135
+                            C 260 108, 255 55, 300 65
+                            C 350 75, 350 30, 410 35
+                            ">
+                        </path>
+
+                    </svg>
+
+                </div>
+
+                <!-- GPS -->
+
+                <div class="gps"></div>
+
+            </div>
+
+            <!-- PROGRESO -->
+
+            <div class="carga">
+
+                <div class="circulo" id="circulo">
+
+                    <span class="numero" id="numero">
+                        0%
+                    </span>
+
+                </div>
+
+                <div class="estado">
+
+                    <strong id="tituloCarga">
+                        Cargando Urbanaut...
+                    </strong>
+
+                    <span id="mensaje">
+                        Preparando tu experiencia
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <script>
+
+        let progreso = 0;
+
+        const numero =
+            document.getElementById("numero");
+
+        const circulo =
+            document.getElementById("circulo");
+
+        const titulo =
+            document.getElementById("tituloCarga");
+
+        const mensaje =
+            document.getElementById("mensaje");
+
+
+        function actualizarMensaje() {
+
+            if (progreso < 20) {
+
+                titulo.textContent =
+                    "Conectando...";
+
+                mensaje.textContent =
+                    "Preparando Urbanaut";
+
+            }
+
+            else if (progreso < 40) {
+
+                titulo.textContent =
+                    "Cargando datos...";
+
+                mensaje.textContent =
+                    "Organizando tu información";
+
+            }
+
+            else if (progreso < 60) {
+
+                titulo.textContent =
+                    "Buscando ubicación...";
+
+                mensaje.textContent =
+                    "Localizando las mejores opciones";
+
+            }
+
+            else if (progreso < 80) {
+
+                titulo.textContent =
+                    "Calculando recorrido...";
+
+                mensaje.textContent =
+                    "Preparando tu ruta";
+
+            }
+
+            else if (progreso < 95) {
+
+                titulo.textContent =
+                    "Casi listo...";
+
+                mensaje.textContent =
+                    "Terminando de preparar todo";
+
+            }
+
+            else {
+
+                titulo.textContent =
+                    "¡Todo listo!";
+
+                mensaje.textContent =
+                    "Entrando a Urbanaut 🚗";
+            }
+        }
+
+
+        function actualizar() {
+
+            numero.textContent =
+                progreso + "%";
+
+
+            const grados =
+                progreso * 3.6;
+
+
+            circulo.style.background =
+
+                `conic-gradient(
+                    #238bff 0deg,
+                    #6b5cff ${grados * .55}deg,
+                    #63d85f ${grados}deg,
+                    rgba(255,255,255,.55)
+                    ${grados}deg
+                )`;
+
+
+            actualizarMensaje();
+
+
+            if (progreso < 100) {
+
+                progreso++;
+
+                setTimeout(
+                    actualizar,
+                    45
+                );
+
+            }
+
+            else {
+
+                setTimeout(
+
+                    function () {
+
+                        window.location.href =
+                            "../inicio/index.html";
+
+                    },
+
+                    1000
+                );
+            }
+
+        }
+
+
+        setTimeout(
+            actualizar,
+            500
+        );
+
+    </script>
+
+</body>
+
+</html>

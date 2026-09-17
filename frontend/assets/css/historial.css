@@ -1,0 +1,163 @@
+.resumen {
+    display: grid;
+    grid-template-columns:
+	repeat(2, 1fr);
+    gap: 12px;
+    margin-bottom: 16px;
+}
+.resumen-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 13px;
+    border-radius: 17px;
+    background:
+	rgba(255, 255, 255, 0.55);
+    border:
+	1px solid
+	rgba(255, 255, 255, 0.8);
+    box-shadow:
+	0 7px 18px
+	rgba(0, 40, 70, 0.10);
+}
+.resumen-card i {
+    font-size: 27px;
+    color: #238bff;
+}
+.resumen-card h3 {
+    color: #123d69;
+    font-size: 14px;
+    margin-bottom: 2px;
+}
+.resumen-card p {
+    color: #58738e;
+    font-size: 12px;
+    margin: 0;
+}
+.titulo-lista {
+    color: #123d69;
+    font-size: 19px;
+    font-weight: 700;
+    margin-bottom: 9px;
+}
+.historial {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    margin-bottom: 16px;
+}
+.lugar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 12px 15px;
+    border-radius: 16px;
+    background:
+	rgba(255, 255, 255, 0.55);
+    border:
+	1px solid
+	rgba(255, 255, 255, 0.8);
+    transition: 0.25s;
+}
+.lugar:hover {
+    background:
+	rgba(255, 255, 255, 0.78);
+    transform:
+	translateX(3px);
+}
+.lugar-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+}
+.lugar-icono {
+    width: 42px;
+    height: 42px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 13px;
+    background:
+	rgba(35, 139, 255, 0.12);
+    color: #238bff;
+    font-size: 22px;
+}
+.lugar-texto h3 {
+    color: #123d69;
+    font-size: 14px;
+    margin: 0 0 2px 0;
+}
+.lugar-texto p {
+    color: #58738e;
+    font-size: 12px;
+    margin: 0;
+}
+.fecha {
+    text-align: right;
+    flex-shrink: 0;
+}
+.fecha strong {
+    display: block;
+    color: #123d69;
+    font-size: 12px;
+}
+.fecha span {
+    color: #58738e;
+    font-size: 11px;
+}
+.botones {
+    display: flex;
+    justify-content: center;
+}
+.volver {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    padding: 9px 20px;
+    border-radius: 12px;
+    background: #1b3237;
+    color: white;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 13px;
+    transition: 0.25s;
+}
+.volver:hover {
+    background: #238bff;
+    color: white;
+    transform:
+	translateY(-2px);
+}
+@media (max-width: 600px) {
+    .contenedor {
+	align-items: flex-start;
+	padding: 8px;
+    }
+    .card-urbanaut {
+	width: 100%;
+	margin-top: 5px;
+	padding: 17px 14px;
+    }
+    h1 {
+	font-size: 26px;
+    }
+    .titulo i {
+	font-size: 27px;
+    }
+    .resumen {
+	grid-template-columns: 1fr;
+    }
+    .lugar {
+	align-items: flex-start;
+    }
+    .fecha {
+	display: none;
+    }
+    .volver {
+	width: 100%;
+    }
+}
