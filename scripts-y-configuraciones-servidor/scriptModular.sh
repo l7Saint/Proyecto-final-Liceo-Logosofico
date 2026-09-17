@@ -7,7 +7,7 @@ read -p "Escriba un número para acceder al script:" opcionScript
 }
 
 while [[ $opcionScript != 5 ]];do
-menuOpciones
+menu
 case $opcionScript in
 1)gestion_usuarios.sh;;
 2)firewall.sh;;
