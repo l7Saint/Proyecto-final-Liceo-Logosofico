@@ -1,5 +1,6 @@
 name: urbanaut
 services:
+
   urbanaut_frontend:
     build: frontend/
     container_name: urbanaut_frontend
@@ -15,6 +16,10 @@ services:
   urbanaut_backend:
     build: backend/
     container_name: urbanaut_backend
+    environment:
+      #credenciales por defecto de admin
+      ADMIN_EMAIL: admin@urbanaut.local
+      ADMIN_PASSWORD: contrasena 
     ports:
       # Por ahora mappear el 80 al 30000 porque el frontend y el backend estan en la misma maquina
       - "30000:80"

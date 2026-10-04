@@ -1,6 +1,56 @@
 const API_BASE = 'http://127.0.0.1:30000/api/admin.php';
+const TOKEN_KEY = 'urbanaut_token';
 
 let usuariosCache = [];
+
+/* ============================
+   GESTIÓN DE TOKEN
+   ============================ */
+
+function getToken() {
+  return localStorage.getItem(TOKEN_KEY);
+}
+
+function setToken(token) {
+  localStorage.setItem(TOKEN_KEY, token);
+}
+
+function clearToken() {
+  localStorage.removeItem(TOKEN_KEY);
+}
+
+/**
+ * Construye los headers con el token de sesión si existe.
+ */
+function authHeaders(extra = {}) {
+  const headers = { Accept: 'application/json', ...extra };
+  const token = getToken();
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
+  }
+  return headers;
+}
+
+/**
+ * Wrapper de fetch que:
+ *  - adjunta el header Authorization automáticamente
+ *  - si el servidor responde 401, limpia el token y redirige a login
+ */
+async function authFetch(url, options = {}) {
+  const response = await fetch(url, {
+    ...options,
+    headers: authHeaders(options.headers),
+  });
+
+  if (response.status === 401) {
+    clearToken();
+    // Ajustá esta ruta a donde tengas tu pantalla de login
+    window.location.href = '/login.html';
+    throw new Error('Sesión expirada. Iniciá sesión nuevamente.');
+  }
+
+  return response;
+}
 
 /* ============================
    LLAMADAS A LA API
@@ -8,10 +58,8 @@ let usuariosCache = [];
 
 async function api_obtenerTodos() {
   try {
-    const response = await fetch(`${API_BASE}/obtener`, {
+    const response = await authFetch(`${API_BASE}/obtener`, {
       method: 'GET',
-      headers: { Accept: 'application/json' },
-      credentials: 'include',
     });
     const data = await response.json();
     if (!response.ok) {
@@ -26,13 +74,9 @@ async function api_obtenerTodos() {
 
 async function api_crearUsuario(usuario) {
   try {
-    const response = await fetch(`${API_BASE}/crear`, {
+    const response = await authFetch(`${API_BASE}/crear`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-      },
-      credentials: 'include',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(usuario),
     });
     const data = await response.json();
@@ -48,13 +92,9 @@ async function api_crearUsuario(usuario) {
 
 async function api_modificarUsuario(id, cambios) {
   try {
-    const response = await fetch(`${API_BASE}/modificar`, {
+    const response = await authFetch(`${API_BASE}/modificar`, {
       method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-      },
-      credentials: 'include',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ id, ...cambios }),
     });
     const data = await response.json();
@@ -70,13 +110,9 @@ async function api_modificarUsuario(id, cambios) {
 
 async function api_eliminarUsuario(id) {
   try {
-    const response = await fetch(`${API_BASE}/eliminar`, {
+    const response = await authFetch(`${API_BASE}/eliminar`, {
       method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-      },
-      credentials: 'include',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ id }),
     });
     const data = await response.json();
@@ -168,10 +204,8 @@ document.getElementById('usuarioForm').addEventListener('submit', async (e) => {
 
   try {
     if (id) {
-      // Modificar
       await api_modificarUsuario(id, usuario);
     } else {
-      // Crear
       if (!contrasena) {
         throw new Error('La contraseña es obligatoria para un usuario nuevo.');
       }
@@ -248,4 +282,25 @@ function cambiarEventoEspecial(switchEvento) {
    INICIO
    ============================ */
 
-document.addEventListener('DOMContentLoaded', cargarUsuarios);
+document.addEventListener('DOMContentLoaded', () => {
+  if (!getToken()) {
+    window.location.href = '/login.html';
+    return;
+  }
+  cargarUsuarios();
+});
+
+/* ============================
+   LOGOUT (opcional)
+   ============================ */
+
+async function logout() {
+  try {
+    await authFetch(`${API_BASE}/../usuario.php/logout`, { method: 'GET' });
+  } catch (_) {
+    // aunque falle, limpiamos igual
+  } finally {
+    clearToken();
+    window.location.href = '/login.html';
+  }
+}

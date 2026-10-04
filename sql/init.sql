@@ -72,3 +72,10 @@ CREATE TABLE IF NOT EXISTS Estaciona_en (
 	FOREIGN KEY (numero_hora, dia_semana) REFERENCES Horario(numero_hora, dia_semana),
 	CHECK (hora_fin IS NULL OR hora_fin > hora_inicio)
 );
+
+CREATE TABLE IF NOT EXISTS Sesion (
+	token VARCHAR(64) PRIMARY KEY,
+	id_usuario INT NOT NULL,
+	fecha_creacion TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	FOREIGN KEY (id_usuario) REFERENCES Usuario(id) ON DELETE CASCADE
+);

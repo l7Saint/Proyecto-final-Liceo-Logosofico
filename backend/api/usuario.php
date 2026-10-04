@@ -1,22 +1,20 @@
 <?php
 require_once 'api.php';
 require_once '../handlers/UsuarioHandler.php';
+require_once '../handlers/SesionHandler.php';
 require_once '../config/conexion.php';
 header('Content-Type: application/json');
 
-$method = $_SERVER['REQUEST_METHOD'];
+$method  = $_SERVER['REQUEST_METHOD'];
 $request = explode('/', trim($_SERVER['PATH_INFO'] ?? '', '/'));
 
 $usrhnd = new UsuarioHandler($conexion);
+$seshnd = new SesionHandler($conexion);
 
-function login($method, $usrhnd) {
+function login($method, $usrhnd, $seshnd) {
 	$data = json_decode(file_get_contents('php://input'), true);
-	$parametros = [
-		'email',
-		'contrasena'
-	];
+	$parametros = ['email', 'contrasena'];
 
-	//verificaciones
 	if($method != 'POST'){
 		error_log("Bad Method en api.usuario.login: " . $method);
 		sendBadMethod('POST');
@@ -28,7 +26,6 @@ function login($method, $usrhnd) {
 		sendBadRequest('Bad Request', $error);
 	}
 
-	//logica del login
 	try{
 		$usuario = $usrhnd->obtenerPorEmail($data['email']);
 		if(
@@ -39,16 +36,17 @@ function login($method, $usrhnd) {
 			sendUnauthorized('Invalid email or password');
 		}
 
-		startSession($usuario);
+		$token = startSession($usuario, $seshnd);
 		http_response_code(200);
 		echo json_encode([
-		    'success' => true,
-		    'usuario' => [
-			'nombre' => $usuario->nombre,
-			'apellido' => $usuario->apellido,
-			'email' => $usuario->email,
-			'fecha_registro' => $usuario->fecha_registro
-		    ]
+			'success' => true,
+			'token' => $token,
+			'usuario' => [
+				'nombre'         => $usuario->nombre,
+				'apellido'       => $usuario->apellido,
+				'email'          => $usuario->email,
+				'fecha_registro' => $usuario->fecha_registro
+			]
 		]);
 		exit;
 
@@ -58,72 +56,65 @@ function login($method, $usrhnd) {
 	}
 }
 
-function user($method, $usrhnd){
+function user($method, $usrhnd, $seshnd){
 	if($method != 'GET'){
 		error_log("Bad Method en api.usuario.user: " . $method);
 		sendBadMethod('GET');
 	}
-	if(!checkSession()){
-		//sendUnauthorized
+	$sesion = checkSession($seshnd);
+	if($sesion === false){
 		error_log("Unauthorized en api.usuario.user: ip: " . $_SERVER['REMOTE_ADDR']);
-		http_response_code(401);
-		echo json_encode([
-		    'success' => false
-		]);
-		exit;
+		sendUnauthorized('Unauthorized');
+	}
+	$usuario = $usrhnd->obtenerPorId($sesion->id_usuario);
+	if($usuario === false){
+		// Hay token válido pero el usuario ya no existe: limpiar y rechazar
+		destroySession($seshnd);
+		sendUnauthorized('Unauthorized');
 	}
 	http_response_code(200);
 	echo json_encode([
-	    'success' => true,
-	    'usuario' => [
-		'nombre' => $usuario->nombre,
-		'apellido' => $usuario->apellido,
-		'email' => $usuario->email,
-		'fecha_registro' => $usuario->fecha_registro
-	    ]
+		'success' => true,
+		'usuario' => [
+			'nombre'         => $usuario->nombre,
+			'apellido'       => $usuario->apellido,
+			'email'          => $usuario->email,
+			'fecha_registro' => $usuario->fecha_registro
+		]
 	]);
+	exit;
 }
 
-function check($method){
+function check($method, $seshnd){
 	if($method != 'GET'){
 		error_log("Bad Method en api.usuario.check: " . $method);
 		sendBadMethod('GET');
 	}
-	if(checkSession()){
+	if(checkSession($seshnd) !== false){
 		http_response_code(200);
-		echo json_encode([
-		    'success' => true,
-		]);
+		echo json_encode(['success' => true]);
 	} else {
 		http_response_code(401);
-		echo json_encode([
-		    'success' => false,
-		]);
+		echo json_encode(['success' => false]);
 	}
+	exit;
 }
 
-function logout($method){
+function logout($method, $seshnd){
 	if($method != 'GET'){
 		error_log("Bad Method en api.usuario.logout: " . $method);
 		sendBadMethod('GET');
 	}
-	destroySession();	
+	destroySession($seshnd);
 	http_response_code(200);
-	echo json_encode([
-	    'success' => true,
-	]);
+	echo json_encode(['success' => true]);
+	exit;
 }
 
-function signin($method, $usrhnd) {
+function signin($method, $usrhnd, $seshnd) {
 	$data = json_decode(file_get_contents('php://input'), true);
-	$parametros = [
-		'nombre',
-		'apellido',
-		'email',
-		'contrasena'
-	];
+	$parametros = ['nombre', 'apellido', 'email', 'contrasena'];
 
-	//verificaciones
 	if($method != 'POST'){
 		error_log("Bad Method en api.usuario.signin: " . $method);
 		sendBadMethod('POST');
@@ -135,34 +126,38 @@ function signin($method, $usrhnd) {
 		sendBadRequest('Bad Request', $error);
 	}
 
-	$existingUser = $usrhnd->obtenerPorEmail($data['email']);
+	try{
+		$existingUser = $usrhnd->obtenerPorEmail($data['email']);
+	} catch(Exception $e){
+		error_log("Error en api.usuario.signin: " . $e);
+		sendServerError();
+	}
 	if($existingUser !== false){
 		http_response_code(409);
 		echo json_encode([
 			'success' => false,
-			'error' => 'Email already registered'
+			'error'   => 'Email already registered'
 		]);
 		exit;
 	}
 
-	//logica del signin
 	try{
 		$usuario = new Usuario(
-			null, //$id	
-			$data['nombre'], //$nombre
-			$data['apellido'], //$apellido
-			$data['email'], //$email
-			password_hash($data['contrasena'], PASSWORD_DEFAULT), //$contrasena_hash
-			false, //$inactivo
-			false, //$es_admin
-			null //$fecha_registro
-		);	
-		if($usrhnd->crearUsuario($usuario)){
-			startSession($usuario);
+			null,
+			$data['nombre'],
+			$data['apellido'],
+			$data['email'],
+			password_hash($data['contrasena'], PASSWORD_DEFAULT),
+			false,
+			false,
+			null
+		);
+		$nuevo_id = $usrhnd->crearUsuario($usuario);
+		if($nuevo_id !== false){
+			$usuario->id = (int)$nuevo_id; // imprescindible para startSession
+			startSession($usuario, $seshnd);
 			http_response_code(200);
-			echo json_encode([
-			    'success' => true,
-			]);
+			echo json_encode(['success' => true]);
 			error_log("Nuevo registro de usuario, email: ".$data['email']);
 			exit;
 		} else {
@@ -179,19 +174,23 @@ $endpoint = $request[0] ?? '';
 switch($endpoint){
 	case 'login':
 		error_log("Call a api.usuario.login");
-		login($method, $usrhnd);	
+		login($method, $usrhnd, $seshnd);
 		break;
 	case 'signin':
 		error_log("Call a api.usuario.signin");
-		signin($method, $usrhnd);	
+		signin($method, $usrhnd, $seshnd);
 		break;
 	case 'logout':
 		error_log("Call a api.usuario.logout");
-		logout($method);	
+		logout($method, $seshnd);
 		break;
 	case 'check':
 		error_log("Call a api.usuario.check");
-		check($method);
+		check($method, $seshnd);
+		break;
+	case 'user':
+		error_log("Call a api.usuario.user");
+		user($method, $usrhnd, $seshnd);
 		break;
 	default:
 		error_log("Endpoint inexistente en api.usuario: " . $request);

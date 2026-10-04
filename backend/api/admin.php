@@ -1,6 +1,7 @@
 <?php
 require_once 'api.php';
 require_once '../handlers/UsuarioHandler.php';
+require_once '../handlers/SesionHandler.php';
 require_once '../config/conexion.php';
 header('Content-Type: application/json');
 
@@ -8,8 +9,9 @@ $method = $_SERVER['REQUEST_METHOD'];
 $request = explode('/', trim($_SERVER['PATH_INFO'] ?? '', '/'));
 
 $usrhnd = new UsuarioHandler($conexion);
+$seshnd = new SesionHandler($conexion);
 
-function crear($method, $usrhnd){
+function crear($method, $usrhnd, $seshnd){
 	$data = json_decode(file_get_contents('php://input'), true);
 	$parametros = [
 		'nombre',
@@ -22,7 +24,7 @@ function crear($method, $usrhnd){
 		error_log("Bad Method en api.admin.crear: " . $method);
 		sendBadMethod('POST');
 	}
-	if(!verificarAdministrador($usrhnd)){
+	if(!verificarAdministrador($usrhnd, $seshnd)){
 		error_log("Unauthorized en api.admin.crear: ip: " . $_SERVER['REMOTE_ADDR']);
 		sendUnauthorized('Unauthorized');
 	}
@@ -74,12 +76,12 @@ function crear($method, $usrhnd){
 	}
 }
 
-function obtener($method, $usrhnd){
+function obtener($method, $usrhnd, $seshnd){
 	if($method != 'GET'){
 		error_log("Bad Method en api.admin.obtener: " . $method);
 		sendBadMethod('GET');
 	}
-	if(!verificarAdministrador($usrhnd)){
+	if(!verificarAdministrador($usrhnd, $seshnd)){
 		error_log("Unauthorized en api.admin.obtener. ip: " . $_SERVER['REMOTE_ADDR']);
 		sendUnauthorized('Unauthorized');
 	}
@@ -110,7 +112,7 @@ function obtener($method, $usrhnd){
 	}
 }
 
-function modificar($method, $usrhnd){
+function modificar($method, $usrhnd, $seshnd){
 	$parametros = [
 		'id'
 	];
@@ -120,7 +122,7 @@ function modificar($method, $usrhnd){
 		error_log("Bad Method en api.admin.modificar: " . $method);
 		sendBadMethod('PUT');
 	}
-	if(!verificarAdministrador($usrhnd)){
+	if(!verificarAdministrador($usrhnd, $seshnd)){
 		error_log("Unauthorized en api.admin.modificar: ip: " . $_SERVER['REMOTE_ADDR']);
 		sendUnauthorized('Unauthorized');
 	}
@@ -176,7 +178,7 @@ function modificar($method, $usrhnd){
 	}
 }
 
-function eliminar($method, $usrhnd){
+function eliminar($method, $usrhnd, $seshnd){
 	$data = json_decode(file_get_contents('php://input'), true);
 	$parametros = [
 		'id'
@@ -186,7 +188,7 @@ function eliminar($method, $usrhnd){
 		error_log("Bad Method en api.admin.eliminar: " . $method);
 		sendBadMethod('DELETE');
 	}
-	if(!verificarAdministrador($usrhnd)){
+	if(!verificarAdministrador($usrhnd, $seshnd)){
 		error_log("Unauthorized en api.admin.eliminar. ip: " . $_SERVER['REMOTE_ADDR']);
 		sendUnauthorized('Unauthorized');
 	}
@@ -225,19 +227,19 @@ $endpoint = $request[0] ?? '';
 switch($endpoint){
 	case 'crear':
 		error_log("Call a api.admin.crear");
-		crear($method, $usrhnd);
+		crear($method, $usrhnd, $seshnd);
 		break;
 	case 'obtener':
 		error_log("Call a api.admin.obtener");
-		obtener($method, $usrhnd);
+		obtener($method, $usrhnd, $seshnd);
 		break;
 	case 'modificar':
 		error_log("Call a api.admin.modificar");
-		modificar($method, $usrhnd);
+		modificar($method, $usrhnd, $seshnd);
 		break;
 	case 'eliminar':
 		error_log("Call a api.admin.eliminar");
-		eliminar($method, $usrhnd);
+		eliminar($method, $usrhnd, $seshnd);
 		break;
 	default:
 		error_log("Endpoint inexistente en api.admin: " . $request);

@@ -4,17 +4,7 @@ ini_set('display_errors', 0);
 ini_set('display_startup_errors', 0);
 error_reporting(E_ALL);
 
-//session ini
-ini_set('session.cookie_httponly', 1);
-ini_set('session.use_only_cookies', 1);
-ini_set('session.cookie_samesite', 'Strict');
-ini_set('session.gc_maxlifetime', 3600); 
-ini_set('session.cookie_path', '/');  
-ini_set('session.save_path', '/tmp'); 
-ini_set('session.cookie_domain', '');
-session_name('PHPSESSID');            
-
-// -- CORS -- ni idea que es
+// -- CORS --
 $origin = $_SERVER['HTTP_ORIGIN'] ?? '*';
 
 header("Access-Control-Allow-Origin: $origin");
@@ -24,42 +14,36 @@ header("Access-Control-Allow-Credentials: true");
 header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
 header("Access-Control-Max-Age: 86400");
 
-session_set_cookie_params([
-	'samesite' => 'None',
-	'secure'   => true,
-	'httponly' => true,
-]);
-
 // Respond to preflight and stop
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(204);
     exit;
 }
 
-function verificarAdministrador($usrhnd){
-	if(!checkSession())	
+// -- Token-based session config --
+define('SESSION_COOKIE_NAME', 'session_token');
+define('SESSION_COOKIE_LIFETIME', 3600); // 1 hora
+
+function verificarAdministrador($usrhnd, $seshnd){
+	$sesion = checkSession($seshnd);
+	if($sesion === false)
 		return false;
-	$id = $_SESSION['user_id'];
-	$user = $usrhnd->obtenerPorId($id);
+	$user = $usrhnd->obtenerPorId($sesion->id_usuario);
 	if(!$user)
 		return false;
 	return $user->es_admin;
 }
 
-
 function sendBadRequest($message = 'Bad Request', $errors = null) {
 	http_response_code(400);
-
 	$response = [
 		'success' => false,
 		'status' => 400,
 		'error' => $message
 	];
-
 	if ($errors) {
 		$response['details'] = $errors;
 	}
-
 	echo json_encode($response);
 	exit;
 }
@@ -72,26 +56,23 @@ function sendBadMethod($allow){
 
 function sendServerError(){
 	http_response_code(500);
-        echo json_encode([
-            'success' => false,
-            'error' => 'Internal server error'
-        ]);
+	echo json_encode([
+		'success' => false,
+		'error' => 'Internal server error'
+	]);
 	exit;
 }
 
 function sendUnauthorized($message = 'Unauthorized', $errors = null){
 	http_response_code(401);
-
 	$response = [
 		'success' => false,
 		'status' => 401,
 		'error' => $message
 	];
-
 	if ($errors) {
 		$response['details'] = $errors;
 	}
-
 	echo json_encode($response);
 	exit;
 }
@@ -108,50 +89,51 @@ function checkParameters($data, $parametros){
 	return $error;
 }
 
-function startSession($usuario){
-	session_start();
-	session_regenerate_id(true);
-	$_SESSION['user_id'] = $usuario->id;
-	$_SESSION['ip'] = $_SERVER['REMOTE_ADDR'];
-	$_SESSION['user-agent'] = $_SERVER['HTTP_USER_AGENT'];
-
-	//error_log("SESSION DATA: " . print_r($_SESSION, true));
-
-	//error_log("VALUES:::::");
-	//error_log("user_id: " . $usuario->id);
-	//error_log("user_agent: " . $_SERVER['HTTP_USER_AGENT']);
-	//error_log("ip: " . $_SERVER['REMOTE_ADDR']);
-
-	error_log("Session Started for user_id: ".$_SESSION['user_id']." ; ip address: ".$_SERVER['REMOTE_ADDR']);
+/**
+ * Crea una sesión en la BD y envía la cookie con el token al cliente.
+ * @return string el token generado
+ */
+function startSession($usuario, $seshnd){
+	$token = $seshnd->crearSesion($usuario->id);
+	if($token === false){
+		error_log("api.startSession: no se pudo crear la sesión para user_id ".$usuario->id);
+		throw new Exception("No se pudo iniciar la sesión.");
+	}
+	error_log("Session Started for user_id: ".$usuario->id." ; ip address: ".$_SERVER['REMOTE_ADDR']);
+	return $token;
 }
 
-function destroySession(){
-	session_start();
-	session_destroy();
+/**
+ * Elimina la sesión de la BD y borra la cookie.
+ */
+function destroySession($seshnd){
+	$header = $_SERVER['HTTP_AUTHORIZATION'] ?? '';
+	if(preg_match('/Bearer\s+(\S+)/', $header, $m)){
+		try { $seshnd->eliminarSesion($m[1]); }
+		catch(Exception $e){ error_log("destroySession: ".$e); }
+	}
 }
 
-function checkSession(){
-	if (session_status() === PHP_SESSION_NONE) {
-		session_start();
-	} 
-	//error_log("SESSION DATA: " . print_r($_SESSION, true));
-
-	if(!isset($_SESSION['user_id'])){
-		error_log("api.checkSession returned false: Session not opened.");
+/**
+ * Valida la cookie contra la BD.
+ * @return Sesion|false el objeto Sesion si es válida, false si no
+ */
+function checkSession($seshnd){
+	$header = $_SERVER['HTTP_AUTHORIZATION'] ?? '';
+	if(!preg_match('/Bearer\s+(\S+)/', $header, $m)){
+		error_log("api.checkSession: no Bearer token.");
 		return false;
 	}
-////////if($_SESSION['ip'] !== $_SERVER['REMOTE_ADDR']){
-////////	error_log("api.checkSession returned false: ip address mismatch, session ip = ".$_SESSION['ip']." | remote ip = ".$_SERVER['REMOTE_ADDR']);
-////////	destroySession();
-////////	return false;
-////////}
-	if($_SESSION['user-agent'] !== $_SERVER['HTTP_USER_AGENT']){
-		error_log("api.checkSession returned false: user-agent mismatch; session user-agent = ".$_SESSION['user-agent']." ; remote user-agent = ".$_SERVER['HTTP_USER_AGENT']);
-		destroySession();
+	$token = $m[1];
+	try {
+		$sesion = $seshnd->obtenerPorToken($token);
+	} catch(Exception $e){
+		error_log("api.checkSession error: ".$e);
 		return false;
 	}
-
-	//si ningun error salto
-	error_log("api.checkSession returned true.");
-	return true;
+	if($sesion === false){
+		error_log("api.checkSession: token no encontrado.");
+		return false;
+	}
+	return $sesion;
 }
