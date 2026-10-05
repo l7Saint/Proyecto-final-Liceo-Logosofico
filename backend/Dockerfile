@@ -19,6 +19,7 @@ RUN chown -R www-data:www-data /var/www/html \
 
 #RUN sed -i 's/AllowOverride None/AllowOverride All/' /etc/apache2/apache2.conf
 
+RUN a2enmod rewrite
 #expone el puerto 80 (http)
 EXPOSE 80
 

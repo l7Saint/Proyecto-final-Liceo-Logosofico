@@ -24,7 +24,7 @@ function crear($method, $usrhnd, $seshnd){
 		error_log("Bad Method en api.admin.crear: " . $method);
 		sendBadMethod('POST');
 	}
-	if(!verificarAdministrador($usrhnd, $seshnd)){
+	if(verificarAdministrador($usrhnd, $seshnd) != 1){
 		error_log("Unauthorized en api.admin.crear: ip: " . $_SERVER['REMOTE_ADDR']);
 		sendUnauthorized('Unauthorized');
 	}
@@ -57,7 +57,7 @@ function crear($method, $usrhnd, $seshnd){
 			null //$fecha_registro
 		);
 
-		$newId = $usrhnd->crearUsuario($usuario);
+		$newId = $usrhnd->crearUsuarioAdmin($usuario);
 		if($newId){
 			http_response_code(200);
 			echo json_encode([
@@ -81,7 +81,7 @@ function obtener($method, $usrhnd, $seshnd){
 		error_log("Bad Method en api.admin.obtener: " . $method);
 		sendBadMethod('GET');
 	}
-	if(!verificarAdministrador($usrhnd, $seshnd)){
+	if(verificarAdministrador($usrhnd, $seshnd) != 1){
 		error_log("Unauthorized en api.admin.obtener. ip: " . $_SERVER['REMOTE_ADDR']);
 		sendUnauthorized('Unauthorized');
 	}
@@ -122,7 +122,7 @@ function modificar($method, $usrhnd, $seshnd){
 		error_log("Bad Method en api.admin.modificar: " . $method);
 		sendBadMethod('PUT');
 	}
-	if(!verificarAdministrador($usrhnd, $seshnd)){
+	if(verificarAdministrador($usrhnd, $seshnd) != 1){
 		error_log("Unauthorized en api.admin.modificar: ip: " . $_SERVER['REMOTE_ADDR']);
 		sendUnauthorized('Unauthorized');
 	}
@@ -188,7 +188,7 @@ function eliminar($method, $usrhnd, $seshnd){
 		error_log("Bad Method en api.admin.eliminar: " . $method);
 		sendBadMethod('DELETE');
 	}
-	if(!verificarAdministrador($usrhnd, $seshnd)){
+	if(verificarAdministrador($usrhnd, $seshnd) != 1){
 		error_log("Unauthorized en api.admin.eliminar. ip: " . $_SERVER['REMOTE_ADDR']);
 		sendUnauthorized('Unauthorized');
 	}

@@ -26,7 +26,7 @@ $admin = new Usuario(
 null
 );
 
-$id = $hnd->crearUsuario($admin);
+$id = $hnd->crearUsuarioAdmin($admin);
 if (!$id) {
 	fwrite(STDERR, "Failed to create admin user.\n");
 	exit(1);

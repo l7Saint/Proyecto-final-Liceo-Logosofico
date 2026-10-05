@@ -45,6 +45,7 @@ function login($method, $usrhnd, $seshnd) {
 				'nombre'         => $usuario->nombre,
 				'apellido'       => $usuario->apellido,
 				'email'          => $usuario->email,
+				'es_admin'       => (int)$usuario->es_admin,
 				'fecha_registro' => $usuario->fecha_registro
 			]
 		]);

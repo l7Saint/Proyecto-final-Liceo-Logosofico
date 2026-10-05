@@ -157,14 +157,6 @@ $url     = 'http://' . $backend . ':' . $port;
 
             <div class="admin-seccion">
 
-                <button
-                    type="button"
-                    class="admin-btn"
-                    onclick="window.location.href='../administrador/ingreso.html'">
-
-                    Soy administrador
-
-                </button>
 
             </div>
 
@@ -187,97 +179,105 @@ $url     = 'http://' . $backend . ':' . $port;
 
     </main>
 
+<script>
+    const TOKEN_KEY = 'urbanaut_token';
 
-    <script>
+    function setToken(token) {
+        localStorage.setItem(TOKEN_KEY, token);
+    }
 
-	function obtenerDatos(){
-            const email =
-                document
-                .getElementById("email")
-                .value
-                .trim();
+    function getToken() {
+        return localStorage.getItem(TOKEN_KEY);
+    }
 
-            const contrasena =
-                document
-                .getElementById("password")
-                .value
-                .trim();
+    function obtenerDatos() {
+        const email = document
+            .getElementById("email")
+            .value
+            .trim();
 
-	    return {
-		email,
-		contrasena
-	    };
-	}
+        const contrasena = document
+            .getElementById("password")
+            .value
+            .trim();
 
-async function enviarDatos(datos){
-	try {
-		const response = await fetch(
-			<?= "\"".$url.'/api/usuario.php/login'."\"" ?>,
-			{
-				method: "POST",
-				credentials: "include",
-				headers: {
-					"Content-Type": "application/json"
-				},
-				body: JSON.stringify(datos)
-			}
-		);
-		let data = await response.json();
-		if (response.status === 200) {
-			alert("Inicio de sesion exitoso.");
-			document.getElementById("formLogin").reset();
-		} else if (response.status === 400) {
-			alert("Faltan datos o hay datos incorrectos.");
-			console.error(data);
-		} else if (response.status === 500) {
-			alert("Error interno del servidor.");
-			console.error(data);
-		} else {
-			alert("Ocurrió un error inesperado.");
-			console.error(data);
-		}
-	} catch (error) {
-              console.error(
-                  "Error al conectar con la API:",
-                  error
-              );
-              alert("No se pudo conectar con el servidor.");
-          }
+        return { email, contrasena };
+    }
 
-}
+    async function enviarDatos(datos) {
+        try {
+            const response = await fetch(
+                <?= "\"" . $url . '/api/usuario.php/login' . "\"" ?>,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Accept": "application/json"
+                    },
+                    body: JSON.stringify(datos)
+                }
+            );
 
-        function iniciarSesion() {
-	    const datos = obtenerDatos();
-            if (
-                datos.email === "" ||
-                datos.contrasena === ""
-            ) {
-                alert(
-                    "Por favor, completá el correo electrónico y la contraseña."
-                );
-                return;
+            let data = await response.json();
+
+            if (response.status === 200) {
+                if (!data.token) {
+                    console.error("Login OK pero no vino token en la respuesta.", data);
+                    alert("Error de sesión: el servidor no devolvió un token.");
+                    return;
+                }
+                setToken(data.token);
+
+		if(data.usuario.es_admin == 1)
+                window.location.href = '../administrador/';
+
+            } else if (response.status === 400) {
+                alert("Faltan datos o hay datos incorrectos.");
+                console.error(data);
+
+            } else if (response.status === 401) {
+                alert("Email o contraseña incorrectos.");
+                console.error(data);
+
+            } else if (response.status === 500) {
+                alert("Error interno del servidor.");
+                console.error(data);
+
+            } else {
+                alert("Ocurrió un error inesperado.");
+                console.error(data);
             }
-            /* COMPROBAR FORMATO DEL EMAIL */
-            const formatoEmail =
-                /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (
-                !formatoEmail.test(datos.email)
-            ) {
-                alert(
-                    "Ingresá un correo electrónico válido."
-                );
-                return;
-            }
-	    enviarDatos(datos);
+        } catch (error) {
+            console.error("Error al conectar con la API:", error);
+            alert("No se pudo conectar con el servidor.");
+        }
+    }
+
+    function iniciarSesion() {
+        const datos = obtenerDatos();
+
+        if (datos.email === "" || datos.contrasena === "") {
+            alert("Por favor, completá el correo electrónico y la contraseña.");
+            return;
         }
 
+        const formatoEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!formatoEmail.test(datos.email)) {
+            alert("Ingresá un correo electrónico válido.");
+            return;
+        }
 
+        enviarDatos(datos);
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
         document
-          .getElementById("formLogin")
-          .addEventListener("submit", function (event) {
-            event.preventDefault();
-	    iniciarSesion();
-	  });
-    </script>
+            .getElementById("formLogin")
+            .addEventListener("submit", function (event) {
+                event.preventDefault();
+                iniciarSesion();
+            });
+    });
+</script>
 </body>
 </html>

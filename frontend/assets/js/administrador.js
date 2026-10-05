@@ -27,7 +27,7 @@ function authHeaders(extra = {}) {
   const token = getToken();
   if (token) {
     headers['Authorization'] = `Bearer ${token}`;
-  }
+}
   return headers;
 }
 
@@ -44,9 +44,8 @@ async function authFetch(url, options = {}) {
 
   if (response.status === 401) {
     clearToken();
-    // Ajustá esta ruta a donde tengas tu pantalla de login
-    window.location.href = '/login.html';
     throw new Error('Sesión expirada. Iniciá sesión nuevamente.');
+	  window.location.replace("/login/login.php");
   }
 
   return response;
@@ -284,7 +283,6 @@ function cambiarEventoEspecial(switchEvento) {
 
 document.addEventListener('DOMContentLoaded', () => {
   if (!getToken()) {
-    window.location.href = '/login.html';
     return;
   }
   cargarUsuarios();
@@ -301,6 +299,6 @@ async function logout() {
     // aunque falle, limpiamos igual
   } finally {
     clearToken();
-    window.location.href = '/login.html';
+	 window.location.href = '../login/login.php'
   }
 }

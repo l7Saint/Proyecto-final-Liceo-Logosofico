@@ -20,10 +20,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit;
 }
 
-// -- Token-based session config --
-define('SESSION_COOKIE_NAME', 'session_token');
-define('SESSION_COOKIE_LIFETIME', 3600); // 1 hora
-
 function verificarAdministrador($usrhnd, $seshnd){
 	$sesion = checkSession($seshnd);
 	if($sesion === false)
@@ -31,6 +27,7 @@ function verificarAdministrador($usrhnd, $seshnd){
 	$user = $usrhnd->obtenerPorId($sesion->id_usuario);
 	if(!$user)
 		return false;
+	error_log("Call a api.verificarAdministrador: $user->es_admin");
 	return $user->es_admin;
 }
 
@@ -89,9 +86,75 @@ function checkParameters($data, $parametros){
 	return $error;
 }
 
+/* ============================================================
+   EXTRACCIÓN DEL BEARER TOKEN
+   ============================================================
+   Apache no siempre reenvía el header Authorization a PHP.
+   Esto depende del SAPI:
+     - mod_php:                   HTTP_AUTHORIZATION disponible.
+     - CGI/FastCGI:               suele requerir REDIRECT_HTTP_AUTHORIZATION
+                                  o un rewrite rule en .htaccess.
+     - Algunos proxys/frameworks: solo expuesto vía getallheaders().
+
+   Este helper prueba todas las fuentes conocidas en orden y
+   devuelve el token limpio, o null si no hay ninguno.
+   ============================================================ */
+function getBearerToken(){
+	$header = '';
+
+	// 1) Caso normal (mod_php)
+	if (!empty($_SERVER['HTTP_AUTHORIZATION'])) {
+		$header = $_SERVER['HTTP_AUTHORIZATION'];
+	}
+	// 2) Apache con CGI/FastCGI
+	elseif (!empty($_SERVER['REDIRECT_HTTP_AUTHORIZATION'])) {
+		$header = $_SERVER['REDIRECT_HTTP_AUTHORIZATION'];
+	}
+	// 3) Fallback genérico: recorrer todos los headers
+	elseif (function_exists('getallheaders')) {
+		foreach (getallheaders() as $k => $v) {
+			if (strcasecmp($k, 'Authorization') === 0) {
+				$header = $v;
+				break;
+			}
+		}
+	}
+	// 4) Último recurso: leer de apache_request_headers()
+	elseif (function_exists('apache_request_headers')) {
+		foreach (apache_request_headers() as $k => $v) {
+			if (strcasecmp($k, 'Authorization') === 0) {
+				$header = $v;
+				break;
+			}
+		}
+	}
+
+	if ($header === '') {
+		error_log('no hay header chavales');
+		return null;
+	}
+
+	// Acepta "Bearer <token>" (case-insensitive)
+	if (preg_match('/^\s*Bearer\s+(\S+)\s*$/i', $header, $m)) {
+		return $m[1];
+	}
+
+	error_log('no hay header chavales');
+	return null;
+}
+
+/* ============================================================
+   CICLO DE VIDA DE LA SESIÓN
+   ============================================================ */
+
 /**
- * Crea una sesión en la BD y envía la cookie con el token al cliente.
+ * Crea una sesión en la BD y devuelve el token al llamador.
+ * No envía cookie: el cliente lo guarda y lo manda como Bearer.
+ *
+ * @param Usuario       $usuario
+ * @param SesionHandler $seshnd
  * @return string el token generado
+ * @throws Exception si no se puede crear la sesión
  */
 function startSession($usuario, $seshnd){
 	$token = $seshnd->crearSesion($usuario->id);
@@ -104,27 +167,35 @@ function startSession($usuario, $seshnd){
 }
 
 /**
- * Elimina la sesión de la BD y borra la cookie.
+ * Elimina la sesión de la BD asociada al Bearer token de la request.
+ * Si no hay token, no hace nada.
+ *
+ * @param SesionHandler $seshnd
  */
 function destroySession($seshnd){
-	$header = $_SERVER['HTTP_AUTHORIZATION'] ?? '';
-	if(preg_match('/Bearer\s+(\S+)/', $header, $m)){
-		try { $seshnd->eliminarSesion($m[1]); }
-		catch(Exception $e){ error_log("destroySession: ".$e); }
+	$token = getBearerToken();
+	if($token === null){
+		return;
+	}
+	try {
+		$seshnd->eliminarSesion($token);
+	} catch(Exception $e){
+		error_log("destroySession: ".$e);
 	}
 }
 
 /**
- * Valida la cookie contra la BD.
- * @return Sesion|false el objeto Sesion si es válida, false si no
+ * Valida el Bearer token contra la BD.
+ *
+ * @param SesionHandler $seshnd
+ * @return Sesion|false el objeto Sesion si es válido, false si no
  */
 function checkSession($seshnd){
-	$header = $_SERVER['HTTP_AUTHORIZATION'] ?? '';
-	if(!preg_match('/Bearer\s+(\S+)/', $header, $m)){
+	$token = getBearerToken();
+	if($token === null){
 		error_log("api.checkSession: no Bearer token.");
 		return false;
 	}
-	$token = $m[1];
 	try {
 		$sesion = $seshnd->obtenerPorToken($token);
 	} catch(Exception $e){
@@ -135,5 +206,6 @@ function checkSession($seshnd){
 		error_log("api.checkSession: token no encontrado.");
 		return false;
 	}
+	error_log("SESION: $sesion->id_usuario");
 	return $sesion;
 }

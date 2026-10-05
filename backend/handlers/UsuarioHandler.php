@@ -13,6 +13,7 @@ class UsuarioHandler {
 	private $stmt_obtenerPorEmail;
 	private $stmt_obtenerTodos;
 	private $stmt_actualizarUsuario;
+	private $stmt_crearUsuarioAdmin;
 
 	/**
 	 * Obtiene un usuario por su ID
@@ -173,6 +174,35 @@ class UsuarioHandler {
 	}
 
 	/**
+	* Crea un nuevo usuario en la base de datos, incluyendo los flags
+	* inactivo y es_admin.
+	*
+	* @param Usuario $usuario
+	* @return int|false
+	* @throws Exception
+	*/
+	public function crearUsuarioAdmin($usuario){
+		try {
+			$success = $this->stmt_crearUsuarioAdmin->execute([
+				$usuario->nombre,
+				$usuario->apellido,
+				$usuario->email,
+				$usuario->contrasena_hash,
+				$usuario->inactivo,
+				$usuario->es_admin,
+			]);
+			if($success){
+				return $this->db->lastInsertId();
+			} else {
+				return false;
+			}
+		} catch(PDOException $e) {
+			error_log("Error en UsuarioHandler.crearUsuarioAdmin: " . $e);
+			throw new Exception("Error en UsuarioHandler.crearUsuarioAdmin.");
+		}
+	}
+
+	/**
 	 * Constructor - Inicializa el manejador con una conexión a la base de datos y prepara las sentencias
 	 *
 	 * @param PDO $db Un objeto PDO válido de conexión a la base de datos
@@ -191,6 +221,7 @@ class UsuarioHandler {
 			$this->stmt_obtenerPorEmail = $this->db->prepare("SELECT * FROM Usuario WHERE email = ?;");
 			$this->stmt_obtenerTodos = $this->db->prepare("SELECT * FROM Usuario;");
 			$this->stmt_actualizarUsuario = $this->db->prepare("UPDATE Usuario SET nombre = ?, apellido = ?, email = ?, contrasena_hash = ?, inactivo = ?, es_admin = ? WHERE id = ?;");
+			$this->stmt_crearUsuarioAdmin = $this->db->prepare("INSERT INTO Usuario (nombre, apellido, email, contrasena_hash, inactivo, es_admin) VALUES (?,?,?,?,?,?);");
 		} catch (PDOException $e){
 			throw new Exception("Error en UsuarioHandler.prepare");
 		}
