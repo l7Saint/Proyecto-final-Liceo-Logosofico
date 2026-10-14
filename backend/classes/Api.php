@@ -1,5 +1,5 @@
 <?php
-require_once '/functions.php';
+require_once '../functions.php';
 
 class Endpoint {
 	public function __construct(
@@ -7,7 +7,7 @@ class Endpoint {
 		public string $method,
 		public array $parameters,
 		/**
-		 * @param Closure(array $data, array $handlers): void $run
+		 * @param Closure(array $data, array $handlers): array $run
 		 */
 		public Closure $run,
 	) {}
@@ -15,11 +15,17 @@ class Endpoint {
 
 class BadApiException extends LogicException {}
 class InvalidDataException extends RuntimeException {}
+class InvalidEndpointException extends RuntimeException {}
 class BadMethodException extends RuntimeException {}
 class GenericRuntimeException extends RuntimeException {
 	public int $httpCode;
-	public function __construct(int $httpCode, string $message){
+	/**
+	 * @param ?Closure(): array $getResponse
+	 */
+	public ?Closure $getResponse;
+	public function __construct(int $httpCode, string $message, ?Closure $getResponse){
 		$this->httpCode = $httpCode;
+		$this->getResponse = $getResponse
 		parent::__construct($message);
 	}
 }
@@ -36,7 +42,7 @@ class Api {
 	public function runEndpoint(string $endpName, string $method, array $data): void{
 		$endp = $this->findEndpoint($endpName);
 		if($endp === null)
-			throw new BadApiException("Invalid endpoint name: {$endpName}.");
+			throw new InvalidEndpointException("Invalid endpoint name: {$endpName}.");
 		elog('debug', "Call to api.{$this->name}.{$endp->name}.");
 		$errorMsg = $this->checkParameters($data, $endp->parameters);
 		if($errorMsg !== null)

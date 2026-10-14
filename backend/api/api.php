@@ -209,3 +209,4 @@ function checkSession($seshnd){
 	error_log("SESION: $sesion->id_usuario");
 	return $sesion;
 }
+
