@@ -1,1344 +1,663 @@
+
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Urbanaut | Mapa</title>
 
-    <!-- Bootstrap -->
-    <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
-        rel="stylesheet">
-
-    <!-- Bootstrap Icons -->
-    <link
-        rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
-
-    <!-- Leaflet -->
-    <link
-        rel="stylesheet"
-        href="https://unpkg.com/leaflet/dist/leaflet.css">
-
-    <script
-        src="https://unpkg.com/leaflet/dist/leaflet.js">
-    </script>
-
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.css">
 
     <style>
-
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-
         body {
-
             min-height: 100vh;
-
-            font-family:
-                "Segoe UI",
-                Arial,
-                sans-serif;
-
-            background:
-                url("../imagenes/imagen2.jpg")
-                center center / cover
-                no-repeat fixed;
-
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: url("../imagenes/imagen2.jpg") center center / cover no-repeat fixed;
             padding-bottom: 30px;
         }
 
-
         body::before {
-
             content: "";
-
             position: fixed;
-
             inset: 0;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(0,180,255,0.15),
-                    rgba(0,255,170,0.08)
-                );
-
+            background: linear-gradient(135deg, rgba(0,180,255,.15), rgba(0,255,170,.08));
             backdrop-filter: blur(2px);
-
             z-index: -1;
         }
 
-
-        /* CONTENEDOR */
-
         .contenedor {
-
             width: 100%;
-
             min-height: 100vh;
-
             display: flex;
-
             justify-content: center;
-
             align-items: center;
-
             padding: 15px;
         }
 
-
-        /* TARJETA */
-
         .card-urbanaut {
-
             width: min(95%, 1000px);
-
             padding: 22px;
-
             border-radius: 30px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(255,255,255,0.72),
-                    rgba(230,250,255,0.45)
-                );
-
-            border:
-                1px solid
-                rgba(255,255,255,0.8);
-
-            box-shadow:
-                0 25px 70px
-                rgba(0,40,70,0.30);
-
+            background: linear-gradient(135deg, rgba(255,255,255,.72), rgba(230,250,255,.45));
+            border: 1px solid rgba(255,255,255,.8);
+            box-shadow: 0 25px 70px rgba(0,40,70,.30);
             backdrop-filter: blur(22px);
         }
 
-
-        /* TITULO */
-
         .titulo {
-
             display: flex;
-
             align-items: center;
-
             justify-content: center;
-
             gap: 10px;
-
             margin-bottom: 5px;
         }
 
-
         .titulo i {
-
             color: #238bff;
-
             font-size: 32px;
         }
-
 
         h1 {
-
             color: #123d69;
-
             font-size: 32px;
-
             font-weight: 750;
-        }
-
-
-        .subtitulo {
-
-            text-align: center;
-
-            color: #58738e;
-
-            font-size: 13px;
-
-            margin-bottom: 12px;
-        }
-
-
-        /* MAPA */
-
-        #map {
-
-            width: 100%;
-
-            height: 58vh;
-
-            min-height: 350px;
-
-            border:
-                5px solid
-                #1b3237;
-
-            border-radius: 18px;
-
-            overflow: hidden;
-        }
-
-
-        /* BOTONES */
-
-        .botones-mapa {
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            gap: 8px;
-
-            margin-top: 12px;
-
-            flex-wrap: wrap;
-        }
-
-
-        .volver,
-        .btn-mapa {
-
-            display: inline-flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            gap: 7px;
-
-            padding: 10px 16px;
-
-            border-radius: 12px;
-
-            color: white;
-
-            text-decoration: none;
-
-            font-size: 13px;
-
-            font-weight: 700;
-
-            border: none;
-
-            cursor: pointer;
-
-            transition: 0.25s;
-        }
-
-
-        .volver {
-
-            background: #1b3237;
-        }
-
-
-        .volver:hover {
-
-            background: #238bff;
-
-            color: white;
-
-            transform: translateY(-2px);
-        }
-
-
-        .btn-mapa:hover {
-
-            transform: translateY(-2px);
-
-            color: white;
-        }
-
-
-        /* LIBERAR */
-
-        .liberar {
-
-            background: #198754;
-        }
-
-
-        .liberar:hover {
-
-            background: #146c43;
-        }
-
-
-        /* OCUPAR */
-
-        .ocupar {
-
-            background: #dc3545;
-        }
-
-
-        .ocupar:hover {
-
-            background: #b02a37;
-        }
-
-
-        /* BUSCAR ESPACIO */
-
-        .buscar {
-
-            background: #238bff;
-        }
-
-
-        .buscar:hover {
-
-            background: #0866c6;
-        }
-
-
-        /* ESTACIONAMIENTO PRIVADO */
-
-        .privado {
-
-            background: #7657d9;
-        }
-
-
-        .privado:hover {
-
-            background: #5a3db5;
-        }
-
-
-        /* =========================
-           POPUP
-        ========================= */
-
-        .popup-fondo {
-
-            display: none;
-
-            position: fixed;
-
-            inset: 0;
-
-            background:
-                rgba(5,25,35,0.55);
-
-            backdrop-filter: blur(4px);
-
-            align-items: center;
-
-            justify-content: center;
-
-            padding: 15px;
-
-            z-index: 9999;
-        }
-
-
-        .popup {
-
-            width: 100%;
-
-            max-width: 650px;
-
-            max-height: 90vh;
-
-            overflow-y: auto;
-
-            background:
-                rgba(245,252,255,0.97);
-
-            border-radius: 22px;
-
-            padding: 24px;
-
-            box-shadow:
-                0 25px 70px
-                rgba(0,30,50,0.40);
-        }
-
-
-        .popup-encabezado {
-
-            display: flex;
-
-            justify-content: space-between;
-
-            align-items: center;
-
-            margin-bottom: 18px;
-
-            border-bottom:
-                1px solid
-                rgba(18,61,105,0.12);
-
-            padding-bottom: 12px;
-        }
-
-
-        .popup-encabezado h2 {
-
-            color: #123d69;
-
-            font-size: 22px;
-
             margin: 0;
         }
 
-
-        .cerrar {
-
-            border: none;
-
-            background: transparent;
-
+        .subtitulo {
+            text-align: center;
             color: #58738e;
-
-            font-size: 25px;
-
-            cursor: pointer;
+            font-size: 13px;
+            margin: 8px 0 12px;
         }
 
-
-        .cerrar:hover {
-
-            color: #dc3545;
-        }
-
-
-        /* TARJETAS DE ESTACIONAMIENTOS */
-
-        .estacionamiento {
-
-            border:
-                1px solid
-                rgba(35,139,255,0.16);
-
-            border-radius: 15px;
-
-            padding: 15px;
-
-            margin-bottom: 12px;
-
-            background:
-                rgba(235,248,255,0.75);
-
-            transition: 0.2s;
-        }
-
-
-        .estacionamiento:hover {
-
-            transform: translateY(-2px);
-
-            box-shadow:
-                0 7px 20px
-                rgba(35,139,255,0.10);
-        }
-
-
-        .estacionamiento h3 {
-
+        #estadoGPS {
+            text-align: center;
+            font-size: 13px;
             color: #123d69;
-
-            font-size: 16px;
-
             margin-bottom: 10px;
         }
 
+        #map {
+            width: 100%;
+            height: 58vh;
+            min-height: 350px;
+            border: 5px solid #1b3237;
+            border-radius: 18px;
+            overflow: hidden;
+        }
+
+        .botones-mapa {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+        }
+
+        .volver, .btn-mapa {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            padding: 10px 16px;
+            border-radius: 12px;
+            color: white;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            transition: .25s;
+        }
+
+        .volver { background: #1b3237; }
+        .volver:hover { background: #238bff; color: white; }
+
+        .btn-mapa:hover { transform: translateY(-2px); }
+
+        .liberar { background: #198754; }
+        .liberar:hover { background: #146c43; }
+
+        .ocupar { background: #dc3545; }
+        .ocupar:hover { background: #b02a37; }
+
+        .buscar { background: #238bff; }
+        .buscar:hover { background: #0866c6; }
+
+        .privado { background: #7657d9; }
+        .privado:hover { background: #5a3db5; }
+
+        .popup-fondo {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(5,25,35,.55);
+            backdrop-filter: blur(4px);
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+            z-index: 9999;
+        }
+
+        .popup {
+            width: 100%;
+            max-width: 650px;
+            max-height: 90vh;
+            overflow-y: auto;
+            background: rgba(245,252,255,.97);
+            border-radius: 22px;
+            padding: 24px;
+            box-shadow: 0 25px 70px rgba(0,30,50,.40);
+        }
+
+        .popup-encabezado {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+            border-bottom: 1px solid rgba(18,61,105,.12);
+            padding-bottom: 12px;
+        }
+
+        .popup-encabezado h2 {
+            color: #123d69;
+            font-size: 22px;
+            margin: 0;
+        }
+
+        .cerrar {
+            border: none;
+            background: transparent;
+            color: #58738e;
+            font-size: 25px;
+            cursor: pointer;
+        }
+
+        .estacionamiento {
+            border: 1px solid rgba(35,139,255,.16);
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 12px;
+            background: rgba(235,248,255,.75);
+            transition: .2s;
+        }
+
+        .estacionamiento:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 20px rgba(35,139,255,.10);
+        }
+
+        .estacionamiento h3 {
+            color: #123d69;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
 
         .dato-estacionamiento {
-
             display: flex;
-
-            align-items: center;
-
+            align-items: flex-start;
             gap: 8px;
-
             color: #58738e;
-
             font-size: 12px;
-
             margin: 6px 0;
         }
 
-
         .dato-estacionamiento i {
-
             color: #238bff;
-
             width: 17px;
-
             text-align: center;
+            flex-shrink: 0;
         }
-
 
         .precio {
-
             color: #198754;
-
             font-weight: 700;
         }
-
 
         .btn-ver-mapa {
-
             margin-top: 10px;
-
             width: 100%;
-
             padding: 9px;
-
             border: none;
-
             border-radius: 10px;
-
             background: #238bff;
-
             color: white;
-
             font-weight: 700;
-
             cursor: pointer;
-
-            transition: 0.2s;
         }
 
-
-        .btn-ver-mapa:hover {
-
-            background: #0866c6;
-        }
-
-
-        /* CELULAR */
+        .btn-ver-mapa:hover { background: #0866c6; }
 
         @media (max-width: 700px) {
-
-            body {
-
-                padding: 10px;
-            }
-
-
-            .contenedor {
-
-                padding: 5px;
-            }
-
+            body { padding: 10px; }
+            .contenedor { padding: 5px; }
 
             .card-urbanaut {
-
                 width: 100%;
-
                 padding: 15px;
-
                 border-radius: 22px;
             }
 
-
-            h1 {
-
-                font-size: 27px;
-            }
-
+            h1 { font-size: 27px; }
 
             #map {
-
                 height: 52vh;
-
                 min-height: 300px;
             }
 
-
             .botones-mapa {
-
                 flex-direction: column;
-
                 width: 100%;
             }
 
-
-            .volver,
-            .btn-mapa {
-
-                width: 100%;
-            }
-
+            .volver, .btn-mapa { width: 100%; }
 
             .popup {
-
                 max-height: 92vh;
-
                 padding: 18px;
             }
         }
-
     </style>
-
 </head>
 
-
 <body>
-
-
-    <main class="contenedor">
-
-
-        <section class="card-urbanaut">
-
-
-            <!-- TITULO -->
-
-            <div class="titulo">
-
-                <i class="bi bi-map"></i>
-
-                <h1>Mapa</h1>
-
-            </div>
-
-
-            <p class="subtitulo">
-
-                Encontrá lugares disponibles cerca tuyo.
-
-            </p>
-
-
-            <!-- MAPA -->
-
-            <div id="map"></div>
-
-
-            <!-- BOTONES -->
-
-            <div class="botones-mapa">
-
-
-                <!-- VOLVER -->
-
-                <a
-                    href="../inicio/index.html"
-                    class="volver">
-
-                    <i class="bi bi-house"></i>
-
-                    Volver a Inicio
-
-                </a>
-
-
-                <!-- LIBERAR -->
-
-                <button
-                    class="btn-mapa liberar"
-                    id="btnLiberar">
-
-                    <i class="bi bi-check-circle"></i>
-
-                    Liberar espacio
-
-                </button>
-
-
-                <!-- OCUPAR -->
-
-                <button
-                    class="btn-mapa ocupar"
-                    id="btnOcupar">
-
-                    <i class="bi bi-x-circle"></i>
-
-                    Ocupar espacio
-
-                </button>
-
-
-                <!-- BUSCAR ESPACIO -->
-
-                <button
-                    class="btn-mapa buscar"
-                    id="btnBuscar">
-
-                    <i class="bi bi-search"></i>
-
-                    Buscar espacio
-
-                </button>
-
-
-                <!-- ESTACIONAMIENTO PRIVADO -->
-
-                <button
-                    class="btn-mapa privado"
-                    id="btnPrivado">
-
-                    <i class="bi bi-p-square-fill"></i>
-
-                    Buscar estacionamiento privado
-
-                </button>
-
-
-            </div>
-
-
-        </section>
-
-    </main>
-
-
-
-    <!-- =========================
-         POPUP ESTACIONAMIENTOS
-    ========================= -->
-
-    <div
-        class="popup-fondo"
-        id="popupFondo">
-
-
-        <div class="popup">
-
-
-            <div class="popup-encabezado">
-
-                <h2>
-                    <i class="bi bi-p-square"></i>
-                    Estacionamientos privados
-                </h2>
-
-                <button
-                    class="cerrar"
-                    id="cerrarPopup">
-
-                    <i class="bi bi-x-lg"></i>
-
-                </button>
-
-            </div>
-
-
-            <p
-                style="
-                    color:#58738e;
-                    font-size:12px;
-                    margin-bottom:15px;
-                ">
-
-                Opciones cercanas al Liceo Logosófico y
-                Parque Batlle.
-
-            </p>
-
-
-
-            <!-- ESTACIONAMIENTO 1 -->
-
-            <div class="estacionamiento">
-
-                <h3>
-                    <i class="bi bi-car-front-fill"></i>
-                    Parking Parque
-                </h3>
-
-
-                <div class="dato-estacionamiento">
-
-                    <i class="bi bi-geo-alt-fill"></i>
-
-                    Dirección:
-                    Gerardo Grasso 2580
-
-                </div>
-
-
-                <div class="dato-estacionamiento">
-
-                    <i class="bi bi-signpost-2-fill"></i>
-
-                    Aprox. 350 m del Liceo
-
-                </div>
-
-
-                <div class="dato-estacionamiento">
-
-                    <i class="bi bi-telephone-fill"></i>
-
-                    Teléfono:
-                    2480 4521
-
-                </div>
-
-
-                <div class="dato-estacionamiento">
-
-                    <i class="bi bi-clock-fill"></i>
-
-                    Horario:
-                    07:00 - 22:00
-
-                </div>
-
-
-                <div class="dato-estacionamiento">
-
-                    <i class="bi bi-cash-coin"></i>
-
-                    Precio:
-                    <span class="precio">
-                        $180 por hora
-                    </span>
-
-                </div>
-
-
-                <button
-                    class="btn-ver-mapa"
-                    onclick="mostrarEstacionamiento(
-                        'Parking Parque',
-                        -34.8927,
-                        -56.1597
-                    )">
-
-                    <i class="bi bi-geo-alt"></i>
-
-                    Ver en el mapa
-
-                </button>
-
-            </div>
-
-
-
-            <!-- ESTACIONAMIENTO 2 -->
-
-            <div class="estacionamiento">
-
-                <h3>
-
-                    <i class="bi bi-car-front-fill"></i>
-
-                    Garage 8 de Octubre
-
-                </h3>
-
-
-                <div class="dato-estacionamiento">
-
-                    <i class="bi bi-geo-alt-fill"></i>
-
-                    Dirección:
-                    Av. 8 de Octubre 2810
-
-                </div>
-
-
-                <div class="dato-estacionamiento">
-
-                    <i class="bi bi-signpost-2-fill"></i>
-
-                    Aprox. 500 m del Liceo
-
-                </div>
-
-
-                <div class="dato-estacionamiento">
-
-                    <i class="bi bi-telephone-fill"></i>
-
-                    Teléfono:
-                    2487 3310
-
-                </div>
-
-
-                <div class="dato-estacionamiento">
-
-                    <i class="bi bi-clock-fill"></i>
-
-                    Horario:
-                    06:30 - 23:00
-
-                </div>
-
-
-                <div class="dato-estacionamiento">
-
-                    <i class="bi bi-cash-coin"></i>
-
-                    Precio:
-                    <span class="precio">
-                        $160 por hora
-                    </span>
-
-                </div>
-
-
-                <button
-                    class="btn-ver-mapa"
-                    onclick="mostrarEstacionamiento(
-                        'Garage 8 de Octubre',
-                        -34.8914,
-                        -56.1578
-                    )">
-
-                    <i class="bi bi-geo-alt"></i>
-
-                    Ver en el mapa
-
-                </button>
-
-            </div>
-
-
-
-            <!-- ESTACIONAMIENTO 3 -->
-
-            <div class="estacionamiento">
-
-                <h3>
-
-                    <i class="bi bi-car-front-fill"></i>
-
-                    Parking Batlle
-
-                </h3>
-
-
-                <div class="dato-estacionamiento">
-
-                    <i class="bi bi-geo-alt-fill"></i>
-
-                    Dirección:
-                    Av. Italia 2700
-
-                </div>
-
-
-                <div class="dato-estacionamiento">
-
-                    <i class="bi bi-signpost-2-fill"></i>
-
-                    Aprox. 650 m del Liceo
-
-                </div>
-
-
-                <div class="dato-estacionamiento">
-
-                    <i class="bi bi-telephone-fill"></i>
-
-                    Teléfono:
-                    2481 7742
-
-                </div>
-
-
-                <div class="dato-estacionamiento">
-
-                    <i class="bi bi-clock-fill"></i>
-
-                    Horario:
-                    24 horas
-
-                </div>
-
-
-                <div class="dato-estacionamiento">
-
-                    <i class="bi bi-cash-coin"></i>
-
-                    Precio:
-                    <span class="precio">
-                        $200 por hora
-                    </span>
-
-                </div>
-
-
-                <button
-                    class="btn-ver-mapa"
-                    onclick="mostrarEstacionamiento(
-                        'Parking Batlle',
-                        -34.8945,
-                        -56.1555
-                    )">
-
-                    <i class="bi bi-geo-alt"></i>
-
-                    Ver en el mapa
-
-                </button>
-
-            </div>
-
-
-
-            <!-- ESTACIONAMIENTO 4 -->
-
-            <div class="estacionamiento">
-
-                <h3>
-
-                    <i class="bi bi-car-front-fill"></i>
-
-                    Cochera del Parque
-
-                </h3>
-
-
-                <div class="dato-estacionamiento">
-
-                    <i class="bi bi-geo-alt-fill"></i>
-
-                    Dirección:
-                    Av. Ramón Anador 2450
-
-                </div>
-
-
-                <div class="dato-estacionamiento">
-
-                    <i class="bi bi-signpost-2-fill"></i>
-
-                    Aprox. 800 m del Liceo
-
-                </div>
-
-
-                <div class="dato-estacionamiento">
-
-                    <i class="bi bi-telephone-fill"></i>
-
-                    Teléfono:
-                    2486 9055
-
-                </div>
-
-
-                <div class="dato-estacionamiento">
-
-                    <i class="bi bi-clock-fill"></i>
-
-                    Horario:
-                    07:30 - 21:30
-
-                </div>
-
-
-                <div class="dato-estacionamiento">
-
-                    <i class="bi bi-cash-coin"></i>
-
-                    Precio:
-                    <span class="precio">
-                        $150 por hora
-                    </span>
-
-                </div>
-
-
-                <button
-                    class="btn-ver-mapa"
-                    onclick="mostrarEstacionamiento(
-                        'Cochera del Parque',
-                        -34.8905,
-                        -56.1640
-                    )">
-
-                    <i class="bi bi-geo-alt"></i>
-
-                    Ver en el mapa
-
-                </button>
-
-            </div>
-
-
+<main class="contenedor">
+    <section class="card-urbanaut">
+        <div class="titulo">
+            <i class="bi bi-map"></i>
+            <h1>Mapa</h1>
         </div>
 
+        <p class="subtitulo">Encontrá lugares disponibles cerca tuyo.</p>
+        <p id="estadoGPS">Buscando tu ubicación actual...</p>
+
+        <div id="map"></div>
+
+        <div class="botones-mapa">
+            <a href="../inicio/index.html" class="volver">
+                <i class="bi bi-house"></i> Volver a Inicio
+            </a>
+
+            <button class="btn-mapa liberar" id="btnLiberar" type="button">
+                <i class="bi bi-check-circle"></i> Liberar espacio
+            </button>
+
+            <button class="btn-mapa ocupar" id="btnOcupar" type="button">
+                <i class="bi bi-car-front"></i> Ocupar espacio
+            </button>
+
+            <button class="btn-mapa buscar" id="btnBuscar" type="button">
+                <i class="bi bi-search"></i> Buscar espacio
+            </button>
+
+            <button class="btn-mapa privado" id="btnPrivado" type="button">
+                <i class="bi bi-p-square-fill"></i> Buscar estacionamiento privado
+            </button>
+        </div>
+    </section>
+</main>
+
+<!-- VENTANA DE ESTACIONAMIENTOS PRIVADOS -->
+<div class="popup-fondo" id="popupFondo">
+    <div class="popup">
+        <div class="popup-encabezado">
+            <h2><i class="bi bi-p-square"></i> Estacionamientos privados</h2>
+            <button class="cerrar" id="cerrarPopup" type="button" aria-label="Cerrar">
+                <i class="bi bi-x-lg"></i>
+            </button>
+        </div>
+
+        <p style="color:#58738e;font-size:12px;margin-bottom:15px;">
+            Elegí un estacionamiento para ver su ubicación y la ruta desde donde estás.
+        </p>
+
+        <div class="estacionamiento">
+            <h3><i class="bi bi-car-front-fill"></i> Cocheras Del Parque</h3>
+            <div class="dato-estacionamiento"><i class="bi bi-geo-alt-fill"></i> Dirección: Gerardo Grasso 2668</div>
+            <div class="dato-estacionamiento"><i class="bi bi-telephone-fill"></i> Teléfono: 092 505 070</div>
+            <div class="dato-estacionamiento"><i class="bi bi-clock-fill"></i> Horario: 24 horas</div>
+            <div class="dato-estacionamiento"><i class="bi bi-cash-coin"></i> Precio: <span class="precio">$180 por hora</span></div>
+            <button class="btn-ver-mapa" type="button"
+                onclick="mostrarEstacionamiento('Cocheras Del Parque', -34.8904068508091, -56.15891277086886)">
+                <i class="bi bi-geo-alt"></i> Ver ruta y elegir
+            </button>
+        </div>
+
+        <div class="estacionamiento">
+            <h3><i class="bi bi-car-front-fill"></i> Auto 3</h3>
+            <div class="dato-estacionamiento"><i class="bi bi-geo-alt-fill"></i> Dirección: Av. 8 de Octubre 2523</div>
+            <div class="dato-estacionamiento"><i class="bi bi-telephone-fill"></i> Teléfono: 092 464 446</div>
+            <div class="dato-estacionamiento"><i class="bi bi-clock-fill"></i> Horario: 24 horas</div>
+            <div class="dato-estacionamiento"><i class="bi bi-cash-coin"></i> Precio: <span class="precio">$160 por hora</span></div>
+            <button class="btn-ver-mapa" type="button"
+                onclick="mostrarEstacionamiento('Auto 3', -34.89203339662599, -56.16307818650692)">
+                <i class="bi bi-geo-alt"></i> Ver ruta y elegir
+            </button>
+        </div>
+
+        <div class="estacionamiento">
+            <h3><i class="bi bi-car-front-fill"></i> Parking</h3>
+            <div class="dato-estacionamiento"><i class="bi bi-geo-alt-fill"></i> Dirección: Juan Ramón Gómez 2624</div>
+            <div class="dato-estacionamiento"><i class="bi bi-clock-fill"></i> Horario: lunes a viernes, 8:00–20:00</div>
+            <div class="dato-estacionamiento"><i class="bi bi-cash-coin"></i> Precio: <span class="precio">$200 por hora</span></div>
+            <button class="btn-ver-mapa" type="button"
+                onclick="mostrarEstacionamiento('Parking', -34.88960778740101, -56.16319467982348)">
+                <i class="bi bi-geo-alt"></i> Ver ruta y elegir
+            </button>
+        </div>
     </div>
+</div>
 
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
 
+<script>
+    /* VARIABLES */
+    let ubicacionUsuario = null;
+    let estacionamientoElegido = null;
+    let rutaActual = null;
+    let marcadorUsuario = null;
+    let marcadorEstacionamiento = null;
+    let marcadorAutoEstacionado = null;
+    let registroAutoEstacionado = null;
+    let seguimientoUbicacion = null;
+    let primeraUbicacionObtenida = false;
 
-    <script>
+    const estadoGPS = document.getElementById("estadoGPS");
+    const popupFondo = document.getElementById("popupFondo");
 
+    /* CREAR MAPA SIN MARCADORES FIJOS */
+    const mapa = L.map("map").setView([-34.9011, -56.1645], 13);
 
-        /* =========================
-           CREAR MAPA
-        ========================= */
+    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution: "&copy; OpenStreetMap contributors",
+        maxZoom: 19
+    }).addTo(mapa);
 
-        const mapa = L.map("map")
-            .setView(
-                [-34.9011, -56.1645],
-                13
-            );
+    /* UBICACIÓN AUTOMÁTICA Y SEGUIMIENTO GPS */
+    function obtenerUbicacion() {
+        if (!navigator.geolocation) {
+            estadoGPS.textContent = "Tu navegador no permite obtener la ubicación.";
+            return;
+        }
 
+        if (seguimientoUbicacion !== null) {
+            return;
+        }
 
-        /* OPENSTREETMAP */
+        estadoGPS.textContent = "Buscando tu ubicación actual...";
 
-        L.tileLayer(
-            "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+        seguimientoUbicacion = navigator.geolocation.watchPosition(
+            function(posicion) {
+                const lat = posicion.coords.latitude;
+                const lng = posicion.coords.longitude;
+
+                ubicacionUsuario = L.latLng(lat, lng);
+                estadoGPS.textContent = "Ubicación actual detectada.";
+
+                if (!marcadorUsuario) {
+                    marcadorUsuario = L.marker(ubicacionUsuario, {
+                        title: "Tu ubicación actual"
+                    }).addTo(mapa);
+
+                    marcadorUsuario.bindPopup("📍 Estás aquí");
+                } else {
+                    marcadorUsuario.setLatLng(ubicacionUsuario);
+                }
+
+                if (!primeraUbicacionObtenida) {
+                    primeraUbicacionObtenida = true;
+                    mapa.setView(ubicacionUsuario, 17);
+                }
+
+                if (estacionamientoElegido) {
+                    calcularRuta();
+                }
+            },
+            function(error) {
+                let mensaje = "No se pudo obtener tu ubicación. Revisá los permisos del navegador.";
+
+                if (error.code === 1) {
+                    mensaje = "Permiso de ubicación denegado. Habilitalo en los permisos del sitio.";
+                    navigator.geolocation.clearWatch(seguimientoUbicacion);
+                    seguimientoUbicacion = null;
+                } else if (error.code === 2) {
+                    mensaje = "Tu ubicación no está disponible. Revisá el GPS o la conexión.";
+                } else if (error.code === 3) {
+                    mensaje = "El GPS está tardando. Podés volver a intentar con Buscar espacio.";
+                }
+
+                estadoGPS.textContent = mensaje;
+                console.warn(mensaje, error.message);
+            },
             {
-                attribution:
-                    "&copy; OpenStreetMap contributors"
-            }
-        ).addTo(mapa);
-
-
-
-        /* MARCADOR DE MONTEVIDEO */
-
-        L.marker(
-            [-34.9011, -56.1645]
-        )
-        .addTo(mapa)
-        .bindPopup("Montevideo")
-        .openPopup();
-
-
-
-        /* MARCADOR DEL LICEO */
-
-        L.marker(
-            [-34.8918, -56.1588]
-        )
-        .addTo(mapa)
-        .bindPopup(
-            "<b>Liceo Logosófico</b><br>" +
-            "Av. 8 de Octubre"
-        );
-
-
-
-        /* =========================
-           UBICACIÓN DEL USUARIO
-        ========================= */
-
-        if (navigator.geolocation) {
-
-            navigator.geolocation.getCurrentPosition(
-
-                function(position) {
-
-                    const lat =
-                        position.coords.latitude;
-
-                    const lng =
-                        position.coords.longitude;
-
-
-                    mapa.setView(
-                        [lat, lng],
-                        15
-                    );
-
-
-                    L.marker(
-                        [lat, lng]
-                    )
-                    .addTo(mapa)
-                    .bindPopup(
-                        "Tu ubicación"
-                    )
-                    .openPopup();
-
-                },
-
-                function(error) {
-
-                    console.error(
-                        "Error de ubicación:",
-                        error
-                    );
-
-                }
-            );
-        }
-
-
-
-        /* =========================
-           BOTÓN LIBERAR
-        ========================= */
-
-        document
-            .getElementById("btnLiberar")
-            .addEventListener(
-                "click",
-                function() {
-
-                    alert(
-                        "Seleccioná un espacio en el mapa para liberarlo."
-                    );
-
-                }
-            );
-
-
-
-        /* =========================
-           BOTÓN OCUPAR
-        ========================= */
-
-        document
-            .getElementById("btnOcupar")
-            .addEventListener(
-                "click",
-                function() {
-
-                    alert(
-                        "Seleccioná un espacio en el mapa para ocuparlo."
-                    );
-
-                }
-            );
-
-
-
-        /* =========================
-           BOTÓN BUSCAR ESPACIO
-        ========================= */
-
-        document
-            .getElementById("btnBuscar")
-            .addEventListener(
-                "click",
-                function() {
-
-                    alert(
-                        "Buscando espacios disponibles cerca tuyo..."
-                    );
-
-                }
-            );
-
-
-
-        /* =========================
-           ABRIR POPUP PRIVADOS
-        ========================= */
-
-        const popupFondo =
-            document.getElementById(
-                "popupFondo"
-            );
-
-
-        document
-            .getElementById("btnPrivado")
-            .addEventListener(
-                "click",
-                function() {
-
-                    popupFondo.style.display =
-                        "flex";
-
-                }
-            );
-
-
-
-        /* =========================
-           CERRAR POPUP
-        ========================= */
-
-        document
-            .getElementById("cerrarPopup")
-            .addEventListener(
-                "click",
-                function() {
-
-                    popupFondo.style.display =
-                        "none";
-
-                }
-            );
-
-
-
-        /* CERRAR TOCANDO AFUERA */
-
-        popupFondo.addEventListener(
-            "click",
-            function(event) {
-
-                if (
-                    event.target ===
-                    popupFondo
-                ) {
-
-                    popupFondo.style.display =
-                        "none";
-
-                }
-
+                enableHighAccuracy: true,
+                maximumAge: 0,
+                timeout: 20000
             }
         );
+    }
 
-
-
-        /* =========================
-           MOSTRAR ESTACIONAMIENTO
-           EN EL MAPA
-        ========================= */
-
-        function mostrarEstacionamiento(
-            nombre,
-            lat,
-            lng
-        ) {
-
-
-            /* CERRAR POPUP */
-
-            popupFondo.style.display =
-                "none";
-
-
-            /* CENTRAR MAPA */
-
-            mapa.setView(
-                [lat, lng],
-                17
-            );
-
-
-            /* CREAR MARCADOR */
-
-            L.marker(
-                [lat, lng]
-            )
-            .addTo(mapa)
-            .bindPopup(
-                "<b>" +
-                nombre +
-                "</b><br>" +
-                "Estacionamiento privado"
-            )
-            .openPopup();
-
+    /* RUTA DESDE TU UBICACIÓN HASTA EL ESTACIONAMIENTO */
+    function calcularRuta() {
+        if (!ubicacionUsuario || !estacionamientoElegido) {
+            return;
         }
 
-    </script>
+        const origen = ubicacionUsuario;
+        const destino = L.latLng(
+            estacionamientoElegido.lat,
+            estacionamientoElegido.lng
+        );
 
+        if (rutaActual) {
+            rutaActual.setWaypoints([origen, destino]);
+            return;
+        }
 
+        rutaActual = L.Routing.control({
+            waypoints: [origen, destino],
+            addWaypoints: false,
+            draggableWaypoints: false,
+            routeWhileDragging: false,
+            fitSelectedRoutes: true,
+            show: false,
+
+            // Evita que la ruta agregue marcadores extra.
+            // El marcador de ubicación del usuario lo controlamos nosotros.
+            createMarker: function() {
+                return null;
+            },
+
+            lineOptions: {
+                styles: [{
+                    color: "#238bff",
+                    opacity: 0.85,
+                    weight: 6
+                }]
+            }
+        }).addTo(mapa);
+
+        rutaActual.on("routingerror", function(event) {
+            console.error("Error al calcular la ruta:", event.error);
+            estadoGPS.textContent = "No se pudo calcular la ruta. Revisá tu conexión.";
+        });
+    }
+
+    /* ELEGIR ESTACIONAMIENTO PRIVADO */
+    function mostrarEstacionamiento(nombre, lat, lng) {
+        estacionamientoElegido = {
+            nombre: nombre,
+            lat: lat,
+            lng: lng
+        };
+
+        popupFondo.style.display = "none";
+
+        if (marcadorEstacionamiento) {
+            mapa.removeLayer(marcadorEstacionamiento);
+        }
+
+        marcadorEstacionamiento = L.marker([lat, lng], {
+            title: nombre
+        }).addTo(mapa);
+
+        marcadorEstacionamiento.bindPopup(
+            "<b>" + nombre + "</b><br>Estacionamiento seleccionado"
+        ).openPopup();
+
+        if (!ubicacionUsuario) {
+            estadoGPS.textContent = "Esperando tu ubicación para mostrar la ruta...";
+            obtenerUbicacion();
+            mapa.setView([lat, lng], 16);
+            alert("Estacionamiento seleccionado. Esperando el GPS para calcular la ruta.");
+            return;
+        }
+
+        calcularRuta();
+    }
+
+    /* ABRIR Y CERRAR VENTANA */
+    document.getElementById("btnPrivado").addEventListener("click", function() {
+        popupFondo.style.display = "flex";
+    });
+
+    document.getElementById("cerrarPopup").addEventListener("click", function() {
+        popupFondo.style.display = "none";
+    });
+
+    popupFondo.addEventListener("click", function(event) {
+        if (event.target === popupFondo) {
+            popupFondo.style.display = "none";
+        }
+    });
+
+    /* BUSCAR ESPACIO: CENTRAR EN TU UBICACIÓN */
+    document.getElementById("btnBuscar").addEventListener("click", function() {
+        if (ubicacionUsuario) {
+            mapa.setView(ubicacionUsuario, 17);
+            if (marcadorUsuario) {
+                marcadorUsuario.openPopup();
+            }
+        } else {
+            obtenerUbicacion();
+            estadoGPS.textContent = "Buscando tu ubicación...";
+        }
+    });
+
+    /* OCUPAR ESPACIO:
+       - Si elegiste un estacionamiento privado, registra ese lugar.
+       - Si no elegiste uno, registra tu ubicación actual.
+    */
+    document.getElementById("btnOcupar").addEventListener("click", function() {
+        if (registroAutoEstacionado) {
+            alert("Ya tenés un estacionamiento registrado. Liberalo primero.");
+            return;
+        }
+
+        if (estacionamientoElegido) {
+            registrarEstacionamiento(
+                estacionamientoElegido.nombre,
+                estacionamientoElegido.lat,
+                estacionamientoElegido.lng
+            );
+            return;
+        }
+
+        if (!ubicacionUsuario) {
+            estadoGPS.textContent = "Esperando tu ubicación para registrar el espacio...";
+            obtenerUbicacion();
+            alert("Todavía no se detectó tu ubicación. Esperá unos segundos y volvé a tocar Ocupar espacio.");
+            return;
+        }
+
+        registrarEstacionamiento(
+            "Mi ubicación actual",
+            ubicacionUsuario.lat,
+            ubicacionUsuario.lng
+        );
+    });
+
+    function registrarEstacionamiento(nombre, lat, lng) {
+        const fecha = new Date();
+
+        registroAutoEstacionado = {
+            nombre: nombre,
+            lat: lat,
+            lng: lng,
+            fechaOcupacion: fecha.toLocaleString("es-UY"),
+            estado: "ocupado"
+        };
+
+        if (marcadorAutoEstacionado) {
+            mapa.removeLayer(marcadorAutoEstacionado);
+        }
+
+        marcadorAutoEstacionado = L.marker([lat, lng], {
+            title: "Estacionamiento registrado"
+        }).addTo(mapa);
+
+        marcadorAutoEstacionado.bindPopup(
+            "<b>Estacionamiento registrado</b><br>" +
+            nombre +
+            "<br>Estado: ocupado" +
+            "<br>Hora: " + registroAutoEstacionado.fechaOcupacion
+        ).openPopup();
+
+        mapa.setView([lat, lng], 18);
+
+        console.log("Estacionamiento registrado:", registroAutoEstacionado);
+        alert("Estacionamiento registrado correctamente: " + nombre + ".");
+    }
+
+    /* LIBERAR ESPACIO */
+    document.getElementById("btnLiberar").addEventListener("click", function() {
+        if (!registroAutoEstacionado) {
+            alert("No tenés ningún estacionamiento registrado.");
+            return;
+        }
+
+        const fechaLiberacion = new Date().toLocaleString("es-UY");
+
+        registroAutoEstacionado.fechaLiberacion = fechaLiberacion;
+        registroAutoEstacionado.estado = "libre";
+
+        console.log("Registro de estacionamiento:", registroAutoEstacionado);
+
+        if (marcadorAutoEstacionado) {
+            mapa.removeLayer(marcadorAutoEstacionado);
+            marcadorAutoEstacionado = null;
+        }
+
+        alert("Estacionamiento liberado correctamente.\nSalida: " + fechaLiberacion);
+
+        registroAutoEstacionado = null;
+        estacionamientoElegido = null;
+
+        if (marcadorEstacionamiento) {
+            mapa.removeLayer(marcadorEstacionamiento);
+            marcadorEstacionamiento = null;
+        }
+
+        if (rutaActual) {
+            mapa.removeControl(rutaActual);
+            rutaActual = null;
+        }
+    });
+
+    /* INICIAR EL GPS AUTOMÁTICAMENTE AL CARGAR */
+    obtenerUbicacion();
+</script>
 </body>
-
 </html>
