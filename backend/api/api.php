@@ -27,7 +27,7 @@ function verificarAdministrador($usrhnd, $seshnd){
 	$user = $usrhnd->obtenerPorId($sesion->id_usuario);
 	if(!$user)
 		return false;
-	error_log("Call a api.verificarAdministrador: $user->es_admin");
+	//error_log("Call a api.verificarAdministrador: $user->es_admin");
 	return $user->es_admin;
 }
 
@@ -130,7 +130,7 @@ function getBearerToken(){
 	}
 
 	if ($header === '') {
-		error_log('no hay header chavales');
+		elog('debug', 'No header in session check.');
 		return null;
 	}
 
@@ -139,7 +139,7 @@ function getBearerToken(){
 		return $m[1];
 	}
 
-	error_log('no hay header chavales');
+	elog('debug', 'No header in session check.');
 	return null;
 }
 

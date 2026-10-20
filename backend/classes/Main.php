@@ -1,5 +1,5 @@
 <?php
-require_once 'Api.php';
+require_once __DIR__ . '/Api.php';
 class BadMainException extends LogicException {}
 class Main {
 	public array $apis = [];
@@ -7,50 +7,64 @@ class Main {
 	public function run(
 		array $request,
 		string $method,
-		array $data
+		?array $data
 	): void {
+		elog('debug', "In main");
 		$apiName = $request[0] ?? '';
 		$endpName = $request[1] ?? '';
 		$api = $this->findApi($apiName);
 		if($api === null){
+			elog('error', "Requested access to nonexistant api: api.$apiName");
 			http_response_code(404);
 			echo json_encode([
-				'error': 'not_found',
-				'message': 'The requested endpoint does not exist.'
+				'error' => 'not_found',
+				'message' => 'The requested endpoint does not exist.'
 			]);
-			die();
+			return;
 		}
-
+		if(!isset($data))
+			$data = [];
+		$apiName = $request[0] ?? '';
 		try {
 			$responseBody = $api->runEndpoint($endpName, $method, $data);
 			echo json_encode($responseBody);
+			elog('debug', "Successful main");
 		} catch (GenericRuntimeException $e) {
+			elog('debug', "GenericRuntimeException: " . $e->getMessage());
 			http_response_code($e->httpCode);
-			$responseBody = ($e->getResponse)();
+			if($e->getResponse !== null)
+				$responseBody = ($e->getResponse)();
 			echo json_encode($responseBody);
-			die();
+			return;
 		} catch (InvalidEndpointException $e) {
 			http_response_code(404);
 			echo json_encode([
-				'error': 'not_found',
-				'message': 'The requested endpoint does not exist.'
+				'error' => 'not_found',
+				'message' => 'The requested endpoint does not exist.'
 			]);
-			die();
+			return;
 		} catch (InvalidDataException $e) {
 			http_response_code(400);
 			$message = $e->getMessage();
 			echo json_encode([
-				'error': 'bad_request',
-				'message': "{$message}"
+				'error' => 'bad_request',
+				'message' => "{$message}"
 			]);
-			die();
+			return;
 		} catch (BadMethodException $e) {
 			http_response_code(405);
 			echo json_encode([
-				'error': 'bad_method',
-				'message': "Method not allowed."
+				'error' => 'bad_method',
+				'message' => "Method not allowed."
 			]);
-			die();
+			return;
+		} catch (Throwable $e) {
+			http_response_code(500);
+			$msg = $e->getMessage();
+			$line = $e->getLine();
+			$file = $e->getFile();
+			elog('error', "In {$file}:{$line} | Error: {$msg}");
+			return;
 		}
 	}
 

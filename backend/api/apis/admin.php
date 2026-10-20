@@ -1,9 +1,9 @@
 <?php
-require_once '../../classes/Api.php'
-require_once '../../handlers/UsuarioHandler.php'
-require_once '../../handlers/SesionHandler.php'
-require_once '../../config/conexion.php'
-require_once '../../api/api.php'
+require_once __DIR__ . '/../../classes/Api.php';
+require_once __DIR__ . '/../../handlers/UsuarioHandler.php';
+require_once __DIR__ . '/../../handlers/SesionHandler.php';
+require_once __DIR__ . '/../../config/conexion.php';
+require_once __DIR__ . '/../../api/api.php';
 
 $adminApi = new Api(
 	name: "admin",
@@ -15,7 +15,8 @@ $adminApi = new Api(
 		if(verificarAdministrador($handlers['usuario'], $handlers['sesion']) !== 1){
 			throw new GenericRuntimeException(
 				httpCode: 401,
-				message: "Unauthorized"
+				message: "Unauthorized",
+				getResponse: null
 			);
 		}
 	}
@@ -25,14 +26,15 @@ $adminApi->addEndpoint(new Endpoint(
 	name: "crear",
 	method: "POST",
 	parameters: ['nombre', 'apellido', 'email', 'contrasena'],
-	run: function (array $data, array $handlers): array {
+	run: function (array $data, array $handlers, Closure $endLog): array {
 		$usrhnd = handlers['usuario'];
 		try {
 			$existingUser = $usrhnd->obtenerPorEmail($data['email']);
 			if($existingUser !== false){
 				throw new GenericRuntimeException(
 					httpCode: 409,
-					message: 'Email already registered'
+					message: 'Email already registered',
+					getResponse: null
 				);
 			}
 			$usuario = new Usuario(
@@ -53,16 +55,20 @@ $adminApi->addEndpoint(new Endpoint(
 					'id' => $newId
 				];
 			} else {
-				//error_log("Error en api.admin.crear: creacion de usuario fallida");
+				($endLog)('error', "Unexpected error, crearUsuarioAdmin returned 'false'.");
 				throw new GenericRuntimeException(
-					httpCode: 500
-					message: "Couldnt create user for some reason"
+					httpCode: 500,
+					message: "Couldnt create user for some reason",
+					getResponse: null
 				);
 			}
-		} catch(Exception $e){
+		} catch(Throwable $e){
+			$message = $e->getMessage();
+			($endLog)('error', "Unexpected error, message: $message.");
 			throw new GenericRuntimeException(
-				httpCode: 500
-				message: $e->getMessage()
+				httpCode: 500,
+				message: $e->getMessage(),
+				getResponse: null
 			);
 		}
 	}
@@ -72,7 +78,7 @@ $adminApi->addEndpoint(new Endpoint(
 	name: "obtener",
 	method: "GET",
 	parameters: [],
-	run: function (array $data, array $handlers): array {
+	run: function (array $data, array $handlers, Closure $endLog): array {
 		$usrhnd = handlers['usuario'];
 		try {
 			$usuarios = $usrhnd->obtenerTodos();
@@ -92,10 +98,13 @@ $adminApi->addEndpoint(new Endpoint(
 				'success' => true,
 				'usuarios' => $resultado
 			];
-		} catch(Exception $e){
+		} catch(Throwable $e){
+			$message = $e->getMessage();
+			($endLog)('error', "Unexpected error, message: $message.");
 			throw new GenericRuntimeException(
-				httpCode: 500
-				message: $e->getMessage()
+				httpCode: 500,
+				message: $e->getMessage(),
+				getResponse: null
 			);
 		}
 	}
@@ -105,14 +114,15 @@ $adminApi->addEndpoint(new Endpoint(
 	name: "modificar",
 	method: "PUT",
 	parameters: ['id'],
-	run: function (array $data, array $handlers): array {
+	run: function (array $data, array $handlers, Closure $endLog): array {
 		$usrhnd = handlers['usuario'];
 		try {
 			$usuario = $usrhnd->obtenerPorId($data['id']);
 			if($usuario === false){
 				throw new GenericRuntimeException(
-					httpCode: 404
-					message: "User not found."
+					httpCode: 404,
+					message: "User not found.",
+					getResponse: null
 				);
 			}
 
@@ -120,8 +130,9 @@ $adminApi->addEndpoint(new Endpoint(
 				$existingUser = $usrhnd->obtenerPorEmail($data['email']);
 				if($existingUser !== false && $existingUser->id != $data['id']){
 					throw new GenericRuntimeException(
-						httpCode: 409
-						message: "Email already registered."
+						httpCode: 409,
+						message: "Email already registered.",
+						getResponse: null
 					);
 				}
 			}
@@ -138,15 +149,20 @@ $adminApi->addEndpoint(new Endpoint(
 					'success' => true
 				];
 			} else {
+				($endLog)('error', "Unexpected error, modificarUsuario returned 'false'.");
 				throw new GenericRuntimeException(
-					httpCode: 500
-					message: "Couldnt modify user."
+					httpCode: 500,
+					message: "Couldnt modify user.",
+					getResponse: null
 				);
 			}
-		} catch(Exception $e){
+		} catch(Throwable $e){
+			$message = $e->getMessage();
+			($endLog)('error', "Unexpected error, message: $message.");
 			throw new GenericRuntimeException(
-				httpCode: 500
-				message: $e->getMessage() 
+				httpCode: 500,
+				message: $e->getMessage(),
+				getResponse: null
 			);
 		}
 	}
@@ -156,15 +172,16 @@ $adminApi->addEndpoint(new Endpoint(
 	name: "eliminar",
 	method: "DELETE",
 	parameters: ['id'],
-	run: function (array $data, array $handlers): array {
+	run: function (array $data, array $handlers, Closure $endLog): array {
 		$usrhnd = handlers['usuario'];
 		try {
 			//no permitir que un admin se elimine a si mismo
 			session_start();
 			if($_SESSION['user_id'] == $data['id']){
 				throw new GenericRuntimeException(
-					httpCode: 400
-					message: 'Cant delete your own user' 
+					httpCode: 400,
+					message: 'Cant delete your own user',
+					getResponse: null
 				);
 			}
 
@@ -174,17 +191,21 @@ $adminApi->addEndpoint(new Endpoint(
 					'success' => true
 				]);
 				error_log("Admin elimino usuario id: " . $data['id']);
-				exit;
 			} else {
+				($endLog)('error', "Unexpected error, eliminarUsuario returned 'false'.");
 				throw new GenericRuntimeException(
-					httpCode: 500
-					message: 'Couldnt delete user' 
+					httpCode: 500,
+					message: 'Couldnt delete user',
+					getResponse: null
 				);
 			}
-		} catch(Exception $e){
+		} catch(Throwable $e){
+			$message = $e->getMessage();
+			($endLog)('error', "Unexpected error, message: $message.");
 			throw new GenericRuntimeException(
-				httpCode: 500
-				message: $e->getMessage()
+				httpCode: 500,
+				message: $e->getMessage(),
+				getResponse: null
 			);
 		}
 	}

@@ -1,9 +1,9 @@
 <?php
-require_once '../../classes/Api.php'
-require_once '../../handlers/UsuarioHandler.php'
-require_once '../../handlers/HorarioHandler.php'
-require_once '../../config/conexion.php'
-require_once '../../api/api.php'
+require_once __DIR__ . '/../../classes/Api.php';
+require_once __DIR__ . '/../../handlers/UsuarioHandler.php';
+require_once __DIR__ . '/../../handlers/HorarioHandler.php';
+require_once __DIR__ . '/../../config/conexion.php';
+require_once __DIR__ . '/../../api/api.php';
 
 $horarioApi = new Api(
 	name: "horario",
@@ -11,11 +11,12 @@ $horarioApi = new Api(
 		'usuario' => new UsuarioHandler($conexion),
 		'horario' => new HorarioHandler($conexion)
 	],
-	prerun: function (array $data, array $handlers): void {
+	prerun: function (array $data, array $handlers, Closure $endLog): void {
 		if(verificarAdministrador($handlers['usuario'], $handlers['sesion']) !== 1){
 			throw new GenericRuntimeException(
 				httpCode: 401,
-				message: "Unauthorized"
+				message: "Unauthorized",
+				getResponse: null
 			);
 		}
 	}
@@ -25,7 +26,7 @@ $horarioApi->addEndpoint(new Endpoint(
 	name: "crear",
 	method: "POST",
 	parameters: ['numero_hora', 'dia_semana', 'horario'],
-	run: function (array $data, array $handlers): array {
+	run: function (array $data, array $handlers, Closure $endLog): array {
 		$horhnd = handlers['horario'];
 		$horario = new Horario(
 			$data["numero_hora"],
@@ -37,10 +38,13 @@ $horarioApi->addEndpoint(new Endpoint(
 			return [
 			    'success' => true
 			];
-		} catch(Exception $e) {
+		} catch(Throwable $e) {
+			$message = $e->getMessage();
+			($endLog)('error', "Unexpected error, message: $message.");
 			throw new GenericRuntimeException(
-				httpCode: 500
-				message: $e->getMessage()
+				httpCode: 500,
+				message: $e->getMessage(),
+				getResponse: null
 			);
 		}
 	}
@@ -50,7 +54,7 @@ $horarioApi->addEndpoint(new Endpoint(
 	name: "obtener",
 	method: "GET",
 	parameters: [],
-	run: function (array $data, array $handlers): array {
+	run: function (array $data, array $handlers, Closure $endLog): array {
 		$horhnd = handlers['horario'];
 		try {
 			$horarios = $horhnd->obtenerTodos();
@@ -58,11 +62,13 @@ $horarioApi->addEndpoint(new Endpoint(
 				'success' => true,
 				'horarios' => $horarios
 			];
-			exit;
-		} catch(Exception $e) {
+		} catch(Throwable $e) {
+			$message = $e->getMessage();
+			($endLog)('error', "Unexpected error, message: $message.");
 			throw new GenericRuntimeException(
-				httpCode: 500
-				message: $e->getMessage()
+				httpCode: 500,
+				message: $e->getMessage(),
+				getResponse: null
 			);
 		}
 	}
@@ -72,17 +78,20 @@ $horarioApi->addEndpoint(new Endpoint(
 	name: "eliminar",
 	method: "DELETE",
 	parameters: ['numero_hora', 'dia_semana'],
-	run: function (array $data, array $handlers): array {
+	run: function (array $data, array $handlers, Closure $endLog): array {
 		$horhnd = handlers['horario'];
 		try {
 			$horhnd->elminarHorario($numero_hora, $dia_semana);
 			return [
 			    'success' => true
 			];
-		} catch(Exception $e) {
+		} catch(Throwable $e) {
+			$message = $e->getMessage();
+			($endLog)('error', "Unexpected error, message: $message.");
 			throw new GenericRuntimeException(
-				httpCode: 500
-				message: $e->getMessage()
+				httpCode: 500,
+				message: $e->getMessage(),
+				getResponse: null
 			);
 		}
 	}

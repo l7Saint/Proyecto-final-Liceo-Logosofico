@@ -1,5 +1,5 @@
 <?php
-require_once "../models/Horario.php";
+require_once __DIR__ . "/../models/Horario.php";
 
 /**
  * Clase HorarioHandler

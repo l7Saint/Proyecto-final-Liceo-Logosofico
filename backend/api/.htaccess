@@ -1,3 +1,8 @@
 RewriteEngine On
+AcceptPathInfo On
+RewriteBase /api/
 RewriteCond %{HTTP:Authorization} .
 RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+# Rewrite everything else to index.php
+RewriteRule ^(.*)$ index.php/$1 [QSA,END]

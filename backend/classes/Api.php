@@ -1,5 +1,5 @@
 <?php
-require_once '../functions.php';
+require_once __DIR__ . '/../functions.php';
 
 class Endpoint {
 	public function __construct(
@@ -7,7 +7,7 @@ class Endpoint {
 		public string $method,
 		public array $parameters,
 		/**
-		 * @param Closure(array $data, array $handlers): array $run
+		 * @param Closure(array $data, array $handlers, Closure $endLog): array $run
 		 */
 		public Closure $run,
 	) {}
@@ -25,7 +25,7 @@ class GenericRuntimeException extends RuntimeException {
 	public ?Closure $getResponse;
 	public function __construct(int $httpCode, string $message, ?Closure $getResponse){
 		$this->httpCode = $httpCode;
-		$this->getResponse = $getResponse
+		$this->getResponse = $getResponse;
 		parent::__construct($message);
 	}
 }
@@ -33,7 +33,7 @@ class GenericRuntimeException extends RuntimeException {
 class Api {
 	public string $name;
 	/**
-	 * @param ?Closure(array $data, array $handlers): void $prerun
+	 * @param ?Closure(array $data, array $handlers, Closure $endLog): void $prerun
 	 */
 	private ?Closure $prerun;
 	private array $endpoints = [];
@@ -41,25 +41,33 @@ class Api {
 
 	public function runEndpoint(string $endpName, string $method, array $data): void{
 		$endp = $this->findEndpoint($endpName);
-		if($endp === null)
+		if($endp === null){
+			elog('error', "Requested access to nonexistant endpoint: api.$this->name.$endp->name");
 			throw new InvalidEndpointException("Invalid endpoint name: {$endpName}.");
+		}
 		elog('debug', "Call to api.{$this->name}.{$endp->name}.");
 		$errorMsg = $this->checkParameters($data, $endp->parameters);
 		if($errorMsg !== null)
 			throw new InvalidDataException($errorMsg);
 		if($method !== $endp->method)
-			throw new BadMethodException("Invalid method expected \'{$endp->method}\' obtained \'{$method}\'");
+			throw new BadMethodException("Invalid method expected '{$endp->method}', obtained '{$method}'");
 		try {
+			$endLog = function(?string $type, string $message): void {
+				if(!isset($type)){
+					elog('debug', "From api.$this->name.$endp->name: ". $message);
+				} else {
+					elog($type, "From api.$this->name.$endp->name: ". $message);
+				}
+			};
 			if(isset($this->prerun))
-				($this->prerun)($data, $this->handlers);
-			($endp->run)($data, $this->handlers);
+				($this->prerun)($data, $this->handlers, $endLog);
+			($endp->run)($data, $this->handlers, $endLog);
 		} catch (GenericRuntimeException $e) {
 			//500 error code es irrecuperable
 			if($e->httpCode === 500){
 				$msg = $e->getMessage();
 				elog('error', "Error en api.{$this->name}.{$endp->name}: {$msg}");
 				http_response_code($e->httpCode);
-				die();
 			} else {
 				throw $e;
 			}
@@ -69,7 +77,6 @@ class Api {
 			$line = $e->getLine();
 			elog('error', "Error en api.{$this->name}.{$endp->name}: {$msg} \nIn {$file}:{$line}");
 			http_response_code(500);
-			die();
 		}
 	}
 
