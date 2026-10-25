@@ -1,6 +1,6 @@
 FROM mariadb:11
 
-#le da el nombre a la base de dtos, el usuario, la contrasena y esas cosas 
+COPY ./importcsv/conteoFiltrado.csv /var/lib/mysql/conteoFiltrado.csv
 
 #expone el puerto de mariadb
 EXPOSE 3306
