@@ -127,3 +127,14 @@ SELECT
 	AVG(vehiculos_hora_carril) AS promedio_vehiculos_carril
 FROM conteo_dataset
 GROUP BY latitud, longitud, dia_semana, hora;
+
+
+
+
+/* Importar Cuadras */
+LOAD DATA INFILE '/var/lib/mysql/cuadras.csv'
+INTO TABLE Cuadra
+FIELDS TERMINATED BY ','
+LINES TERMINATED BY '\n'
+IGNORE 1 ROWS
+(numero_puerta_inicial,numero_puerta_final,calle,latitud,longitud);

@@ -66,7 +66,9 @@ class Api {
 			//500 error code es irrecuperable
 			if($e->httpCode === 500){
 				$msg = $e->getMessage();
-				elog('error', "Error en api.{$this->name}.{$endp->name}: {$msg}");
+				$file = $e->getFile();
+				$line = $e->getLine();
+				elog('error', "Error en api.{$this->name}.{$endp->name}: {$msg} \nIn {$file}:{$line}");
 				http_response_code($e->httpCode);
 			} else {
 				throw $e;
