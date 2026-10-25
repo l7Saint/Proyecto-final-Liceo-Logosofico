@@ -27,7 +27,7 @@ services:
       - urbanaut_mariadb
 
   urbanaut_mariadb:
-    image: mariadb:11
+    build: sql/
     container_name: urbanaut_mariadb
     environment:
       MARIADB_ROOT_PASSWORD: root
