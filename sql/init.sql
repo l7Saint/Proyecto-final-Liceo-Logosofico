@@ -67,3 +67,10 @@ CREATE TABLE IF NOT EXISTS Estaciona_en (
 	FOREIGN KEY (numero_hora) REFERENCES Horario(numero_hora),
 	CHECK (hora_fin IS NULL OR hora_fin > hora_inicio)
 );
+
+CREATE TABLE IF NOT EXISTS Calle(
+	nombre VARCHAR(50) NOT NULL,
+	id INT AUTO_INCREMENT PRIMARY KEY,
+	longitud_metros REAL NOT NULL,
+	puede_estacionar BOOLEAN NOT NULL
+)
