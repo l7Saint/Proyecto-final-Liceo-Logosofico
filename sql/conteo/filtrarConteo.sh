@@ -3,12 +3,12 @@
 # https://catalogodatos.gub.uy/es/dataset/conteo-vehicular-en-las-principales-avenidas-de-montevideo
 
 # Primer punto en la esquina superior izquierda 
-latitud1="-34.88628"
-longitud1="-56.16844"
+latitud1="-34.8861260"
+longitud1="-56.1682944"
 
 # Segundo punto en la esquina inferior derecha
-latitud2="-34.89611"
-longitud2="-56.14775"
+latitud2="-34.8933556"
+longitud2="-56.1542466"
 
 archivoConteo="${1}"
 if ! [[ -f "${archivoConteo}" ]]; then
