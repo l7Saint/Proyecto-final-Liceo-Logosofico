@@ -35,8 +35,10 @@ $estacionarApi->addEndpoint(new Endpoint(
 					cu.id = ? AND 
 					co.dia_semana = ? AND 
 					co.hora = ? 
+				HAVING
+					distancia <= 450
 				ORDER BY distancia ASC 
-				LIMIT 20;
+				;
 				');
 				$stmt_obtenerConteoCuadra->execute([
 					$cuadra_id,
@@ -51,7 +53,7 @@ $estacionarApi->addEndpoint(new Endpoint(
 				//normalizar
 				$datos = [];
 				for($i = 0; $i < sizeof($conteo); $i++){
-					$datos[$i]['distancia'] = exp(-1 * $conteo[$i]['distancia'] / 2200);
+					$datos[$i]['distancia'] = exp(-1 * $conteo[$i]['distancia'] / 450);
 					$datos[$i]['muestras'] = (-1 * exp(-1 * $conteo[$i]['cantidad_muestras'] / 200)) + 1;
 					$datos[$i]['trafico'] = exp(-1 * $conteo[$i]['promedio_vehiculos_carril'] / 25);
 				}
@@ -76,7 +78,7 @@ $estacionarApi->addEndpoint(new Endpoint(
 				$output[] = [ 
 					"cuadra_id" => $cuadra_id,
 					"puntaje" => $pntj_trafico * 10,
-					"confianza" => $pntj_muestras * $pntj_distancia * 10
+					"confianza" => ($pntj_muestras + $pntj_distancia) * 5
 			       	];
 			}
 			echo json_encode($output);
