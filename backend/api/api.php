@@ -1,25 +1,4 @@
 <?php
-//error handling ini
-ini_set('display_errors', 0);
-ini_set('display_startup_errors', 0);
-error_reporting(E_ALL);
-
-// -- CORS --
-$origin = $_SERVER['HTTP_ORIGIN'] ?? '*';
-
-header("Access-Control-Allow-Origin: $origin");
-header("Vary: Origin");
-header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
-header("Access-Control-Allow-Credentials: true");
-header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
-header("Access-Control-Max-Age: 86400");
-
-// Respond to preflight and stop
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-    http_response_code(204);
-    exit;
-}
-
 function verificarAdministrador($usrhnd, $seshnd){
 	$sesion = checkSession($seshnd);
 	if($sesion === false)
@@ -29,61 +8,6 @@ function verificarAdministrador($usrhnd, $seshnd){
 		return false;
 	//error_log("Call a api.verificarAdministrador: $user->es_admin");
 	return $user->es_admin;
-}
-
-function sendBadRequest($message = 'Bad Request', $errors = null) {
-	http_response_code(400);
-	$response = [
-		'success' => false,
-		'status' => 400,
-		'error' => $message
-	];
-	if ($errors) {
-		$response['details'] = $errors;
-	}
-	echo json_encode($response);
-	exit;
-}
-
-function sendBadMethod($allow){
-	http_response_code(405);
-	header("Allow: $allow");
-	exit;
-}
-
-function sendServerError(){
-	http_response_code(500);
-	echo json_encode([
-		'success' => false,
-		'error' => 'Internal server error'
-	]);
-	exit;
-}
-
-function sendUnauthorized($message = 'Unauthorized', $errors = null){
-	http_response_code(401);
-	$response = [
-		'success' => false,
-		'status' => 401,
-		'error' => $message
-	];
-	if ($errors) {
-		$response['details'] = $errors;
-	}
-	echo json_encode($response);
-	exit;
-}
-
-function checkParameters($data, $parametros){
-	$error = null;
-	foreach ($parametros as $p){
-		if(!isset($data[$p])){
-			if (!isset($error))
-				$error = '';
-			$error = $error . "Missing parameter: $p ";
-		}
-	}
-	return $error;
 }
 
 /* ============================================================

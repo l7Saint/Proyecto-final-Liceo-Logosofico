@@ -68,7 +68,7 @@ $usuarioApi->addEndpoint(new Endpoint(
 	method: "GET",
 	parameters: [],
 	run: function (array $data, array $handlers, Closure $endLog): array {
-		$sesion = checksession($handlers['sesion']);
+		$sesion = checkSession($handlers['sesion']);
 		if($sesion === false){
 			throw new GenericRuntimeException(
 				httpCode: 401,
@@ -104,7 +104,7 @@ $usuarioApi->addEndpoint(new Endpoint(
 	method: "GET",
 	parameters: [],
 	run: function (array $data, array $handlers, Closure $endLog): array {
-		if(checksession($handlers['sesion'])){
+		if(checkSession($handlers['sesion'])){
 			return ['success' => true];
 		} else {
 			throw new GenericRuntimeException(

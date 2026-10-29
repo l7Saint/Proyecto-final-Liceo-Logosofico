@@ -1,18 +1,18 @@
 <?php
 require_once __DIR__ . '/../../classes/Api.php';
 require_once __DIR__ . '/../../handlers/TieneHandler.php';
+require_once __DIR__ . '/../../handlers/SesionHandler.php';
 require_once __DIR__ . '/../../config/conexion.php';
 require_once __DIR__ . '/../../api/api.php';
-/*
- * Hay que actualizar esta api al nuevo sistema de sesion con SesionHandler
- */
+
 $tieneApi = new Api(
 	name: "tiene",
 	handlers: [
-		'tiene' => new TieneHandler($conexion)
+		'tiene' => new TieneHandler($conexion),
+		'sesion' => new SesionHandler($conexion)
 	],
 	prerun: function (array $data, array $handlers, Closure $endLog): void {
-		if(!checkSession())
+		if(checkSession($handlers['sesion']) === false)
 			throw new GenericRuntimeException (
 				httpCode: 401,
 				message: 'Unauthorized',
@@ -27,8 +27,7 @@ $tieneApi->addEndpoint(new Endpoint(
 	parameters: ['numero_hora', 'dia_semana'],
 	run: function (array $data, array $handlers, Closure $endLog): array {
 		$tiehnd = $handlers['tiene'];
-		session_start();
-		$id_usuario = $_SESSION['user_id'];
+		$id_usuario = checkSession($handlers['sesion'])->id_usuario;
 		try {
 			if($tiehnd->asignarHorario(
 				$id_usuario,
@@ -64,8 +63,7 @@ $tieneApi->addEndpoint(new Endpoint(
 	parameters: [],
 	run: function (array $data, array $handlers, Closure $endLog): array {
 		$tiehnd = $handlers['tiene'];
-		session_start();
-		$id_usuario = $_SESSION['user_id'];
+		$id_usuario = checkSession($handlers['sesion'])->id_usuario;
 		try {
 			$horarios = $tiehnd->obtenerPorIDUsuario($id_usuario);
 			return [
