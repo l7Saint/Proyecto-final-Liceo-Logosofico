@@ -7,15 +7,15 @@ FROM php:8.2-apache
 RUN docker-php-ext-install pdo pdo_mysql
 
 #copia los archivos html y php al contenedor
-COPY . /var/www/html/
+#COPY . /var/www/html/
 COPY ./scripts/backend-entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/backend-entrypoint.sh
-RUN rm /var/www/html/scripts/backend-entrypoint.sh Dockerfile
+#RUN rm /var/www/html/scripts/backend-entrypoint.sh Dockerfile
 
 #cambia los permisos de las carpetas del servidor para que sean
 #del usuario de apache
-RUN chown -R www-data:www-data /var/www/html \
-    && chmod -R 755 /var/www/html
+#RUN chown -R www-data:www-data /var/www/html \
+#    && chmod -R 755 /var/www/html
 
 #RUN sed -i 's/AllowOverride None/AllowOverride All/' /etc/apache2/apache2.conf
 
