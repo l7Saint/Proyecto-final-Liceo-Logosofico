@@ -9,7 +9,7 @@ class Main {
 		string $method,
 		?array $data
 	): void {
-		elog('debug', "In main");
+		#elog('debug', "In main");
 		$apiName = $request[0] ?? '';
 		$endpName = $request[1] ?? '';
 		$api = $this->findApi($apiName);
@@ -28,9 +28,9 @@ class Main {
 		try {
 			$responseBody = $api->runEndpoint($endpName, $method, $data);
 			echo json_encode($responseBody);
-			elog('debug', "Successful main");
+			#elog('debug', "Successful main");
 		} catch (GenericRuntimeException $e) {
-			elog('debug', "GenericRuntimeException: " . $e->getMessage());
+			#elog('debug', "GenericRuntimeException: " . $e->getMessage());
 			http_response_code($e->httpCode);
 			if($e->getResponse !== null)
 				$responseBody = ($e->getResponse)();

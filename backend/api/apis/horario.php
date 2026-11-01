@@ -9,10 +9,12 @@ $horarioApi = new Api(
 	name: "horario",
 	handlers: [
 		'usuario' => new UsuarioHandler($conexion),
-		'horario' => new HorarioHandler($conexion)
+		'horario' => new HorarioHandler($conexion),
+		'sesion' => new SesionHandler($conexion)
 	],
 	prerun: function (array $data, array $handlers, Closure $endLog): void {
 		if(verificarAdministrador($handlers['usuario'], $handlers['sesion']) !== 1){
+			($endLog)('error', "No autorizado.");
 			throw new GenericRuntimeException(
 				httpCode: 401,
 				message: "Unauthorized",
@@ -26,7 +28,7 @@ $horarioApi->addEndpoint(new Endpoint(
 	name: "crear",
 	method: "POST",
 	parameters: ['numero_hora', 'dia_semana', 'horario'],
-	run: function (array $data, array $handlers, Closure $endLog): array {
+	run: function (array $data, array $handlers, Closure $endLog): void {
 		$horhnd = handlers['horario'];
 		$horario = new Horario(
 			$data["numero_hora"],
@@ -35,9 +37,9 @@ $horarioApi->addEndpoint(new Endpoint(
 		);
 		try {
 			$horhnd->crearHorario($horario);
-			return [
+			echo(json_encode( [
 			    'success' => true
-			];
+			]));
 		} catch(Throwable $e) {
 			$message = $e->getMessage();
 			($endLog)('error', "Unexpected error, message: $message.");
@@ -54,14 +56,14 @@ $horarioApi->addEndpoint(new Endpoint(
 	name: "obtener",
 	method: "GET",
 	parameters: [],
-	run: function (array $data, array $handlers, Closure $endLog): array {
+	run: function (array $data, array $handlers, Closure $endLog): void {
 		$horhnd = handlers['horario'];
 		try {
 			$horarios = $horhnd->obtenerTodos();
-			return [
+			echo(json_encode( [
 				'success' => true,
 				'horarios' => $horarios
-			];
+			]));
 		} catch(Throwable $e) {
 			$message = $e->getMessage();
 			($endLog)('error', "Unexpected error, message: $message.");
@@ -78,13 +80,13 @@ $horarioApi->addEndpoint(new Endpoint(
 	name: "eliminar",
 	method: "DELETE",
 	parameters: ['numero_hora', 'dia_semana'],
-	run: function (array $data, array $handlers, Closure $endLog): array {
+	run: function (array $data, array $handlers, Closure $endLog): void {
 		$horhnd = handlers['horario'];
 		try {
 			$horhnd->elminarHorario($numero_hora, $dia_semana);
-			return [
+			echo(json_encode( [
 			    'success' => true
-			];
+			]));
 		} catch(Throwable $e) {
 			$message = $e->getMessage();
 			($endLog)('error', "Unexpected error, message: $message.");

@@ -138,3 +138,11 @@ FIELDS TERMINATED BY ','
 LINES TERMINATED BY '\n'
 IGNORE 1 ROWS
 (numero_puerta_inicial,numero_puerta_final,calle,latitud,longitud);
+
+/* Importar Horarios */
+LOAD DATA INFILE '/var/lib/mysql/horario.csv'
+INTO TABLE Horario
+FIELDS TERMINATED BY ','
+LINES TERMINATED BY '\n'
+IGNORE 1 ROWS
+(numero_hora,dia_semana,horario);

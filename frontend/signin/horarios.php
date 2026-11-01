@@ -46,11 +46,8 @@ $url     = 'http://' . $backend . ':' . $port;
             </p>
             <!-- FORMULARIO -->
             <form id="formularioHorarios">
-                <!-- =========================
-                     DÍAS
-                     ========================= -->
+                <!-- DÍAS -->
                 <div class="dias-container">
-                    <!-- LUNES -->
                     <button
                         type="button"
                         class="btn-dia"
@@ -59,7 +56,6 @@ $url     = 'http://' . $backend . ':' . $port;
                         <i class="bi bi-calendar2"></i>
                         Lunes
                     </button>
-                    <!-- MARTES -->
                     <button
                         type="button"
                         class="btn-dia"
@@ -68,7 +64,6 @@ $url     = 'http://' . $backend . ':' . $port;
                         <i class="bi bi-calendar2"></i>
                         Martes
                     </button>
-                    <!-- MIÉRCOLES -->
                     <button
                         type="button"
                         class="btn-dia"
@@ -77,7 +72,6 @@ $url     = 'http://' . $backend . ':' . $port;
                         <i class="bi bi-calendar2"></i>
                         Miércoles
                     </button>
-                    <!-- JUEVES -->
                     <button
                         type="button"
                         class="btn-dia"
@@ -86,7 +80,6 @@ $url     = 'http://' . $backend . ':' . $port;
                         <i class="bi bi-calendar2"></i>
                         Jueves
                     </button>
-                    <!-- VIERNES -->
                     <button
                         type="button"
                         class="btn-dia"
@@ -96,32 +89,13 @@ $url     = 'http://' . $backend . ':' . $port;
                         Viernes
                     </button>
                 </div>
-                <!-- =========================
-                     CONTENEDORES DE DÍAS
-                     ========================= -->
-                <div
-                    id="contenedorlunes"
-                    class="contenedor-dia">
-                </div>
-                <div
-                    id="contenedormartes"
-                    class="contenedor-dia">
-                </div>
-                <div
-                    id="contenedormiercoles"
-                    class="contenedor-dia">
-                </div>
-                <div
-                    id="contenedorjueves"
-                    class="contenedor-dia">
-                </div>
-                <div
-                    id="contenedorviernes"
-                    class="contenedor-dia">
-                </div>
-                <!-- =========================
-                     EVENTO ESPECIAL
-                     ========================= -->
+                <!-- CONTENEDORES DE DÍAS -->
+                <div id="contenedorlunes" class="contenedor-dia"></div>
+                <div id="contenedormartes" class="contenedor-dia"></div>
+                <div id="contenedormiercoles" class="contenedor-dia"></div>
+                <div id="contenedorjueves" class="contenedor-dia"></div>
+                <div id="contenedorviernes" class="contenedor-dia"></div>
+                <!-- EVENTO ESPECIAL -->
                 <div class="evento-especial">
                     <div
                         class="evento-cabecera"
@@ -146,10 +120,7 @@ $url     = 'http://' . $backend . ':' . $port;
                             <span class="slider"></span>
                         </label>
                     </div>
-                    <!-- INFORMACIÓN QUE APARECE AL ACTIVAR -->
-                    <div
-                        id="infoEvento"
-                        class="evento-info">
+                    <div id="infoEvento" class="evento-info">
                         <strong>
                             ¿Qué significa?
                         </strong>
@@ -169,319 +140,247 @@ $url     = 'http://' . $backend . ':' . $port;
                         de Urbanaut.
                     </div>
                 </div>
-                <!-- =========================
-                     MENSAJE
-                     ========================= -->
+                <!-- MENSAJE -->
                 <p class="mensaje-horarios">
                     <i class="bi bi-info-circle"></i>
                     Podés seleccionar más de un horario por día.
                 </p>
-                <!-- =========================
-                     BOTÓN
-                     ========================= -->
-                <button
-                    type="submit"
-                    class="btn-continuar">
+                <!-- BOTÓN -->
+                <button type="submit" class="btn-continuar">
                     Guardar horarios
-                    <span class="flecha">
-                        →
-                    </span>
+                    <span class="flecha"> → </span>
                 </button>
             </form>
-            <!-- =========================
-                 INFO
-                 ========================= -->
+            <!-- INFO -->
             <div class="info">
                 <i class="bi bi-clock"></i>
                 Los horarios seleccionados quedarán guardados en Urbanaut.
             </div>
         </section>
     </main>
-    <script>
-function agruparPorDia(horarios, dias) {
-  const resultado = {};
-  for (const d of dias){
-	  resultado[d] = [];
-	}
-  for (const h of horarios) {
-    const dia = h.dia_semana;
-    resultado[dia].push(h.horario);
-  }
+    <script type="module">
+        import UrbanautClient, {
+            HttpError,
+            NetworkError
+        } from '/assets/js/urbanaut-js-client/src/urbanaut.js';
 
-  return resultado;
-}
+        const api = new UrbanautClient({
+            baseUrl: <?= json_encode($url . '/api') ?>
+        });
 
-async function obtenerHorarios(){
-	var horarios = null;
-	try{
-		const response = await fetch(
-			<?= "\"".$url.'/api/horario.php/obtener'."\"" ?>,
-			{
-				method: "GET",
-				headers: {
-					"Content-Type": "application/json"
-				},
-			}
-		);
-		horarios = await response.json();
-	}  catch (error) {
-              console.error(
-                  "Error al conectar con la API:",
-                  error
-              );
-              alert(
-                  "No se pudo conectar con el servidor."
-              );
-          }
-	return horarios;
-}
-        const DIAS = [
-            "lunes",
-            "martes",
-            "miercoles",
-            "jueves",
-            "viernes"
-        ];
-	var horarios = null;
-	var horariosCreados = false;
-	var horariosPorDia = null;
-	obtenerHorarios().then(result =>{
-		horarios = result;
-		console.log(horarios);
-		horariosPorDia = agruparPorDia(horarios["horarios"], DIAS);
-	});
+        const DIAS = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes'];
 
-        function mostrarInfoEvento() {
-            const info =
-                document.getElementById(
-                    "infoEvento"
-                );
-            info.classList.toggle("mostrar");
+        /** @type {Record<string, Array<{ numero_hora: number, horario: string }>> | null} */
+        let horariosPorDia = null;
+        let horariosCreados = false;
+        let cargaHorarios = null;
+
+        /** Groups the flat `horario[]` response into per-day, ordered buckets. */
+        function agruparPorDia(horarios, dias) {
+            const resultado = {};
+            for (const d of dias) resultado[d] = [];
+
+            for (const h of horarios) {
+                const dia = String(h?.dia_semana ?? '').toLowerCase();
+                if (!resultado[dia]) continue; // skip dias we do not render
+                resultado[dia].push({
+                    numero_hora: Number(h.numero_hora),
+                    horario: String(h.horario ?? '')
+                });
+            }
+
+            for (const d of dias) {
+                resultado[d].sort((a, b) => a.numero_hora - b.numero_hora);
+            }
+            return resultado;
         }
 
-        function generarLiHorarioHora(
-            dia,
-            nhora
-        ) {
-            var liHora =
-                document.createElement("li");
-            liHora.classList.add(
-                "li-hora"
-            );
+        /** Loads the catalogue once and caches the promise. */
+        function cargarHorarios() {
+            if (!cargaHorarios) {
+                cargaHorarios = api.tiene
+                    .obtenertodos()
+                    .then((lista) => {
+                        horariosPorDia = agruparPorDia(lista, DIAS);
+                        return horariosPorDia;
+                    })
+                    .catch((error) => {
+                        if (error instanceof HttpError) {
+                            console.error('tiene.obtenertodos', error.status, error.code, error);
+                            if (error.status === 401) {
+                                window.location.href = '../login/login.php';
+                                return;
+                            }
+                            alert(`No se pudieron cargar los horarios (HTTP ${error.status}).`);
+                        } else if (error instanceof NetworkError) {
+                            console.error('tiene.obtenertodos', error);
+                            alert('No se pudo conectar con el servidor.');
+                        } else {
+                            console.error('tiene.obtenertodos', error);
+                            alert('Ocurrió un error inesperado al cargar los horarios.');
+                        }
+                        cargaHorarios = null; // allow a retry on the next click
+                        throw error;
+                    });
+            }
+            return cargaHorarios;
+        }
+
+        function mostrarInfoEvento() {
+            const info = document.getElementById('infoEvento');
+            info.classList.toggle('mostrar');
+        }
+        window.mostrarInfoEvento = mostrarInfoEvento;
+
+        function generarLiHorarioHora(dia, registro) {
+            const inputId = `${dia}${registro.numero_hora}`;
+            const liHora = document.createElement('li');
+            liHora.classList.add('li-hora');
+            liHora.id = `li${inputId}`;
             liHora.innerHTML = `
-                <label
-                    for="${dia}${nhora}">
-                    ${horariosPorDia[dia][nhora]}
-                </label>
+                <label for="${inputId}">${registro.horario}</label>
                 <input
                     type="checkbox"
-                    id="${dia}${nhora}"
+                    id="${inputId}"
                     name="horarios${dia}[]"
-                    value="${nhora}"
+                    value="${registro.numero_hora}"
                 />
             `;
-            var checkbox =
-                liHora.querySelector(
-                    "input"
-                );
-            checkbox.addEventListener(
-                "change",
-                function() {
-                    actualizarColorDia(
-                        dia
-                    );
-                }
-            );
-            liHora.id =
-                "li" + dia + nhora;
+            liHora.querySelector('input').addEventListener('change', () => {
+                actualizarColorDia(dia);
+            });
             return liHora;
         }
 
-        function generarUlHorarioDia(
-            dia
-        ) {
-            var ulDia =
-                document.createElement(
-                    "ul"
-                );
-            ulDia.classList.add(
-                "lista-horarios"
-            );
-            for (
-                var nhora = 0;
-                nhora < horariosPorDia[dia].length;
-                nhora++
-            ) {
-                var liHora =
-                    generarLiHorarioHora(
-                        dia,
-                        nhora
-                    );
-                ulDia.appendChild(
-                    liHora
-                );
+        function generarUlHorarioDia(dia) {
+            const ulDia = document.createElement('ul');
+            ulDia.classList.add('lista-horarios');
+            ulDia.id = `ul${dia}`;
+            for (const registro of horariosPorDia[dia]) {
+                ulDia.appendChild(generarLiHorarioHora(dia, registro));
             }
-            ulDia.id =
-                "ul" + dia;
             return ulDia;
         }
-	
+
         function generarHorarios() {
-            for (
-                var ndia = 0;
-                ndia < DIAS.length;
-                ndia++
-            ) {
-                var contenedorDia =
-                    document.getElementById(
-                        "contenedor" +
-                        DIAS[ndia]
-                    );
-                var ulDia =
-                    generarUlHorarioDia(
-                        DIAS[ndia]
-                    );
+            for (const dia of DIAS) {
+                const contenedorDia = document.getElementById(`contenedor${dia}`);
+                const ulDia = generarUlHorarioDia(dia);
                 ulDia.hidden = true;
-                contenedorDia.appendChild(
-                    ulDia
-                );
+                contenedorDia.appendChild(ulDia);
             }
         }
 
-        function actualizarColorDia(
-            dia
-        ) {
-            var ul =
-                document.getElementById(
-                    "ul" + dia
-                );
+        function actualizarColorDia(dia) {
+            const ul = document.getElementById(`ul${dia}`);
             if (!ul) return;
-            var checks =
-                ul.querySelectorAll(
-                    'input[type="checkbox"]'
-                );
-            var tieneHorario = false;
-            checks.forEach(
-                function(check) {
-                    if (check.checked) {
-                        tieneHorario = true;
-                    }
-                }
-            );
-            var boton =
-                document.querySelector(
-                    '.btn-dia[data-dia="' +
-                    dia +
-                    '"]'
-                );
+            const tieneHorario = [...ul.querySelectorAll('input[type="checkbox"]')]
+                .some((check) => check.checked);
+            const boton = document.querySelector(`.btn-dia[data-dia="${dia}"]`);
             if (!boton) return;
-            if (tieneHorario) {
-                boton.classList.add(
-                    "dia-seleccionado"
-                );
-            } else {
-                boton.classList.remove(
-                    "dia-seleccionado"
-                );
-            }
+            boton.classList.toggle('dia-seleccionado', tieneHorario);
         }
 
-        function despliegaHorarios(
-            idUl
-        ) {
+        async function despliegaHorarios(idUl) {
+		console.log(idUl);
+            try {
+                await cargarHorarios();
+            } catch {
+		console.log('pepito');
+                return; // the loader already alerted the user
+            }
+
             if (!horariosCreados) {
                 generarHorarios();
                 horariosCreados = true;
             }
-            var ul =
-                document.getElementById(
-                    idUl
-                );
-            DIAS.forEach(
-                function(dia) {
-                    var otroUl =
-                        document.getElementById(
-                            "ul" + dia
-                        );
-                    if (
-                        otroUl &&
-                        otroUl !== ul
-                    ) {
-                        otroUl.hidden = true;
-                    }
-                }
-            );
-            if (ul.hidden) {
-                ul.hidden = false;
-            } else {
-                ul.hidden = true;
-            }
+
+            const ul = document.getElementById(idUl);
+            if (!ul) return;
+
+            DIAS.forEach((dia) => {
+                const otroUl = document.getElementById(`ul${dia}`);
+                if (otroUl && otroUl !== ul) otroUl.hidden = true;
+            });
+
+            ul.hidden = !ul.hidden;
         }
-function obtenerHorariosSeleccionados() {
-    const resultado = {};
-    
-    for (const dia of DIAS) {
-        const checkboxes = document.querySelectorAll(
-            `#ul${dia} input[type="checkbox"]:checked`
-        );
-        resultado[dia] = Array.from(checkboxes).map(cb => {
-            return parseInt(cb.id.slice(dia.length), 10);
-        });
-    }
-    
-    return resultado;
-}
+        window.despliegaHorarios = despliegaHorarios;
 
-async function asignarHorario(nhora, dia) {
-	const payload = {
-		numero_hora: nhora,
-		dia_semana: dia
-	};
-	try {
-		const response = await fetch(
-		<?= "\"".$url.'/api/tiene.php/asignar'."\"" ?>, 
-		{
-			method: "POST",
-			credentials: "include",
-			headers: {
-				"Content-Type": "application/json"
-			},
-			body: JSON.stringify(payload)
-		}
-		);
+        function obtenerHorariosSeleccionados() {
+            const resultado = {};
+            for (const dia of DIAS) {
+                const checkboxes = document.querySelectorAll(
+                    `#ul${dia} input[type="checkbox"]:checked`
+                );
+                resultado[dia] = Array.from(checkboxes).map((cb) => Number(cb.value));
+            }
+            return resultado;
+        }
 
-		if (!response.ok) {
-			throw new Error(`Error HTTP: ${response.status} ${response.statusText}`);
-		}
-
-		const data = await response.json();
-		console.log("Respuesta del servidor:", data);
-		return data;
-
-	} catch (error) {
-		console.error("Error al enviar los horarios:", error);
-		alert("No se pudieron guardar los horarios. Intentá de nuevo.");
-		throw error;
-	}
-}
+        /** Claims one slot for the authenticated user (id comes from the token). */
+        function asignarHorario(numero_hora, dia_semana) {
+            return api.tiene.asignar({ numero_hora, dia_semana });
+        }
 
         document
-            .getElementById(
-                "formularioHorarios"
-            )
-            .addEventListener(
-                "submit",
-                function(event) {
-                    event.preventDefault();
-			const horSelc = obtenerHorariosSeleccionados();
-		    for (const d of DIAS){
-			    for (const n of horSelc[d]){
-				asignarHorario(n,d);
-		            }
-			}
-                    //window.location.href =   "auto.php";
+            .getElementById('formularioHorarios')
+            .addEventListener('submit', async (event) => {
+                event.preventDefault();
+
+                if (!api.isAuthenticated) {
+                    alert('Necesitás iniciar sesión para guardar tus horarios.');
+                    window.location.href = '../login/login.php';
+                    return;
                 }
-            );
+
+                const seleccion = obtenerHorariosSeleccionados();
+                const total = DIAS.reduce((acc, dia) => acc + seleccion[dia].length, 0);
+
+                if (total === 0) {
+                    alert('Seleccioná al menos un horario antes de guardar.');
+                    return;
+                }
+
+                const boton = event.submitter ?? document.querySelector('#formularioHorarios .btn-continuar');
+                if (boton) boton.disabled = true;
+
+                const errores = [];
+                try {
+                    for (const dia of DIAS) {
+                        for (const numero_hora of seleccion[dia]) {
+                            try {
+                                await asignarHorario(numero_hora, dia);
+                            } catch (error) {
+                                errores.push({ dia, numero_hora, error });
+                                console.error(`tiene.asignar (${dia} #${numero_hora})`, error);
+                            }
+                        }
+                    }
+                } finally {
+                    if (boton) boton.disabled = false;
+                }
+
+                if (errores.length === 0) {
+                    alert('Horarios guardados correctamente.');
+                    window.location.href = './auto.php';
+                    return;
+                }
+
+                const sesionExpirada = errores.some(
+                    ({ error }) => error instanceof HttpError && error.status === 401
+                );
+                if (sesionExpirada) {
+                    alert('Tu sesión expiró. Iniciá sesión de nuevo.');
+                    window.location.href = '../login/login.php';
+                    return;
+                }
+
+                alert(
+                    `No se pudieron guardar ${errores.length} de ${total} horarios. ` +
+                    'Puede que ya los tuvieras asignados. Intentá de nuevo.'
+                );
+            });
     </script>
 </body>
 </html>

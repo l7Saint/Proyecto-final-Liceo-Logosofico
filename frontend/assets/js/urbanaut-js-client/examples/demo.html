@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Urbanaut JS Client — Demo</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --border: #e5e5e5;
+      --accent: #4d6bfe;
+      --muted: #6b7280;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 32px 20px 64px;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      color: #0d0d0d;
+      background: #fafafa;
+    }
+    main { max-width: 880px; margin: 0 auto; display: grid; gap: 20px; }
+    h1 { font-size: 22px; font-weight: 600; margin: 0 0 4px; }
+    p.lead { margin: 0 0 8px; color: var(--muted); font-size: 14px; }
+    section {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 1px 2px rgba(0,0,0,.04);
+    }
+    h2 { font-size: 15px; font-weight: 600; margin: 0 0 14px; }
+    .row { display: flex; flex-wrap: wrap; gap: 10px; align-items: flex-end; }
+    label { display: grid; gap: 4px; font-size: 12px; font-weight: 600; color: var(--muted); }
+    input, select {
+      font: inherit; font-size: 14px;
+      padding: 8px 10px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: #fff;
+      min-width: 150px;
+    }
+    button {
+      font: inherit; font-size: 14px;
+      padding: 9px 16px;
+      border: 0; border-radius: 8px;
+      background: var(--accent); color: #fff;
+      cursor: pointer;
+    }
+    button.secondary { background: #fff; color: var(--accent); border: 1px solid var(--accent); }
+    button:disabled { opacity: .5; cursor: not-allowed; }
+    pre {
+      margin: 14px 0 0;
+      padding: 12px 14px;
+      background: #0d0d0d;
+      color: #e5e7eb;
+      border-radius: 8px;
+      font-size: 12.5px;
+      line-height: 1.5;
+      overflow: auto;
+      max-height: 320px;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .status { font-size: 13px; color: var(--muted); margin-top: 10px; }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>Urbanaut JS Client — Demo</h1>
+      <p class="lead">Vanilla ES modules. No build step. Open this page from a static server.</p>
+    </header>
+
+    <section>
+      <h2>Connection</h2>
+      <div class="row">
+        <label>API base URL
+          <input id="baseUrl" type="text" value="http://localhost:8000/api" />
+        </label>
+        <button id="btnSave" class="secondary" type="button">Apply</button>
+      </div>
+      <div class="status" id="status">Not connected.</div>
+    </section>
+
+    <section>
+      <h2>Session</h2>
+      <div class="row">
+        <label>Email <input id="email" type="email" value="admin@example.com" /></label>
+        <label>Password <input id="contrasena" type="password" value="changeme" /></label>
+        <button id="btnLogin" type="button">Log in</button>
+        <button id="btnCheck" class="secondary" type="button">Check</button>
+        <button id="btnMe" class="secondary" type="button">Get user</button>
+        <button id="btnLogout" class="secondary" type="button">Log out</button>
+      </div>
+      <pre id="out">Ready.</pre>
+    </section>
+
+    <section>
+      <h2>Vehicles</h2>
+      <div class="row">
+        <label>Marca <input id="marca" type="text" value="Toyota" /></label>
+        <label>Modelo <input id="modelo" type="text" value="Corolla" /></label>
+        <label>Color <input id="color" type="text" value="gris" /></label>
+        <label>Tamaño
+          <select id="tamano">
+            <option value="chico">chico</option>
+            <option value="mediano" selected>mediano</option>
+            <option value="grande">grande</option>
+          </select>
+        </label>
+        <button id="btnVehCreate" type="button">Create</button>
+        <button id="btnVehList" class="secondary" type="button">List</button>
+      </div>
+    </section>
+
+    <section>
+      <h2>Time slots</h2>
+      <div class="row">
+        <button id="btnHorList" class="secondary" type="button">List horarios</button>
+        <button id="btnTieneList" class="secondary" type="button">My slots</button>
+        <button id="btnProb" class="secondary" type="button">Probabilidad</button>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="./demo.js"></script>
+</body>
+</html>

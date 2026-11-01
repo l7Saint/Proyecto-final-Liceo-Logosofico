@@ -21,7 +21,7 @@ $usuarioApi->addEndpoint(new Endpoint(
 	name: "login",
 	method: "POST",
 	parameters: ['email', 'contrasena'],
-	run: function (array $data, array $handlers, Closure $endLog): array {
+	run: function (array $data, array $handlers, Closure $endLog): void {
 		$usrhnd = $handlers['usuario'];
 		$seshnd = $handlers['sesion'];
 		try {
@@ -39,7 +39,7 @@ $usuarioApi->addEndpoint(new Endpoint(
 			}
 			$token = startsession($usuario, $seshnd);
 			($endLog)('debug', "User with id=$usuario->id session started.");
-			return [
+			echo(json_encode([
 				'success' => true,
 				'token' => $token,
 				'usuario' => [
@@ -49,7 +49,7 @@ $usuarioApi->addEndpoint(new Endpoint(
 					'es_admin'       => (int)$usuario->es_admin,
 					'fecha_registro' => $usuario->fecha_registro
 				]
-			];
+			]));
 		} catch (Throwable $e) {
 			$message = $e->getMessage();
 			($endLog)('error', "Unexpected error.");
@@ -67,7 +67,7 @@ $usuarioApi->addEndpoint(new Endpoint(
 	name: "user",
 	method: "GET",
 	parameters: [],
-	run: function (array $data, array $handlers, Closure $endLog): array {
+	run: function (array $data, array $handlers, Closure $endLog): void {
 		$sesion = checkSession($handlers['sesion']);
 		if($sesion === false){
 			throw new GenericRuntimeException(
@@ -85,7 +85,7 @@ $usuarioApi->addEndpoint(new Endpoint(
 				getResponse: null
 			);
 		}
-		return [
+		echo(json_encode([
 			'success' => true,
 			'usuario' => [
 				'nombre'         => $usuario->nombre,
@@ -94,7 +94,7 @@ $usuarioApi->addEndpoint(new Endpoint(
 				'es_admin'       => (int)$usuario->es_admin,
 				'fecha_registro' => $usuario->fecha_registro
 			]
-		];
+		]));
 	}
 ));
 
@@ -103,9 +103,9 @@ $usuarioApi->addEndpoint(new Endpoint(
 	name: "check",
 	method: "GET",
 	parameters: [],
-	run: function (array $data, array $handlers, Closure $endLog): array {
+	run: function (array $data, array $handlers, Closure $endLog): void {
 		if(checkSession($handlers['sesion'])){
-			return ['success' => true];
+			echo(json_encode(['success' => true]));
 		} else {
 			throw new GenericRuntimeException(
 				httpCode: 401,
@@ -121,9 +121,9 @@ $usuarioApi->addEndpoint(new Endpoint(
 	name: "logout",
 	method: "GET",
 	parameters: [],
-	run: function (array $data, array $handlers, Closure $endLog): array {
+	run: function (array $data, array $handlers, Closure $endLog): void {
 		destroySession($handlers['sesion']);
-		return ['success' => true];
+		echo(json_encode( ['success' => true]));
 	}
 ));
 
@@ -132,7 +132,7 @@ $usuarioApi->addEndpoint(new Endpoint(
 	name: "signin",
 	method: "POST",
 	parameters: ['nombre', 'apellido', 'email', 'contrasena'],
-	run: function (array $data, array $handlers, Closure $endLog): array {
+	run: function (array $data, array $handlers, Closure $endLog): void {
 		$usrhnd = $handlers['usuario'];
 		$seshnd = $handlers['sesion'];
 		try{
@@ -169,7 +169,7 @@ $usuarioApi->addEndpoint(new Endpoint(
 				$usuario->id = (int)$nuevo_id; 
 				startSession($usuario, $seshnd);
 				($endLog)('debug', "New user registered with id=$nuevo_id");
-				return ['success' => true];
+				echo(json_encode(['success' => true]));
 			} else {
 				($endLog)('error', "Unexpected error, crearUsuario returned 'false'.");
 				throw new GenericRuntimeException(

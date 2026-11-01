@@ -42,7 +42,7 @@ class Api {
 	public function runEndpoint(string $endpName, string $method, array $data): void{
 		$endp = $this->findEndpoint($endpName);
 		if($endp === null){
-			elog('error', "Requested access to nonexistant endpoint: api.$this->name.$endp->name");
+			elog('error', "Requested access to nonexistant endpoint: api.{$this->name}.{$endpName}");
 			throw new InvalidEndpointException("Invalid endpoint name: {$endpName}.");
 		}
 		elog('debug', "Call to api.{$this->name}.{$endp->name}.");
@@ -52,11 +52,12 @@ class Api {
 		if($method !== $endp->method)
 			throw new BadMethodException("Invalid method expected '{$endp->method}', obtained '{$method}'");
 		try {
-			$endLog = function(?string $type, string $message): void {
+			$apiName  = $this->name;
+			$endLog = function(?string $type, string $message) use ($apiName, $endpName): void {
 				if(!isset($type)){
-					elog('debug', "From api.$this->name.$endp->name: ". $message);
+					elog('debug', "From api.{$apiName}.{$endpName}: ". $message);
 				} else {
-					elog($type, "From api.$this->name.$endp->name: ". $message);
+					elog($type, "From api.{$apiName}.{$endpName}: ". $message);
 				}
 			};
 			if(isset($this->prerun))

@@ -1,8 +1,11 @@
 <?php
+require_once __DIR__ . '/../functions.php';
 function verificarAdministrador($usrhnd, $seshnd){
 	$sesion = checkSession($seshnd);
-	if($sesion === false)
+	if($sesion === false){
 		return false;
+		elog('error', "Unauthorized in verificarAdministrador. Sesion is false");
+	}
 	$user = $usrhnd->obtenerPorId($sesion->id_usuario);
 	if(!$user)
 		return false;

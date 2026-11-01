@@ -9,7 +9,8 @@ $tieneApi = new Api(
 	name: "tiene",
 	handlers: [
 		'tiene' => new TieneHandler($conexion),
-		'sesion' => new SesionHandler($conexion)
+		'sesion' => new SesionHandler($conexion),
+		'horario' => new HorarioHandler($conexion)
 	],
 	prerun: function (array $data, array $handlers, Closure $endLog): void {
 		if(checkSession($handlers['sesion']) === false)
@@ -25,7 +26,7 @@ $tieneApi->addEndpoint(new Endpoint(
 	name: "asignar",
 	method: "POST",
 	parameters: ['numero_hora', 'dia_semana'],
-	run: function (array $data, array $handlers, Closure $endLog): array {
+	run: function (array $data, array $handlers, Closure $endLog): void {
 		$tiehnd = $handlers['tiene'];
 		$id_usuario = checkSession($handlers['sesion'])->id_usuario;
 		try {
@@ -34,9 +35,9 @@ $tieneApi->addEndpoint(new Endpoint(
 				$data['numero_hora'],
 				$data['dia_semana']
 			)){
-				return [
+				echo(json_encode([
 					'success' => true
-				];
+				]));
 			} else {
 				($endLog)('error', "Unexpected error, asignarHorario returned 'false'.");
 				throw new GenericRuntimeException(
@@ -61,15 +62,39 @@ $tieneApi->addEndpoint(new Endpoint(
 	name: "obtener",
 	method: "GET",
 	parameters: [],
-	run: function (array $data, array $handlers, Closure $endLog): array {
+	run: function (array $data, array $handlers, Closure $endLog): void {
 		$tiehnd = $handlers['tiene'];
 		$id_usuario = checkSession($handlers['sesion'])->id_usuario;
 		try {
 			$horarios = $tiehnd->obtenerPorIDUsuario($id_usuario);
-			return [
+			echo(json_encode([
 				'success' => true,
 				'horarios' => $horarios
-			];
+			]));
+		} catch(Throwable $e) {
+			$message = $e->getMessage();
+			($endLog)('error', "Unexpected error, message: $message.");
+			throw new GenericRuntimeException(
+				httpCode: 500,
+				message: $e->getMessage(),
+				getResponse: null
+			);
+		}
+	}
+));
+
+$tieneApi->addEndpoint(new Endpoint(
+	name: "obtenertodos",
+	method: "GET",
+	parameters: [],
+	run: function (array $data, array $handlers, Closure $endLog): void {
+		$horhnd = $handlers['horario'];
+		try {
+			$horarios = $horhnd->obtenerTodos();
+			echo(json_encode( [
+				'success' => true,
+				'horarios' => $horarios
+			]));
 		} catch(Throwable $e) {
 			$message = $e->getMessage();
 			($endLog)('error', "Unexpected error, message: $message.");

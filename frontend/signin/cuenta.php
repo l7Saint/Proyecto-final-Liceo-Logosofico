@@ -42,8 +42,6 @@ $url     = 'http://' . $backend . ':' . $port;
         </p>
         <!-- FORMULARIO -->
         <form id="formulario">
-          <!-- action="horarios.php"
-                method="POST"> -->
           <!-- NOMBRE -->
           <div class="campo">
             <i class="bi bi-person"></i>
@@ -159,95 +157,96 @@ $url     = 'http://' . $backend . ':' . $port;
         </div>
       </section>
     </main>
-    <script>
-        function mostrarPassword(id, boton) {
-          const input = document.getElementById(id);
-          const icono = boton.querySelector("i");
-          if (input.type === "password") {
-            input.type = "text";
-            icono.classList.remove("bi-eye");
-            icono.classList.add("bi-eye-slash");
+    <script type="module">
+      import UrbanautClient, {
+        HttpError,
+        NetworkError,
+        ValidationError
+      } from '/assets/js/urbanaut-js-client/src/urbanaut.js';
+
+      const api = new UrbanautClient({
+        baseUrl: <?= json_encode($url . '/api') ?>
+	<?php error_log("baseUrl: $url"); ?>
+      });
+
+      function mostrarPassword(id, boton) {
+        const input = document.getElementById(id);
+        const icono = boton.querySelector('i');
+        if (input.type === 'password') {
+          input.type = 'text';
+          icono.classList.remove('bi-eye');
+          icono.classList.add('bi-eye-slash');
+        } else {
+          input.type = 'password';
+          icono.classList.remove('bi-eye-slash');
+          icono.classList.add('bi-eye');
+        }
+      }
+      window.mostrarPassword = mostrarPassword;
+
+      document.getElementById('formulario').addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const contrasena = document.getElementById('contrasena').value;
+        const confirmar = document.getElementById('confirmar').value;
+        if (contrasena !== confirmar) {
+          alert('Las contraseñas no coinciden.');
+          return;
+        }
+        await enviarDatos(obtenerDatos());
+      });
+
+      function obtenerDatos() {
+        const nombre = document.getElementById('nombre').value.trim();
+        const apellido = document.getElementById('apellido').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const contrasena = document.getElementById('contrasena').value;
+        return { nombre, apellido, email, contrasena };
+      }
+
+      async function enviarDatos(datos) {
+        try {
+          // `autoLogin` is required: the backend creates the session during signin
+          // but discards the token before responding. The wrapper logs in right
+          // afterwards so the token + profile are stored in localStorage.
+          const { success, session } = await api.usuario.signin(datos, { autoLogin: true });
+
+          if (!success) {
+            alert('No se pudo crear la cuenta. Intentá de nuevo.');
+            return;
+          }
+
+          alert('Usuario registrado correctamente.');
+          document.getElementById('formulario').reset();
+
+          if (session?.token) {
+            window.location.href = './horarios.php';
           } else {
-            input.type = "password";
-            icono.classList.remove("bi-eye-slash");
-            icono.classList.add("bi-eye");
+            // Registration worked but auto-login did not — send the user to login.
+            window.location.href = '../login/login.php';
           }
-        }
-        document
-          .getElementById("formulario")
-          .addEventListener("submit", function (event) {
-            event.preventDefault();
-            const contrasena = document.getElementById("contrasena").value;
-            const confirmar = document.getElementById("confirmar").value;
-            if (contrasena !== confirmar) {
-              alert("Las contraseñas no coinciden.");
-              return;
+        } catch (error) {
+          if (error instanceof ValidationError) {
+            alert(`Faltan datos: ${error.details?.missing?.join(', ') ?? ''}`);
+            console.error(error);
+          } else if (error instanceof HttpError) {
+            if (error.status === 409) {
+              alert('Ese correo ya está registrado.');
+            } else if (error.status === 400) {
+              alert('Faltan datos o hay datos incorrectos.');
+            } else if (error.status === 500) {
+              alert('Error interno del servidor.');
+            } else {
+              alert(`Ocurrió un error inesperado (HTTP ${error.status}).`);
             }
-	    enviarDatos(obtenerDatos());
-	    window.location.href = './horarios.php';
-          });
-        function obtenerDatos() {
-          const nombre = document.getElementById("nombre").value.trim();
-          const apellido = document.getElementById("apellido").value.trim();
-          const email = document.getElementById("email").value.trim();
-          const contrasena = document.getElementById("contrasena").value;
-          const datos = {
-            nombre,
-            apellido,
-            email,
-            contrasena,
-          };
-          return datos;
-        }
-        async function enviarDatos(datos) {
-          try {
-               const response = await fetch(
-	       <?= "\"".$url.'/api/usuario.php/signin'."\"" ?>,
-                  {
-                      method: "POST",
-                      headers: {
-                          "Content-Type": "application/json"
-                      },
-                      body: JSON.stringify(datos)
-                  }
-              );
-              let data = await response.json();
-                if (response.status === 200) {
-                  alert(
-                      "Usuario registrado correctamente."
-                  );
-                  document
-                      .getElementById("formulario")
-                      .reset();
-              } else if (response.status === 409) {
-                  alert(
-                      "Ese correo ya está registrado."
-                  );
-              } else if (response.status === 400) {
-                  alert(
-                      "Faltan datos o hay datos incorrectos."
-                  );
-                  console.error(data);
-              } else if (response.status === 500) {
-                  alert(
-                      "Error interno del servidor."
-                  );
-                  console.error(data);
-              } else {
-                  alert(
-                      "Ocurrió un error inesperado."
-                  );
-                  console.error(data);
-              }
-          } catch (error) {
-              console.error(
-                  "Error al conectar con la API:",
-                  error
-              );
-              alert(
-                  "No se pudo conectar con el servidor."
-              );
+            console.error(error);
+          } else if (error instanceof NetworkError) {
+            alert('No se pudo conectar con el servidor.');
+            console.error(error);
+          } else {
+            alert('Ocurrió un error inesperado.');
+            console.error(error);
           }
+        }
       }
     </script>
   </body>

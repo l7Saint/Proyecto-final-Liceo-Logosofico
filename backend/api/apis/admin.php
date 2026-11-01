@@ -176,8 +176,8 @@ $adminApi->addEndpoint(new Endpoint(
 		$usrhnd = handlers['usuario'];
 		try {
 			//no permitir que un admin se elimine a si mismo
-			session_start();
-			if($_SESSION['user_id'] == $data['id']){
+			$self_id = checkSession($handlers['sesion'])->id_usuario;
+			if($self_id === $data['id']){
 				throw new GenericRuntimeException(
 					httpCode: 400,
 					message: 'Cant delete your own user',

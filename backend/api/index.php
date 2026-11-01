@@ -3,9 +3,9 @@ require_once '../classes/Main.php';
 require_once '../functions.php';
 
 //error handling ini
-//ini_set('display_errors', 0);
-//ini_set('display_startup_errors', 0);
-//error_reporting(E_ALL);
+ini_set('display_errors', 0);
+ini_set('display_startup_errors', 0);
+error_reporting(E_ALL);
 
 // -- CORS --
 $origin = $_SERVER['HTTP_ORIGIN'] ?? '*';
@@ -31,10 +31,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 }
 
 try {
-	elog('debug', "Before Main");
+	#elog('debug', "Before Main");
 	$main = new Main();
 	foreach (glob('apis/*.php') as $file) {
-		elog('debug', "Imported: {$file}");
+		#elog('debug', "Imported: {$file}");
 		require_once __DIR__ . '/' . $file;
 	}
 } catch (Throwable $e) {
@@ -45,7 +45,7 @@ try {
 	die();
 }
 try {
-	elog('debug', "After Import, Before Run");
+	#elog('debug', "After Import, Before Run");
 	$uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);   // "/api/foo/bar"
 	$uri = preg_replace('#^/api/?#', '', $uri);                // "foo/bar"
 	$main->run(
@@ -53,7 +53,7 @@ try {
 		method: $_SERVER['REQUEST_METHOD'],
 		data: json_decode(file_get_contents('php://input'), true)
 	);
-	elog('debug', "After Run, End");
+	#elog('debug', "After Run, End");
 } catch (Throwable $e) {
 	$message = $e->getMessage();
 	$file = $e->getFile();

@@ -15,7 +15,7 @@ $estacionarApi->addEndpoint(new Endpoint(
 	name: "probabilidad",
 	method: "GET",
 	parameters: ['cuadras_id', 'dia_semana', 'hora'],
-	run: function (array $data, array $handlers, Closure $endLog): array {
+	run: function (array $data, array $handlers, Closure $endLog): void {
 		try {
 			$conexion = $handlers['conexion'];
 			foreach($data['cuadras_id'] as $cuadra_id){

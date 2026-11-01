@@ -1,6 +1,6 @@
 <?php
 class Horario {
-	private const DIAS_VALIDOS = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado'];
+	private const DIAS_VALIDOS = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'];
 	public function __construct(
 		public ?int $numero_hora,
 		public ?string $dia_semana,
