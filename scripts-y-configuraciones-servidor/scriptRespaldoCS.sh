@@ -18,7 +18,7 @@ loggear(){
 
 menuOpciones(){
 echo -e "Bienvenido al script de Respaldo del servidor\n"
-echo -e "1)Respaldo local\n2)Respaldo remoto (utilizando scp)\n3)Programar respaldo con CRON\n4)Salir\n"
+echo -e "1)Respaldo local\n2)Respaldo remoto (utilizando scp)\n3)Programar respaldo con CRON\n4)Respaldo Docker\n5)Salir\n"
 read -p "Elija una de las opciones: " opcionUser
 
 }
@@ -119,13 +119,58 @@ echo "Se cambio el archivo correctamente"
 
 }
 
-while [[ $opcionUser != 4 ]];do
+respaldoDocker(){
+checkLogFolder
+
+fechaActual=$(date +%d-%m-%Y--%H-%M-%S)
+
+carpetaRespaldo="$(pwd)/respaldos"
+mkdir -p "$carpetaRespaldo"
+
+archivoTAR="$carpetaRespaldo/db_data_$fechaActual.tar.gz"
+
+volumen=$(docker volume ls -q | grep -E 'urbanaut_db_data')
+
+    if [[ -z "$volumen" ]]; then
+        loggear "No se encontró el volumen db_data"
+        return 1
+    fi
+
+loggear "Iniciando respaldo del volumen $volumen"
+
+
+    if ! docker compose stop; then
+        loggear "No se pudieron detener los contenedores"
+        return 1
+    fi
+
+    if docker run --rm \
+    -v "$volumen:/datos:ro" \
+    -v "$carpetaRespaldo:/respaldo" \
+    alpine tar -czf "/respaldo/$(basename "$archivoTAR")" -C /datos .; then
+
+        loggear "Respaldo creado correctamente: $archivoTAR"
+
+    else
+        loggear "Error al crear el respaldo del volumen"
+    fi
+
+
+    if docker compose start -d; then
+        loggear "Contenedores iniciados nuevamente"
+    else
+        loggear "Error al iniciar los contenedores nuevamente"
+    fi
+}
+
+while [[ $opcionUser != 5 ]];do
 menuOpciones
 case $opcionUser in
 1)respaldolocal;;
 2)respaldoRemotoSCP;;
 3)respaldoCRON;;
-4);;
+4)respaldoDocker;;
+5);;
 esac
 done
 
