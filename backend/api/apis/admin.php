@@ -27,7 +27,7 @@ $adminApi->addEndpoint(new Endpoint(
 	method: "POST",
 	parameters: ['nombre', 'apellido', 'email', 'contrasena'],
 	run: function (array $data, array $handlers, Closure $endLog): array {
-		$usrhnd = handlers['usuario'];
+		$usrhnd = $handlers['usuario'];
 		try {
 			$existingUser = $usrhnd->obtenerPorEmail($data['email']);
 			if($existingUser !== false){
@@ -50,12 +50,12 @@ $adminApi->addEndpoint(new Endpoint(
 			$newId = $usrhnd->crearUsuarioAdmin($usuario);
 			if($newId){
 				//error_log("Admin creo nuevo usuario, email: ".$data['email']);
-				return [
+				echo(json_encode([
 					'success' => true,
 					'id' => $newId
-				];
+				]);
 			} else {
-				($endLog)('error', "Unexpected error, crearUsuarioAdmin returned 'false'.");
+				($endLog)('error', "Unexpected error, crearUsuarioAdmin echo json_encode(ed 'false'.");
 				throw new GenericRuntimeException(
 					httpCode: 500,
 					message: "Couldnt create user for some reason",
@@ -79,7 +79,7 @@ $adminApi->addEndpoint(new Endpoint(
 	method: "GET",
 	parameters: [],
 	run: function (array $data, array $handlers, Closure $endLog): array {
-		$usrhnd = handlers['usuario'];
+		$usrhnd = $handlers['usuario'];
 		try {
 			$usuarios = $usrhnd->obtenerTodos();
 			$resultado = [];
@@ -94,10 +94,10 @@ $adminApi->addEndpoint(new Endpoint(
 					'fecha_registro' => $u->fecha_registro
 				];
 			}
-			return [
+			echo json_encode([
 				'success' => true,
 				'usuarios' => $resultado
-			];
+			]);
 		} catch(Throwable $e){
 			$message = $e->getMessage();
 			($endLog)('error', "Unexpected error, message: $message.");
@@ -115,7 +115,7 @@ $adminApi->addEndpoint(new Endpoint(
 	method: "PUT",
 	parameters: ['id'],
 	run: function (array $data, array $handlers, Closure $endLog): array {
-		$usrhnd = handlers['usuario'];
+		$usrhnd = $handlers['usuario'];
 		try {
 			$usuario = $usrhnd->obtenerPorId($data['id']);
 			if($usuario === false){
@@ -145,11 +145,11 @@ $adminApi->addEndpoint(new Endpoint(
 			if(isset($data['es_admin'])) $usuario->es_admin = $data['es_admin'] ? 1 : 0;
 
 			if($usrhnd->modificarUsuario($data['id'], $usuario)){
-				return [
+				echo json_encode([
 					'success' => true
-				];
+				]);
 			} else {
-				($endLog)('error', "Unexpected error, modificarUsuario returned 'false'.");
+				($endLog)('error', "Unexpected error, modificarUsuario echo json_encode(ed 'false'.");
 				throw new GenericRuntimeException(
 					httpCode: 500,
 					message: "Couldnt modify user.",
@@ -173,7 +173,7 @@ $adminApi->addEndpoint(new Endpoint(
 	method: "DELETE",
 	parameters: ['id'],
 	run: function (array $data, array $handlers, Closure $endLog): array {
-		$usrhnd = handlers['usuario'];
+		$usrhnd = $handlers['usuario'];
 		try {
 			//no permitir que un admin se elimine a si mismo
 			$self_id = checkSession($handlers['sesion'])->id_usuario;
@@ -192,7 +192,7 @@ $adminApi->addEndpoint(new Endpoint(
 				]);
 				error_log("Admin elimino usuario id: " . $data['id']);
 			} else {
-				($endLog)('error', "Unexpected error, eliminarUsuario returned 'false'.");
+				($endLog)('error', "Unexpected error, eliminarUsuario echo json_encode(ed 'false'.");
 				throw new GenericRuntimeException(
 					httpCode: 500,
 					message: 'Couldnt delete user',

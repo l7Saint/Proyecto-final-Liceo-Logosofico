@@ -42,10 +42,13 @@ CREATE TABLE IF NOT EXISTS Cuadra (
 
 CREATE TABLE IF NOT EXISTS Reporte (
 	id_cuadra INT,
-	fecha DATE,
-	hora TIME,
+	/* Que tan llena esta la cuadra del 1 al 10 */
+	valor INT NOT NULL,
+	fecha DATE NOT NULL,
+	hora TIME NOT NULL,
 	PRIMARY KEY (id_cuadra, fecha, hora),
-	FOREIGN KEY (id_cuadra) REFERENCES Cuadra(id)
+	FOREIGN KEY (id_cuadra) REFERENCES Cuadra(id),
+	CHECK (valor BETWEEN 0 AND 10)
 );
 
 CREATE TABLE IF NOT EXISTS Tiene (
@@ -70,14 +73,11 @@ CREATE TABLE IF NOT EXISTS Estaciona_en (
 	id_usuario INT NOT NULL,
 	id_vehiculo INT NOT NULL,
 	id_cuadra INT NOT NULL,
-	numero_hora INT NOT NULL,
-	dia_semana ENUM('lunes','martes','miercoles','jueves','viernes','sabado','domingo') NOT NULL,
 	fecha DATE NOT NULL,
 	hora_inicio TIME NOT NULL DEFAULT (CURRENT_TIME),
 	hora_fin TIME,
 	FOREIGN KEY (id_usuario, id_vehiculo) REFERENCES Posee(id_usuario, id_vehiculo),
 	FOREIGN KEY (id_cuadra) REFERENCES Cuadra(id),
-	FOREIGN KEY (numero_hora, dia_semana) REFERENCES Horario(numero_hora, dia_semana),
 	CHECK (hora_fin IS NULL OR hora_fin > hora_inicio)
 );
 
@@ -127,6 +127,7 @@ SELECT
 	AVG(vehiculos_hora_carril) AS promedio_vehiculos_carril
 FROM conteo_dataset
 GROUP BY latitud, longitud, dia_semana, hora;
+DROP TABLE conteo_dataset;
 
 
 

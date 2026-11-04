@@ -12,6 +12,15 @@ $estacionarApi = new Api(
 );
 
 $estacionarApi->addEndpoint(new Endpoint(
+	name: "estacionar",
+	method: "POST",
+	parameters: ['ubicacion', 'fecha', 'hora'],
+	run: function (array $data, array $handlers, Closure $endLog): void {
+		
+	}
+));
+
+$estacionarApi->addEndpoint(new Endpoint(
 	name: "probabilidad",
 	method: "GET",
 	parameters: ['cuadras_id', 'dia_semana', 'hora'],
