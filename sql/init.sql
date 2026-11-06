@@ -34,6 +34,7 @@ CREATE TABLE IF NOT EXISTS Cuadra (
 	numero_puerta_inicial INT,
 	numero_puerta_final INT,
 	calle VARCHAR(100) NOT NULL,
+	largo_metros DECIMAL(10,7) NOT NULL,
 	latitud DECIMAL(10,7),
 	longitud DECIMAL(10,7),
 	CHECK (latitud BETWEEN -90 AND 90),
