@@ -53,7 +53,7 @@ $adminApi->addEndpoint(new Endpoint(
 				echo(json_encode([
 					'success' => true,
 					'id' => $newId
-				]);
+				]));
 			} else {
 				($endLog)('error', "Unexpected error, crearUsuarioAdmin echo json_encode(ed 'false'.");
 				throw new GenericRuntimeException(
