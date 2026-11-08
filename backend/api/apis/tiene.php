@@ -106,5 +106,28 @@ $tieneApi->addEndpoint(new Endpoint(
 		}
 	}
 ));
+$tieneApi->addEndpoint(new Endpoint(
+    name: "desasignar",
+    method: "DELETE",
+    parameters: ['numero_hora', 'dia_semana'],
+    run: function (array $data, array $handlers, Closure $endLog): void {
+        $tiehnd = $handlers['tiene'];
+        $sesion = checkSession($handlers['sesion']);
+        
+        if ($sesion === false) {
+            throw new GenericRuntimeException(401, "Unauthorized", null);
+        }
+
+        try {
+            if($tiehnd->desasignarHorario((int)$sesion->id_usuario, $data['numero_hora'], $data['dia_semana'])){
+                echo json_encode(['success' => true]);
+            } else {
+                throw new Exception("No se pudo desasignar el horario");
+            }
+        } catch(Throwable $e) {
+            throw new GenericRuntimeException(500, $e->getMessage(), null);
+        }
+    }
+));
 
 $main->addApi($tieneApi);

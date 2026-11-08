@@ -122,4 +122,17 @@ export class UsuarioApi {
 
     return { success: Boolean(body?.success), session };
   }
+
+  async modificar({ nombre, apellido, email } = {}, options = {}) {
+    requireFields({ nombre, apellido, email }, ['nombre', 'apellido', 'email'], {
+      api: API,
+      endpoint: 'modificar'
+    });
+
+    return this.client.http.request(API, 'modificar', {
+      method: 'PUT',
+      data: { nombre, apellido, email },
+      signal: options.signal
+    });
+  }
 }

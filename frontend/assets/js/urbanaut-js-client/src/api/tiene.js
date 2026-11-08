@@ -62,4 +62,19 @@ export class TieneApi {
     });
     return body?.horarios ?? [];
   }
+  async desasignar({ numero_hora, dia_semana } = {}, options = {}) {
+    requireFields({ numero_hora, dia_semana }, ['numero_hora', 'dia_semana'], {
+      api: API,
+      endpoint: 'desasignar'
+    });
+
+    return this.client.http.request(API, 'desasignar', {
+      method: 'DELETE',
+      data: { numero_hora, dia_semana },
+      signal: options.signal
+    });
+  }
+
+
+
 }
