@@ -11,6 +11,7 @@ Drop the folder on any static server and `import` it.
 ## 1. Directory structure
 
 ```
+
 urbanaut-js-client/
 ├── README.md
 ├── src/
@@ -27,10 +28,11 @@ urbanaut-js-client/
 │       ├── horario.js         ← HorarioApi      (crear / obtener / eliminar)
 │       ├── tiene.js           ← TieneApi        (asignar / obtener)
 │       ├── vehiculo.js        ← VehiculoApi     (crear / obtener / modificar / eliminar)
-│       └── estacionar.js      ← EstacionarApi   (probabilidad)
+│       └── estacionar.js      ← EstacionarApi   (probabilidad / estacionar / liberar)
 └── examples/
-    ├── demo.html
-    └── demo.js
+├── demo.html
+└── demo.js
+
 ```
 
 ### Layer responsibilities
@@ -45,10 +47,12 @@ urbanaut-js-client/
 Naming convention: **one namespace per backend API name**, **one method per backend endpoint name**.
 
 ```
+
 const api = new UrbanautClient();
 await api.usuario.login({ email, contrasena });   // → /api/usuario/login
 await api.vehiculo.obtener();                     // → /api/vehiculo/obtener
 await api.estacionar.probabilidad({ ... });       // → /api/estacionar/probabilidad
+
 ```
 
 ---
@@ -72,9 +76,13 @@ await api.estacionar.probabilidad({ ... });       // → /api/estacionar/probabi
 Serve the folder over HTTP (ES modules do not work from `file://`):
 
 ```
+
 npx serve urbanaut-js-client
+
 # or
+
 python3 -m http.server --directory urbanaut-js-client
+
 ```
 
 ---
@@ -82,14 +90,16 @@ python3 -m http.server --directory urbanaut-js-client
 ## 3. Client configuration
 
 ```
+
 new UrbanautClient({
-  baseUrl: '/api',        // prefix for every request (no trailing slash needed)
-  storage: null,          // Storage-like object; defaults to localStorage (memory fallback)
-  persistUser: true,      // also persist the user profile object
-  fetchImpl: null,        // inject a custom fetch (tests, polyfills)
-  timeout: 20000,         // ms; 0 disables the timeout
-  credentials: 'omit'     // cookies are not used — auth is Bearer-token only
+baseUrl: '/api',        // prefix for every request (no trailing slash needed)
+storage: null,          // Storage-like object; defaults to localStorage (memory fallback)
+persistUser: true,      // also persist the user profile object
+fetchImpl: null,        // inject a custom fetch (tests, polyfills)
+timeout: 20000,         // ms; 0 disables the timeout
+credentials: 'omit'     // cookies are not used — auth is Bearer-token only
 });
+
 ```
 
 ### Instance surface
@@ -120,7 +130,9 @@ new UrbanautClient({
 ⚙
 
 ```
+
 const off = api.on('unauthorized', () => location.assign('/login'));
+
 ```
 
 ---
@@ -205,26 +217,42 @@ The user id is derived server-side from the Bearer token — never send it.
 
 Ownership (`vehiculo.id_usuario === session.id_usuario`) is enforced server-side → `403`.
 
-### `estacionar` — `api.estacionar` (public)
+### `estacionar` — `api.estacionar`
 
-| Wrapper method | HTTP | Path | Request body | Resolves to |
-|---|---|---|---|---|
-| `probabilidad({ cuadras_id, dia_semana, hora })` | GET | `/estacionar/probabilidad` | `cuadras_id: number[]`, `dia_semana`, `hora` | `[{ cuadra_id, puntaje, confianza }]` |
+| Wrapper method | HTTP | Path | Auth | Request body | Resolves to |
+|---|---|---|---|---|---|
+| `probabilidad({ cuadras_id, dia_semana, hora })` | GET | `/estacionar/probabilidad` | — | `cuadras_id: number[]`, `dia_semana`, `hora` | `[{ cuadra_id, puntaje, confianza }]` |
+| `estacionar({ latitud, longitud, id_vehiculo })` | POST | `/estacionar/estacionar` | user ² | `latitud`, `longitud`, `id_vehiculo` | `{ success, id_est }` |
+| `liberar({ id_est })` | POST | `/estacionar/liberar` | — ¹ | `id_est` | `null` |
+
+> ¹ **`liberar()` is currently unauthenticated.** The endpoint's API-level `prerun`
+> session check is commented out in `backend/api/apis/estacionar.php`, so it accepts
+> requests without a Bearer token and performs no ownership check. The wrapper still
+> forwards the token when available, so it keeps working if the backend re-enables
+> the check.
+>
+> ² **`estacionar()` requires a valid session, but the backend reports a missing one
+> as `500` (not `401`).** The controller calls `checkSession(...)->id_usuario`; with
+> no session, `checkSession` returns `false` and the property access fatals, which the
+> endpoint catches and re-throws as `GenericRuntimeException(500)`. Call it after a
+> successful `usuario.login()` and this is a non-issue.
 
 ---
 
 ## 6. Error handling
 
 ```
+
 import { HttpError, NetworkError, ValidationError } from './urbanaut-js-client/src/urbanaut.js';
 
 try {
-  await api.vehiculo.eliminar({ id: 42 });
+await api.vehiculo.eliminar({ id: 42 });
 } catch (err) {
-  if (err instanceof ValidationError)  { /* missing field, nothing was sent */ }
-  else if (err instanceof HttpError)   { console.warn(err.status, err.code, err.message); }
-  else if (err instanceof NetworkError){ /* offline / timeout / DNS */ }
+if (err instanceof ValidationError)  { /* missing field, nothing was sent */ }
+else if (err instanceof HttpError)   { console.warn(err.status, err.code, err.message); }
+else if (err instanceof NetworkError){ /* offline / timeout / DNS */ }
 }
+
 ```
 
 | Class | Thrown when | Useful fields |
@@ -249,8 +277,8 @@ These are real properties of the PHP code, documented here so nobody wastes an a
 parameters are validated against that decoded array. Query strings are never read.
 ⇒ `estacionar.probabilidad()` sends a `GET` **with** a JSON body. That is intentional and required.
 2. **Double-echo responses.**
-`vehiculo.*`, `estacionar.probabilidad` and `admin.eliminar` echo their own JSON and *also*
-`return` (or fall through), so `Main` appends a second `json_encode(null)`.
+`vehiculo.*`, `estacionar.probabilidad`, `estacionar.estacionar` and `admin.eliminar` echo their
+own JSON and *also* `return` (or fall through), so `Main` appends a second `json_encode(null)`.
 The wire body looks like `{"success":true,"id":1}null`.
 ⇒ `parseBody()` falls back to extracting the first balanced JSON value.
 3. **`signin` swallows the token.** See §5.
@@ -262,6 +290,10 @@ so the admin guard silently fails. The wrapper still sends the Bearer token.
 a fatal `Error` (HTTP 500) on those endpoints until fixed server-side.
 7. **`dia_semana` vocabulary** is `lunes … sabado`; `Horario` throws on anything else,
 which surfaces as a `500`.
+8. **`estacionar.liberar` has no auth and no ownership check.** Its `prerun` session
+guard is commented out and the controller never calls `checkSession`, so any client
+can close any event by `id_est`. The wrapper still forwards the Bearer token when
+present so it remains compatible if the backend re-enables the check.
 
 ---
 
@@ -282,16 +314,18 @@ so it works under both `mod_php` and `php-fpm` behind Apache.
 Adding a new endpoint is a three-line change:
 
 ```
+
 // src/api/horario.js
 async actualizar({ numero_hora, dia_semana, horario }, options = {}) {
-  requireFields({ numero_hora, dia_semana, horario }, ['numero_hora', 'dia_semana', 'horario'],
-    { api: 'horario', endpoint: 'actualizar' });
-  return this.client.http.request('horario', 'actualizar', {
-    method: 'PUT',
-    data: { numero_hora, dia_semana, horario },
-    signal: options.signal
-  });
+requireFields({ numero_hora, dia_semana, horario }, ['numero_hora', 'dia_semana', 'horario'],
+{ api: 'horario', endpoint: 'actualizar' });
+return this.client.http.request('horario', 'actualizar', {
+method: 'PUT',
+data: { numero_hora, dia_semana, horario },
+signal: options.signal
+});
 }
+
 ```
 
 Every method accepts an optional trailing `options` object supporting `{ signal }` for

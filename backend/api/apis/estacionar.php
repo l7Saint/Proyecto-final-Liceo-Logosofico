@@ -29,6 +29,28 @@ $estacionarApi = new Api(
 );
 
 $estacionarApi->addEndpoint(new Endpoint(
+	name: "liberar",
+	method: "POST",
+	parameters: ['id_est'],
+	run: function (array $data, array $handlers, Closure $endLog): void {
+		$now = new DateTime('now', new DateTimeZone('-03:00'));
+		$esthnd = $handlers['estacionamiento'];
+		try {
+			$est = $esthnd->obtenerPorId($data['id_est']);
+			$est->hora_fin = $now->format('H:i:s');
+			$esthnd->actualizarEstacionamiento($data['id_est'], $est);
+		} catch (Throwable $e) {
+			($endLog)('error', "Unexpected error.");
+			throw new GenericRuntimeException(
+				httpCode: 500,
+				message: $e->getMessage(),
+				getResponse: null
+			);
+		}
+	}
+));
+
+$estacionarApi->addEndpoint(new Endpoint(
 	name: "estacionar",
 	method: "POST",
 	parameters: ['latitud', 'longitud', 'id_vehiculo'],

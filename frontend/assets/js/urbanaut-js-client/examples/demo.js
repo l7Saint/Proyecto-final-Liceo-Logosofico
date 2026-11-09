@@ -94,4 +94,18 @@ $('btnProb').addEventListener('click', () => guarded('estacionar.probabilidad', 
   log('estacionar.probabilidad', result);
 }));
 
+$('btnEstacionar').addEventListener('click', () => guarded('estacionar.estacionar', async () => {
+  const result = await api.estacionar.estacionar({
+    latitud: Number($('latitud').value),
+    longitud: Number($('longitud').value),
+    id_vehiculo: Number($('idVehiculo').value)
+  });
+  log('estacionar.estacionar', result);
+}));
+
+$('btnLiberar').addEventListener('click', () => guarded('estacionar.liberar', async () => {
+  const result = await api.estacionar.liberar({ id_est: Number($('idEst').value) });
+  log('estacionar.liberar', result);
+}));
+
 refreshStatus();
