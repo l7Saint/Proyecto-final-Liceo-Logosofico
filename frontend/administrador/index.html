@@ -165,6 +165,11 @@
       </section>
     </main>
 
-    <script src="/assets/js/administrador.js"></script>
+    <!--
+      `type="module"` is required: administrador.js now imports the Urbanaut JS client.
+      Inline `onclick`/`onchange` handlers in this file rely on the module attaching
+      `cancelarEdicion`, `cambiarEventoEspecial` and `logout` to `window`.
+    -->
+    <script type="module" src="/assets/js/administrador.js"></script>
   </body>
 </html>

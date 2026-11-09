@@ -1,304 +1,297 @@
-const API_BASE = 'http://127.0.0.1:30000/api/admin.php';
-const TOKEN_KEY = 'urbanaut_token';
+/**
+ * Urbanaut admin panel — now backed by the Urbanaut JS client.
+ *
+ * Replaces the hand-rolled `authFetch` + `/api/admin.php/*` calls with the
+ * `admin` namespace of the client. Endpoint mapping:
+ *
+ *   cargarUsuarios      → api.admin.obtener()
+ *   guardarUsuario      → api.admin.crear() / api.admin.modificar()
+ *   eliminarUsuario     → api.admin.eliminar()
+ *   logout              → api.usuario.logout() + api.clearSession()
+ *
+ * The HTML uses inline `onclick="cancelarEdicion()"`, `onchange="cambiarEventoEspecial(this)"`
+ * and `onclick="logout()"`. Since this file is loaded as an ES module, those
+ * functions are attached to `window` at the bottom of the file.
+ */
 
+import UrbanautClient from '/urbanaut-js-client/src/urbanaut.js';
+
+const BACKEND_URL = 'http://127.0.0.1:30000';
+const LEGACY_TOKEN_KEY = 'urbanaut_token';
+
+/* -------------------------------------------------------------------------
+   Token migration — users who logged in before the client migration still have
+   their token under `urbanaut_token` and no `urbanaut.token`. Copy it over so
+   the client picks it up automatically.
+   ------------------------------------------------------------------------- */
+(function migrateLegacyToken() {
+  try {
+    const legacy = localStorage.getItem(LEGACY_TOKEN_KEY);
+    const current = localStorage.getItem('urbanaut.token');
+    if (legacy && !current) localStorage.setItem('urbanaut.token', legacy);
+  } catch { /* storage unavailable */ }
+})();
+
+const api = new UrbanautClient({ baseUrl: BACKEND_URL + '/api' });
+
+/* -------------------------------------------------------------------------
+   DOM references
+   ------------------------------------------------------------------------- */
+const tbody = document.getElementById('tablaUsuarios');
+const form = document.getElementById('usuarioForm');
+const formTitulo = document.getElementById('formTitulo');
+const usuarioIdInput = document.getElementById('usuarioId');
+const nombreInput = document.getElementById('nombre');
+const apellidoInput = document.getElementById('apellido');
+const emailInput = document.getElementById('email');
+const contrasenaInput = document.getElementById('contrasena');
+const esAdminInput = document.getElementById('es_admin');
+const inactivoInput = document.getElementById('inactivo');
+const cantidadUsuariosEl = document.getElementById('cantidadUsuarios');
+
+/** @type {object[]} */
 let usuariosCache = [];
 
-/* ============================
-   GESTIÓN DE TOKEN
-   ============================ */
-
-function getToken() {
-  return localStorage.getItem(TOKEN_KEY);
-}
-
-function setToken(token) {
-  localStorage.setItem(TOKEN_KEY, token);
-}
-
-function clearToken() {
-  localStorage.removeItem(TOKEN_KEY);
-}
-
-/**
- * Construye los headers con el token de sesión si existe.
- */
-function authHeaders(extra = {}) {
-  const headers = { Accept: 'application/json', ...extra };
-  const token = getToken();
-  if (token) {
-    headers['Authorization'] = `Bearer ${token}`;
-}
-  return headers;
-}
-
-/**
- * Wrapper de fetch que:
- *  - adjunta el header Authorization automáticamente
- *  - si el servidor responde 401, limpia el token y redirige a login
- */
-async function authFetch(url, options = {}) {
-  const response = await fetch(url, {
-    ...options,
-    headers: authHeaders(options.headers),
-  });
-
-  if (response.status === 401) {
-    clearToken();
-    throw new Error('Sesión expirada. Iniciá sesión nuevamente.');
-	  window.location.replace("/login/login.php");
+/* -------------------------------------------------------------------------
+   Auth guard — redirects to the login page when the session is missing or the
+   user is not an admin. Falls back to /usuario/user if the client has a token
+   but no cached profile (e.g. legacy session restored from storage).
+   ------------------------------------------------------------------------- */
+async function requireAdmin() {
+  if (!api.isAuthenticated) {
+    window.location.href = '../login/login.php';
+    return false;
   }
 
-  return response;
-}
-
-/* ============================
-   LLAMADAS A LA API
-   ============================ */
-
-async function api_obtenerTodos() {
-  try {
-    const response = await authFetch(`${API_BASE}/obtener`, {
-      method: 'GET',
-    });
-    const data = await response.json();
-    if (!response.ok) {
-      throw new Error(data.error || `HTTP ${response.status}`);
+  let user = api.currentUser;
+  if (!user) {
+    try {
+      user = await api.usuario.getUser();
+    } catch (err) {
+      console.warn('No se pudo obtener el usuario:', err);
+      user = null;
     }
-    return data.usuarios;
-  } catch (error) {
-    console.error('Error obteniendo usuarios:', error);
-    throw error;
   }
+
+  if (!user || Number(user.es_admin) !== 1) {
+    alert('Acceso denegado. Se requiere una cuenta de administrador.');
+    api.clearSession();
+    localStorage.removeItem(LEGACY_TOKEN_KEY);
+    window.location.href = '../login/login.php';
+    return false;
+  }
+
+  return true;
 }
 
-async function api_crearUsuario(usuario) {
-  try {
-    const response = await authFetch(`${API_BASE}/crear`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(usuario),
-    });
-    const data = await response.json();
-    if (!response.ok) {
-      throw new Error(data.error || `HTTP ${response.status}`);
-    }
-    return data;
-  } catch (error) {
-    console.error('Error creando usuario:', error);
-    throw error;
-  }
+/* -------------------------------------------------------------------------
+   Rendering helpers
+   ------------------------------------------------------------------------- */
+function escapeHtml(value) {
+  return String(value ?? '').replace(/[&<>"']/g, (ch) => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;'
+  })[ch]);
 }
-
-async function api_modificarUsuario(id, cambios) {
-  try {
-    const response = await authFetch(`${API_BASE}/modificar`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ id, ...cambios }),
-    });
-    const data = await response.json();
-    if (!response.ok) {
-      throw new Error(data.error || `HTTP ${response.status}`);
-    }
-    return data;
-  } catch (error) {
-    console.error('Error modificando usuario:', error);
-    throw error;
-  }
-}
-
-async function api_eliminarUsuario(id) {
-  try {
-    const response = await authFetch(`${API_BASE}/eliminar`, {
-      method: 'DELETE',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ id }),
-    });
-    const data = await response.json();
-    if (!response.ok) {
-      throw new Error(data.error || `HTTP ${response.status}`);
-    }
-    return data.success;
-  } catch (error) {
-    console.error('Error eliminando usuario:', error);
-    throw error;
-  }
-}
-
-/* ============================
-   RENDERIZADO
-   ============================ */
 
 function renderUsuarios(usuarios) {
-  const tbody = document.getElementById('tablaUsuarios');
   tbody.innerHTML = '';
 
-  usuarios.forEach((u) => {
+  for (const u of usuarios) {
     const tr = document.createElement('tr');
-
     tr.innerHTML = `
-      <td class="id-usuario">${u.id}</td>
-      <td class="nombre">${u.nombre}</td>
-      <td class="dato">${u.apellido}</td>
-      <td class="dato">${u.email}</td>
-      <td class="dato">${u.es_admin == 1 ? 'Sí' : 'No'}</td>
-      <td class="dato">${u.inactivo == 1 ? 'Sí' : 'No'}</td>
-      <td class="dato">${u.fecha_registro || '-'}</td>
+      <td>${escapeHtml(u.id)}</td>
+      <td>${escapeHtml(u.nombre)}</td>
+      <td>${escapeHtml(u.apellido)}</td>
+      <td>${escapeHtml(u.email)}</td>
+      <td>${Number(u.es_admin) === 1 ? '✓' : '—'}</td>
+      <td>${Number(u.inactivo) === 1 ? '✓' : '—'}</td>
+      <td>${escapeHtml(u.fecha_registro ?? '')}</td>
       <td>
-        <button class="btn-editar" onclick="editarUsuario(${u.id})">
-          <i class="bi bi-pencil"></i> Editar
+        <button type="button" class="btn-borrar" data-action="edit" data-id="${escapeHtml(u.id)}" title="Editar">
+          <i class="bi bi-pencil"></i>
         </button>
-        <button class="btn-borrar" onclick="borrarUsuario(${u.id})">
-          <i class="bi bi-trash"></i> Borrar
+        <button type="button" class="btn-borrar" data-action="delete" data-id="${escapeHtml(u.id)}" title="Eliminar">
+          <i class="bi bi-trash"></i>
         </button>
       </td>
     `;
-
     tbody.appendChild(tr);
+  }
+
+  tbody.querySelectorAll('[data-action="edit"]').forEach((btn) => {
+    btn.addEventListener('click', () => editarUsuario(Number(btn.dataset.id)));
   });
-
-  actualizarCantidad();
+  tbody.querySelectorAll('[data-action="delete"]').forEach((btn) => {
+    btn.addEventListener('click', () => eliminarUsuario(Number(btn.dataset.id)));
+  });
 }
 
-function actualizarCantidad() {
-  const filas = document.querySelectorAll('#tablaUsuarios tr');
-  document.getElementById('cantidadUsuarios').textContent = filas.length;
-}
-
-/* ============================
-   CARGA INICIAL
-   ============================ */
-
+/* -------------------------------------------------------------------------
+   API operations — via the JS client
+   ------------------------------------------------------------------------- */
 async function cargarUsuarios() {
   try {
-    const usuarios = await api_obtenerTodos();
-    usuariosCache = usuarios;
-    renderUsuarios(usuarios);
-  } catch (error) {
-    alert('No se pudieron cargar los usuarios: ' + error.message);
+    const usuarios = await api.admin.obtener();
+    usuariosCache = Array.isArray(usuarios) ? usuarios : [];
+    renderUsuarios(usuariosCache);
+    cantidadUsuariosEl.textContent = String(usuariosCache.length);
+  } catch (err) {
+    handleApiError(err, 'cargar usuarios');
   }
 }
 
-/* ============================
-   CREAR / EDITAR
-   ============================ */
+function editarUsuario(id) {
+  const u = usuariosCache.find((x) => Number(x.id) === id);
+  if (!u) return;
 
-document.getElementById('usuarioForm').addEventListener('submit', async (e) => {
-  e.preventDefault();
+  usuarioIdInput.value = u.id;
+  nombreInput.value = u.nombre ?? '';
+  apellidoInput.value = u.apellido ?? '';
+  emailInput.value = u.email ?? '';
+  contrasenaInput.value = '';
+  esAdminInput.checked = Number(u.es_admin) === 1;
+  inactivoInput.checked = Number(u.inactivo) === 1;
 
-  const id = document.getElementById('usuarioId').value;
-  const contrasena = document.getElementById('contrasena').value;
+  formTitulo.textContent = 'Editar usuario';
+}
 
-  const usuario = {
-    nombre: document.getElementById('nombre').value.trim(),
-    apellido: document.getElementById('apellido').value.trim(),
-    email: document.getElementById('email').value.trim(),
-    es_admin: document.getElementById('es_admin').checked ? 1 : 0,
-    inactivo: document.getElementById('inactivo').checked ? 1 : 0,
-  };
+function cancelarEdicion() {
+  form.reset();
+  usuarioIdInput.value = '';
+  formTitulo.textContent = 'Nuevo usuario';
+}
 
-  if (contrasena) {
-    usuario.contrasena = contrasena;
+async function guardarUsuario(event) {
+  event.preventDefault();
+
+  const idRaw = usuarioIdInput.value;
+  const id = idRaw ? Number(idRaw) : null;
+
+  const nombre = nombreInput.value.trim();
+  const apellido = apellidoInput.value.trim();
+  const email = emailInput.value.trim();
+  const contrasena = contrasenaInput.value.trim();
+  const es_admin = esAdminInput.checked ? 1 : 0;
+  const inactivo = inactivoInput.checked ? 1 : 0;
+
+  if (!nombre || !apellido || !email) {
+    alert('Completá nombre, apellido y email.');
+    return;
+  }
+  if (!id && !contrasena) {
+    alert('La contraseña es obligatoria para un usuario nuevo.');
+    return;
   }
 
   try {
     if (id) {
-      await api_modificarUsuario(id, usuario);
+      const payload = { id, nombre, apellido, email, es_admin, inactivo };
+      if (contrasena) payload.contrasena = contrasena;
+      await api.admin.modificar(payload);
     } else {
-      if (!contrasena) {
-        throw new Error('La contraseña es obligatoria para un usuario nuevo.');
-      }
-      await api_crearUsuario(usuario);
+      await api.admin.crear({ nombre, apellido, email, contrasena, es_admin, inactivo });
     }
 
     cancelarEdicion();
     await cargarUsuarios();
-  } catch (error) {
-    alert('Error: ' + error.message);
+  } catch (err) {
+    handleApiError(err, id ? 'modificar usuario' : 'crear usuario');
   }
-});
-
-function editarUsuario(id) {
-  const u = usuariosCache.find((u) => u.id == id);
-  if (!u) return;
-
-  document.getElementById('usuarioId').value = u.id;
-  document.getElementById('nombre').value = u.nombre;
-  document.getElementById('apellido').value = u.apellido;
-  document.getElementById('email').value = u.email;
-  document.getElementById('contrasena').value = '';
-  document.getElementById('es_admin').checked = u.es_admin == 1;
-  document.getElementById('inactivo').checked = u.inactivo == 1;
-
-  document.getElementById('formTitulo').textContent = 'Editar usuario #' + u.id;
 }
 
-function cancelarEdicion() {
-  document.getElementById('usuarioForm').reset();
-  document.getElementById('usuarioId').value = '';
-  document.getElementById('formTitulo').textContent = 'Nuevo usuario';
-}
-
-/* ============================
-   ELIMINAR
-   ============================ */
-
-async function borrarUsuario(id) {
-  const u = usuariosCache.find((u) => u.id == id);
-  const nombre = u ? `${u.nombre} ${u.apellido}` : `ID ${id}`;
-
-  if (!confirm(`¿Querés borrar al usuario ${nombre}?`)) return;
+async function eliminarUsuario(id) {
+  if (!confirm(`¿Eliminar el usuario #${id}?`)) return;
 
   try {
-    await api_eliminarUsuario(id);
+    await api.admin.eliminar({ id });
     await cargarUsuarios();
-  } catch (error) {
-    alert('Error al borrar: ' + error.message);
+  } catch (err) {
+    handleApiError(err, 'eliminar usuario');
   }
 }
 
-/* ============================
-   EVENTO ESPECIAL
-   ============================ */
+/* -------------------------------------------------------------------------
+   Error handling — maps client errors to user-facing alerts
+   ------------------------------------------------------------------------- */
+function handleApiError(err, contexto) {
+  console.error(`Error al ${contexto}:`, err);
 
-function cambiarEventoEspecial(switchEvento) {
+  if (err?.name === 'ValidationError') {
+    const missing = err?.details?.missing?.join(', ') ?? '';
+    alert(`Datos incompletos${missing ? ': ' + missing : '.'}`);
+    return;
+  }
+
+  if (err?.name === 'NetworkError') {
+    alert('No se pudo conectar con el servidor.');
+    return;
+  }
+
+  switch (err?.status) {
+    case 400:
+      alert('Solicitud inválida. Revisá los datos ingresados.');
+      break;
+    case 401:
+      alert('Tu sesión expiró. Iniciá sesión de nuevo.');
+      window.location.href = '../login/login.php';
+      break;
+    case 403:
+      alert('No tenés permiso para realizar esta acción.');
+      break;
+    case 404:
+      alert('El recurso solicitado no existe.');
+      break;
+    case 409:
+      alert('Ya existe un usuario con ese email.');
+      break;
+    case 500:
+      alert('Error interno del servidor. Revisá los logs del backend.');
+      break;
+    default:
+      alert('Ocurrió un error inesperado.');
+  }
+}
+
+/* -------------------------------------------------------------------------
+   Misc — non-API helpers referenced from the HTML
+   ------------------------------------------------------------------------- */
+function cambiarEventoEspecial(checkbox) {
   const estado = document.getElementById('estadoEvento');
-  if (switchEvento.checked) {
+  if (checkbox.checked) {
     estado.textContent = 'Activado';
-    estado.style.color = '#67ed9d';
-    alert(
-      'Evento especial activado.\n\n' +
-        'Los usuarios que participen podrán formar parte de las estadísticas del sábado.'
-    );
+    alert('Evento especial activado (funcionalidad reservada, aún no persistida).');
   } else {
     estado.textContent = 'Desactivado';
-    estado.style.color = '#779488';
     alert('Evento especial desactivado.');
   }
 }
 
-/* ============================
-   INICIO
-   ============================ */
-
-document.addEventListener('DOMContentLoaded', () => {
-  if (!getToken()) {
-    return;
+function logout() {
+  // Fire-and-forget server-side logout; navigation is handled by the anchor href.
+  if (api.isAuthenticated) {
+    api.usuario.logout().catch(() => { /* ignore */ });
   }
-  cargarUsuarios();
-});
-
-/* ============================
-   LOGOUT (opcional)
-   ============================ */
-
-async function logout() {
-  try {
-    await authFetch(`${API_BASE}/../usuario.php/logout`, { method: 'GET' });
-  } catch (_) {
-    // aunque falle, limpiamos igual
-  } finally {
-    clearToken();
-	 window.location.href = '../login/login.php'
-  }
+  api.clearSession();
+  localStorage.removeItem(LEGACY_TOKEN_KEY);
 }
+
+/* -------------------------------------------------------------------------
+   Wiring
+   ------------------------------------------------------------------------- */
+form.addEventListener('submit', guardarUsuario);
+
+// Expose for inline handlers in index.html
+window.cancelarEdicion = cancelarEdicion;
+window.cambiarEventoEspecial = cambiarEventoEspecial;
+window.logout = logout;
+
+// Initial load
+(async () => {
+  if (await requireAdmin()) {
+    await cargarUsuarios();
+  }
+})();

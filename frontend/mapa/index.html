@@ -55,15 +55,15 @@
           </a>
 
           <button class="btn-mapa liberar" id="btnLiberar" type="button">
-            <i class="bi bi-check-circle"></i> Liberar espacio
+            <i class="bi bi-check-circle"></i> Liberar estacionamiento
           </button>
 
-          <button class="btn-mapa ocupar" id="btnOcupar" type="button">
-            <i class="bi bi-car-front"></i> Ocupar espacio
+          <button class="btn-mapa ocupar" id="btnMarcar" type="button">
+            <i class="bi bi-car-front"></i> Marcar estacionamiento
           </button>
 
           <button class="btn-mapa buscar" id="btnBuscar" type="button">
-            <i class="bi bi-search"></i> Buscar espacio
+            <i class="bi bi-search"></i> Buscar lugar
           </button>
 
           <button class="btn-mapa privado" id="btnPrivado" type="button">
@@ -285,14 +285,84 @@
     <script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
 
     <script>
-      /* VARIABLES */
+      /* ================================
+         API HELPERS
+         ================================ */
+      const API_BASE = 'http://127.0.0.1:30000/api';
+
+      function getToken() {
+        return (
+          localStorage.getItem('urbanaut.token') ||
+          localStorage.getItem('urbanaut_token') ||
+          null
+        );
+      }
+
+      function parseBody(rawText) {
+        if (typeof rawText !== 'string') return null;
+        const text = rawText.trim();
+        if (text === '') return null;
+        try { return JSON.parse(text); } catch { /* fall through */ }
+
+        const start = text.search(/[\[{]/);
+        if (start === -1) return text;
+        const src = text.slice(start);
+        let depth = 0, inStr = false, esc = false;
+        for (let i = 0; i < src.length; i++) {
+          const c = src[i];
+          if (inStr) {
+            if (esc) esc = false;
+            else if (c === '\\') esc = true;
+            else if (c === '"') inStr = false;
+            continue;
+          }
+          if (c === '"') inStr = true;
+          else if (c === '{' || c === '[') depth++;
+          else if (c === '}' || c === ']') {
+            depth--;
+            if (depth === 0) {
+              try { return JSON.parse(src.slice(0, i + 1)); }
+              catch { return text; }
+            }
+          }
+        }
+        return text;
+      }
+
+      async function apiRequest(apiName, endpoint, { method = 'GET', data = null, auth = true } = {}) {
+        const headers = { 'Accept': 'application/json' };
+        if (data !== null) headers['Content-Type'] = 'application/json';
+        if (auth) {
+          const token = getToken();
+          if (token) headers['Authorization'] = 'Bearer ' + token;
+        }
+        const response = await fetch(`${API_BASE}/${apiName}/${endpoint}`, {
+          method,
+          headers,
+          body: data !== null ? JSON.stringify(data) : undefined,
+        });
+        const rawText = await response.text();
+        const body = parseBody(rawText);
+        if (!response.ok) {
+          const error = new Error(`HTTP ${response.status}`);
+          error.status = response.status;
+          error.body = body;
+          throw error;
+        }
+        return body;
+      }
+
+      /* ================================
+         STATE
+         ================================ */
       let ubicacionUsuario = null;
       let estacionamientoElegido = null;
       let rutaActual = null;
       let marcadorUsuario = null;
       let marcadorEstacionamiento = null;
       let marcadorAutoEstacionado = null;
-      let registroAutoEstacionado = null;
+      let marcadorMejorLugar = null;
+      let estacionamientoActivo = null; // { id_est, nombre, lat, lng, fechaOcupacion }
       let seguimientoUbicacion = null;
       let primeraUbicacionObtenida = false;
 
@@ -514,129 +584,242 @@
         }
       });
 
-      /* BUSCAR ESPACIO */
+      /* ===================================================
+         BUSCAR LUGAR — GET /api/estacionar/probabilidad
+         Pide la probabilidad de todas las cuadras y elige
+         la de mayor (puntaje × confianza).
+         =================================================== */
+      const DIAS_SEMANA_ES = [
+        "domingo", "lunes", "martes", "miercoles", "jueves", "viernes", "sabado",
+      ];
+      const CUADRAS_ID = Array.from({ length: 25 }, (_, i) => i + 1);
+
       document
         .getElementById("btnBuscar")
-        .addEventListener("click", function () {
-          if (ubicacionUsuario) {
-            mapa.setView(ubicacionUsuario, 17);
+        .addEventListener("click", async function () {
+          const ahora = new Date();
+          const dia = DIAS_SEMANA_ES[ahora.getDay()];
+          if (dia === "domingo") {
+            estadoGPS.textContent =
+              "La estimación de estacionamiento no está disponible los domingos.";
+            return;
+          }
+          const hora = ahora.getHours();
 
-            if (marcadorUsuario) {
-              marcadorUsuario.openPopup();
+          try {
+            estadoGPS.textContent = "Calculando el mejor lugar...";
+
+            const resultados = await apiRequest("estacionar", "probabilidad", {
+              method: "GET",
+              auth: false,
+              data: { cuadras_id: CUADRAS_ID, dia_semana: dia, hora },
+            });
+
+            if (!Array.isArray(resultados) || resultados.length === 0) {
+              estadoGPS.textContent = "No se encontraron resultados.";
+              return;
             }
-          } else {
-            obtenerUbicacion();
-            estadoGPS.textContent = "Buscando tu ubicación...";
+
+            let mejor = null;
+            let mejorScore = -Infinity;
+            for (const r of resultados) {
+              if (r.latitud == null || r.longitud == null) continue;
+              const score = (r.puntaje ?? 0) * (r.confianza ?? 0);
+              if (score > mejorScore) {
+                mejorScore = score;
+                mejor = r;
+              }
+            }
+
+            if (!mejor) {
+              estadoGPS.textContent =
+                "No se pudieron obtener coordenadas de las cuadras.";
+              return;
+            }
+
+            if (marcadorMejorLugar) {
+              mapa.removeLayer(marcadorMejorLugar);
+            }
+            marcadorMejorLugar = L.marker(
+              [mejor.latitud, mejor.longitud],
+              { title: "Mejor lugar para estacionar" },
+            ).addTo(mapa);
+
+            marcadorMejorLugar
+              .bindPopup(
+                "<b>Mejor lugar para estacionar</b><br>" +
+                  "Cuadra #" + mejor.cuadra_id + "<br>" +
+                  "Puntaje: " + Number(mejor.puntaje).toFixed(2) + "<br>" +
+                  "Confianza: " + Number(mejor.confianza).toFixed(2) + "<br>" +
+                  "Score: " + mejorScore.toFixed(2),
+              )
+              .openPopup();
+
+            mapa.setView([mejor.latitud, mejor.longitud], 18);
+            estadoGPS.textContent =
+              "Mejor lugar: cuadra " + mejor.cuadra_id + ".";
+          } catch (err) {
+            console.error("Error en probabilidad:", err);
+            estadoGPS.textContent =
+              "No se pudo calcular el mejor lugar. Intentá de nuevo.";
           }
         });
 
-      /* OCUPAR ESPACIO */
+      /* ===================================================
+         MARCAR ESTACIONAMIENTO — POST /api/estacionar/estacionar
+         =================================================== */
       document
-        .getElementById("btnOcupar")
-        .addEventListener("click", function () {
-          if (registroAutoEstacionado) {
+        .getElementById("btnMarcar")
+        .addEventListener("click", async function () {
+          if (estacionamientoActivo) {
             alert("Ya tenés un estacionamiento registrado. Liberalo primero.");
             return;
           }
 
-          if (estacionamientoElegido) {
-            registrarEstacionamiento(
-              estacionamientoElegido.nombre,
-              estacionamientoElegido.lat,
-              estacionamientoElegido.lng,
-            );
+          if (!getToken()) {
+            alert("Necesitás iniciar sesión para marcar un estacionamiento.");
             return;
           }
 
-          if (!ubicacionUsuario) {
+          // Determinar coordenadas
+          let lat, lng, nombre;
+          if (estacionamientoElegido) {
+            lat = estacionamientoElegido.lat;
+            lng = estacionamientoElegido.lng;
+            nombre = estacionamientoElegido.nombre;
+          } else if (ubicacionUsuario) {
+            lat = ubicacionUsuario.lat;
+            lng = ubicacionUsuario.lng;
+            nombre = "Mi ubicación actual";
+          } else {
             estadoGPS.textContent =
               "Esperando tu ubicación para registrar el espacio...";
             obtenerUbicacion();
             alert(
-              "Todavía no se detectó tu ubicación. Esperá unos segundos y volvé a tocar Ocupar espacio.",
+              "Todavía no se detectó tu ubicación. Esperá unos segundos y volvé a tocar Marcar estacionamiento.",
             );
             return;
           }
 
-          registrarEstacionamiento(
-            "Mi ubicación actual",
-            ubicacionUsuario.lat,
-            ubicacionUsuario.lng,
-          );
+          try {
+            // Obtener primer vehículo del usuario
+            estadoGPS.textContent = "Obteniendo tu vehículo...";
+            const vehResp = await apiRequest("vehiculo", "obtener");
+            const vehiculos = vehResp?.vehiculos ?? [];
+            if (vehiculos.length === 0) {
+              alert(
+                "No tenés vehículos registrados. Agregá uno en tu perfil antes de marcar.",
+              );
+              estadoGPS.textContent = "No hay vehículos registrados.";
+              return;
+            }
+            const idVehiculo = vehiculos[0].id;
+
+            // Registrar en el backend
+            estadoGPS.textContent = "Registrando estacionamiento...";
+            const resp = await apiRequest("estacionar", "estacionar", {
+              method: "POST",
+              data: { latitud: lat, longitud: lng, id_vehiculo: idVehiculo },
+            });
+
+            if (!resp || resp.success !== true || resp.id_est == null) {
+              throw new Error("Respuesta inválida del servidor.");
+            }
+
+            estacionamientoActivo = {
+              id_est: resp.id_est,
+              nombre: nombre,
+              lat: lat,
+              lng: lng,
+              fechaOcupacion: new Date().toLocaleString("es-UY"),
+            };
+
+            if (marcadorAutoEstacionado) {
+              mapa.removeLayer(marcadorAutoEstacionado);
+            }
+            marcadorAutoEstacionado = L.marker([lat, lng], {
+              title: "Estacionamiento registrado",
+            }).addTo(mapa);
+
+            marcadorAutoEstacionado
+              .bindPopup(
+                "<b>Estacionamiento registrado</b><br>" +
+                  nombre + "<br>" +
+                  "ID: " + estacionamientoActivo.id_est + "<br>" +
+                  "Hora: " + estacionamientoActivo.fechaOcupacion,
+              )
+              .openPopup();
+
+            mapa.setView([lat, lng], 18);
+
+            estadoGPS.textContent =
+              "Estacionamiento #" + estacionamientoActivo.id_est + " registrado.";
+            alert(
+              "Estacionamiento registrado correctamente (id " +
+                estacionamientoActivo.id_est + ").",
+            );
+          } catch (err) {
+            console.error("Error al marcar estacionamiento:", err);
+            let msg = "No se pudo registrar el estacionamiento.";
+            if (err.status === 404) {
+              msg = "La ubicación está fuera del área permitida.";
+            } else if (err.status === 401) {
+              msg = "Tu sesión expiró. Iniciá sesión de nuevo.";
+            } else if (err.status === 500) {
+              msg = "Error del servidor. Revisá los logs del backend.";
+            }
+            estadoGPS.textContent = msg;
+            alert(msg);
+          }
         });
 
-      function registrarEstacionamiento(nombre, lat, lng) {
-        const fecha = new Date();
-
-        registroAutoEstacionado = {
-          nombre: nombre,
-          lat: lat,
-          lng: lng,
-          fechaOcupacion: fecha.toLocaleString("es-UY"),
-          estado: "ocupado",
-        };
-
-        if (marcadorAutoEstacionado) {
-          mapa.removeLayer(marcadorAutoEstacionado);
-        }
-
-        marcadorAutoEstacionado = L.marker([lat, lng], {
-          title: "Estacionamiento registrado",
-        }).addTo(mapa);
-
-        marcadorAutoEstacionado
-          .bindPopup(
-            "<b>Estacionamiento registrado</b><br>" +
-              nombre +
-              "<br>Estado: ocupado" +
-              "<br>Hora: " +
-              registroAutoEstacionado.fechaOcupacion,
-          )
-          .openPopup();
-
-        mapa.setView([lat, lng], 18);
-
-        console.log("Estacionamiento registrado:", registroAutoEstacionado);
-        alert("Estacionamiento registrado correctamente: " + nombre + ".");
-      }
-
-      /* LIBERAR ESPACIO */
+      /* ===================================================
+         LIBERAR ESTACIONAMIENTO — POST /api/estacionar/liberar
+         =================================================== */
       document
         .getElementById("btnLiberar")
-        .addEventListener("click", function () {
-          if (!registroAutoEstacionado) {
+        .addEventListener("click", async function () {
+          if (!estacionamientoActivo) {
             alert("No tenés ningún estacionamiento registrado.");
             return;
           }
 
-          const fechaLiberacion = new Date().toLocaleString("es-UY");
+          try {
+            estadoGPS.textContent = "Liberando estacionamiento...";
+            await apiRequest("estacionar", "liberar", {
+              method: "POST",
+              data: { id_est: estacionamientoActivo.id_est },
+            });
 
-          registroAutoEstacionado.fechaLiberacion = fechaLiberacion;
-          registroAutoEstacionado.estado = "libre";
+            const idCerrado = estacionamientoActivo.id_est;
 
-          console.log("Registro de estacionamiento:", registroAutoEstacionado);
+            if (marcadorAutoEstacionado) {
+              mapa.removeLayer(marcadorAutoEstacionado);
+              marcadorAutoEstacionado = null;
+            }
 
-          if (marcadorAutoEstacionado) {
-            mapa.removeLayer(marcadorAutoEstacionado);
-            marcadorAutoEstacionado = null;
-          }
+            estacionamientoActivo = null;
+            estacionamientoElegido = null;
 
-          alert(
-            "Estacionamiento liberado correctamente.\nSalida: " +
-              fechaLiberacion,
-          );
+            if (marcadorEstacionamiento) {
+              mapa.removeLayer(marcadorEstacionamiento);
+              marcadorEstacionamiento = null;
+            }
 
-          registroAutoEstacionado = null;
-          estacionamientoElegido = null;
+            if (rutaActual) {
+              mapa.removeControl(rutaActual);
+              rutaActual = null;
+            }
 
-          if (marcadorEstacionamiento) {
-            mapa.removeLayer(marcadorEstacionamiento);
-            marcadorEstacionamiento = null;
-          }
+            document.getElementById("btnSalirRuta").style.display = "none";
 
-          if (rutaActual) {
-            mapa.removeControl(rutaActual);
-            rutaActual = null;
+            estadoGPS.textContent = "Estacionamiento liberado.";
+            alert("Estacionamiento #" + idCerrado + " liberado.");
+          } catch (err) {
+            console.error("Error al liberar estacionamiento:", err);
+            estadoGPS.textContent =
+              "No se pudo liberar el estacionamiento. Intentá de nuevo.";
+            alert("No se pudo liberar el estacionamiento.");
           }
         });
 

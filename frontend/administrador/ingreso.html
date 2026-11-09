@@ -49,19 +49,21 @@
 
         <!-- FORMULARIO -->
 
-        <form onsubmit="entrarAdministrador(event)">
-          <!-- NOMBRE -->
+        <form id="adminLoginForm" autocomplete="on">
+          <!-- EMAIL -->
 
           <div class="campo">
-            <label for="admin"> Nombre de administrador </label>
+            <label for="email"> Correo electrónico </label>
 
             <div class="input-contenedor">
-              <i class="bi bi-person-fill"></i>
+              <i class="bi bi-envelope-fill"></i>
 
               <input
-                type="text"
-                id="admin"
-                placeholder="Ingresá tu usuario"
+                type="email"
+                id="email"
+                name="email"
+                placeholder="admin@example.com"
+                autocomplete="username"
                 required
               />
             </div>
@@ -78,7 +80,9 @@
               <input
                 type="password"
                 id="password"
+                name="password"
                 placeholder="Ingresá tu contraseña"
+                autocomplete="current-password"
                 required
               />
             </div>
@@ -102,26 +106,70 @@
       </section>
     </main>
 
-    <script>
-      function entrarAdministrador(event) {
+    <script type="module">
+      import UrbanautClient from '/urbanaut-js-client/src/urbanaut.js';
+
+      // Backend origin. The admin section is served statically, so we hard-code
+      // the URL the same way the rest of the admin panel does.
+      const BACKEND_URL = 'http://127.0.0.1:30000';
+
+      const LEGACY_TOKEN_KEY = 'urbanaut_token';
+
+      const api = new UrbanautClient({ baseUrl: BACKEND_URL + '/api' });
+
+      const form = document.getElementById('adminLoginForm');
+      const emailInput = document.getElementById('email');
+      const passwordInput = document.getElementById('password');
+
+      form.addEventListener('submit', async (event) => {
         event.preventDefault();
 
-        const usuario = document.getElementById("admin").value;
+        const email = emailInput.value.trim();
+        const contrasena = passwordInput.value.trim();
 
-        const password = document.getElementById("password").value;
-
-        /*
-                POR AHORA solamente comprobamos
-                que haya datos.
-
-                Más adelante esto se puede conectar
-                con PHP y una base de datos.
-            */
-
-        if (usuario !== "" && password !== "") {
-          window.location.href = "../administrador/index.html";
+        if (!email || !contrasena) {
+          alert('Por favor, completá el correo electrónico y la contraseña.');
+          return;
         }
-      }
+
+        try {
+          // POST /api/usuario/login — the client persists the token automatically.
+          const data = await api.usuario.login({ email, contrasena });
+
+          const usuario = data?.usuario;
+          if (!usuario || Number(usuario.es_admin) !== 1) {
+            // Not an admin: discard the session so a normal user can't hold
+            // onto admin-panel state.
+            try { await api.usuario.logout(); } catch { /* ignore */ }
+            api.clearSession();
+            localStorage.removeItem(LEGACY_TOKEN_KEY);
+            alert('Esta cuenta no tiene permisos de administrador.');
+            return;
+          }
+
+          // Mirror the client token to the legacy key so pages that still read
+          // `urbanaut_token` (admin panel, map) keep working without changes.
+          localStorage.setItem(LEGACY_TOKEN_KEY, data.token);
+
+          window.location.href = '../administrador/index.html';
+        } catch (err) {
+          console.error('Admin login error:', err);
+
+          if (err?.name === 'ValidationError') {
+            alert('Completá todos los campos.');
+          } else if (err?.name === 'NetworkError') {
+            alert('No se pudo conectar con el servidor.');
+          } else if (err?.status === 401) {
+            alert('Email o contraseña incorrectos.');
+          } else if (err?.status === 400) {
+            alert('Datos incorrectos.');
+          } else if (err?.status === 500) {
+            alert('Error interno del servidor.');
+          } else {
+            alert('Ocurrió un error inesperado.');
+          }
+        }
+      });
     </script>
   </body>
 </html>

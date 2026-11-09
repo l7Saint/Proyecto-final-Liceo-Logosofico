@@ -78,6 +78,14 @@ $estacionarApi->addEndpoint(new Endpoint(
 				getResponse: null
 			);
 		}
+
+		if(is_null(response['address']['road']) ||
+		   is_null(response['address']['house_number']))
+			throw new GenericRuntimeException(
+				httpCode: 404,
+				message: 'No se pudo determinar la cuadra',
+				getResponse: null
+			);
 		
 		try {
 			$cuadra = $cuahnd->obtenerPorPuerta(
@@ -134,14 +142,23 @@ $estacionarApi->addEndpoint(new Endpoint(
 	run: function (array $data, array $handlers, Closure $endLog): void {
 		try {
 			$conexion = $handlers['conexion'];
+			$cuahnd = $handlers['cuadra'];
 			$predictor = new PredictorEstacionamiento($conexion);
+			$output = [];
 			foreach($data['cuadras_id'] as $cuadra_id){
 				$p = $predictor->calcularPuntaje($cuadra_id, $data['hora'], $data['dia_semana']);
-				$output[] = [ 
+
+				// NEW: include the block's midpoint so the client can place a marker.
+				$cuadra = null;
+				try { $cuadra = $cuahnd->obtenerPorId($cuadra_id); } catch (Throwable $_) { $cuadra = null; }
+
+				$output[] = [
 					"cuadra_id" => $cuadra_id,
-					"puntaje" => $p['puntaje'],
-					"confianza" => $p['confianza']
-			       	];
+					"puntaje"   => $p['puntaje'],
+					"confianza" => $p['confianza'],
+					"latitud"   => ($cuadra !== false && $cuadra !== null) ? $cuadra->latitud : null,
+					"longitud"  => ($cuadra !== false && $cuadra !== null) ? $cuadra->longitud : null,
+				];
 			}
 			echo json_encode($output);
 		} catch (Throwable $e) {
