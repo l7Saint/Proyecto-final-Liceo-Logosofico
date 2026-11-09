@@ -8,6 +8,7 @@ require_once __DIR__ . "/../models/Cuadra.php";
 class CuadraHandler {
 	private $db;
 	private $stmt_obtenerPorId;
+	private $stmt_obtenerPorPuerta;
 	private $stmt_obtenerTodos;
 	private $stmt_crearCuadra;
 	private $stmt_actualizarCuadra;
@@ -32,6 +33,26 @@ class CuadraHandler {
 		} catch (PDOException $e) {
 			error_log("Error en CuadraHandler.obtenerPorId: " . $e);
 			throw new Exception("Error en CuadraHandler.obtenerPorId: " . $e->getMessage(), 0, $e);
+		}
+	}
+
+	/**
+	 * Obtiene una Cuadra en base a un numero de puerta y una calle
+	 *
+	 * @param int $num_puerta El numero de puerta
+	 * @param string $calle El nombre de la calle
+	 * @return Cuadra|false
+	 * @throws Exception
+	 * @throws InvalidArgumentException Si $num_puerta no es int o si $calle no es string
+	 */
+	public function obtenerPorPuerta(string $calle, int $num_puerta){
+		try {
+			$this->stmt_obtenerPorPuerta->execute([$calle, $num_puerta]);
+			$fetch = $this->stmt_obtenerPorPuerta->fetch(PDO::FETCH_ASSOC);
+			return ($fetch === false) ? false : $this->fetchToCuadra($fetch);
+		} catch (PDOException $e) {
+			error_log("Error en CuadraHandler.obtenerPorPuerta: " . $e);
+			throw new Exception("Error en CuadraHandler.obtenerPorPuerta: " . $e->getMessage(), 0, $e);
 		}
 	}
 
@@ -166,6 +187,7 @@ class CuadraHandler {
 		}
 		$this->db = $db;
 		try {
+			$this->stmt_obtenerPorPuerta  = $this->db->prepare('SELECT * FROM Cuadra WHERE calle = ? AND ? BETWEEN numero_puerta_inicial AND numero_puerta_final LIMIT 1;');
 			$this->stmt_obtenerPorId      = $this->db->prepare('SELECT * FROM Cuadra WHERE id = ?;');
 			$this->stmt_obtenerTodos      = $this->db->prepare('SELECT * FROM Cuadra;');
 			$this->stmt_crearCuadra       = $this->db->prepare('INSERT INTO Cuadra (numero_puerta_inicial, numero_puerta_final, calle, latitud, longitud) VALUES (?,?,?,?,?);');

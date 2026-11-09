@@ -61,14 +61,6 @@ CREATE TABLE IF NOT EXISTS Tiene (
 	FOREIGN KEY (numero_hora, dia_semana) REFERENCES Horario(numero_hora, dia_semana)
 );
 
-CREATE TABLE IF NOT EXISTS Posee (
-	id_usuario INT NOT NULL,
-	id_vehiculo INT NOT NULL,
-	PRIMARY KEY (id_usuario, id_vehiculo),
-	FOREIGN KEY (id_usuario) REFERENCES Usuario(id),
-	FOREIGN KEY (id_vehiculo) REFERENCES Vehiculo(id)
-);
-
 CREATE TABLE IF NOT EXISTS Estaciona_en (
 	id INT AUTO_INCREMENT PRIMARY KEY,
 	id_usuario INT NOT NULL,
@@ -77,7 +69,7 @@ CREATE TABLE IF NOT EXISTS Estaciona_en (
 	fecha DATE NOT NULL,
 	hora_inicio TIME NOT NULL DEFAULT (CURRENT_TIME),
 	hora_fin TIME,
-	FOREIGN KEY (id_usuario, id_vehiculo) REFERENCES Posee(id_usuario, id_vehiculo),
+	FOREIGN KEY (id_vehiculo) REFERENCES Vehiculo(id),
 	FOREIGN KEY (id_cuadra) REFERENCES Cuadra(id),
 	CHECK (hora_fin IS NULL OR hora_fin > hora_inicio)
 );
