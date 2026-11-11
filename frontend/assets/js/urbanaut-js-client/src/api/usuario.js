@@ -135,4 +135,11 @@ export class UsuarioApi {
       signal: options.signal
     });
   }
+  async eliminar(options = {}) {
+    return this.client.http.request(API, 'eliminar', {
+      method: 'DELETE',
+      signal: options.signal
+    });
+  }
+
 }
