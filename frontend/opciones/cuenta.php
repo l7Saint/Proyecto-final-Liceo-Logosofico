@@ -3,6 +3,11 @@ $apiKey = '';
 $apiSecret = ''; 
 
 if (isset($_GET['marca_id'])) {
+    if (!is_string($_GET['marca_id'])) {
+        header('Content-Type: application/json');
+        echo json_encode([]);
+        exit;
+    }
     $url = 'https://carapi.app/api/models/v2?make_id=' . urlencode($_GET['marca_id']);
     $ch = curl_init();
     curl_setopt_array($ch, [
@@ -842,10 +847,6 @@ $url     = 'http://' . $backend . ':' . $port;
                         const selectMarca = document.getElementById('editarMarca');
                         const event = new Event('change');
                         selectMarca.dispatchEvent(event);
-                        
-                        setTimeout(() => {
-                            document.getElementById('editarModelo').value = auto.modelo || '';
-                        }, 800);
                     }
 
                     document.getElementById('editarTamano').value = auto.tamano || 'chico';
@@ -887,6 +888,7 @@ $url     = 'http://' . $backend . ':' . $port;
                     opt.textContent = m.name;
                     selectModelo.appendChild(opt);
                 });
+                document.getElementById('editarModelo').value = window.__autoActual?.modelo || '';
             } catch (e) {
                 console.error("Error cargando modelos", e);
                 selectModelo.innerHTML = '<option value="" selected disabled>Error al cargar modelos</option>';
@@ -1084,6 +1086,13 @@ $url     = 'http://' . $backend . ':' . $port;
             const botonGuardar = document.querySelector('#modalEditarHorarios .guardar');
             botonGuardar.disabled = true;
             botonGuardar.textContent = 'Guardando...';
+
+            if (checkboxes.length === 0) {
+                alert('No se pudieron cargar los horarios. Volvé a intentarlo.');
+                botonGuardar.disabled = false;
+                botonGuardar.textContent = 'Guardar cambios';
+                return;
+            }
 
             try {
                 const mios = await api.tiene.obtener();

@@ -65,6 +65,7 @@ $url     = 'http://' . $backend . ':' . $port;
 
             <form
                 id="formLogin"
+                method="post"
                 >
 
                 <!-- MAIL -->
@@ -183,7 +184,7 @@ $url     = 'http://' . $backend . ':' . $port;
 
   function obtenerDatos() {
     const email      = document.getElementById("email").value.trim();
-    const contrasena = document.getElementById("password").value.trim();
+    const contrasena = document.getElementById("password").value;
     return { email, contrasena };
   }
 

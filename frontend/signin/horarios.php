@@ -209,7 +209,8 @@ $url     = 'http://' . $backend . ':' . $port;
                             console.error('tiene.obtenertodos', error.status, error.code, error);
                             if (error.status === 401) {
                                 window.location.href = '../login/login.php';
-                                return;
+                                cargaHorarios = null;
+                                throw error;
                             }
                             alert(`No se pudieron cargar los horarios (HTTP ${error.status}).`);
                         } else if (error instanceof NetworkError) {
@@ -276,7 +277,8 @@ $url     = 'http://' . $backend . ':' . $port;
             if (!ul) return;
             const tieneHorario = [...ul.querySelectorAll('input[type="checkbox"]')]
                 .some((check) => check.checked);
-            const boton = document.querySelector(`.btn-dia[data-dia="${dia}"]`);
+            const boton = [...document.querySelectorAll('.btn-dia')]
+                .find((b) => (b.dataset.dia || '').toLowerCase() === dia);
             if (!boton) return;
             boton.classList.toggle('dia-seleccionado', tieneHorario);
         }
