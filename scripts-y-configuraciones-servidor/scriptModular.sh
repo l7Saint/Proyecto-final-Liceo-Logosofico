@@ -9,10 +9,10 @@ read -p "Escriba un número para acceder al script:" opcionScript
 while [[ $opcionScript != 5 ]];do
 menu
 case $opcionScript in
-1)gestion_usuarios.sh;;
-2)firewall.sh;;
-3)scriptRespaldoCS.sh;;
-4)logsFedora.sh;;
+1)./gestion_usuarios.sh;;
+2)./firewall.sh;;
+3)./scriptRespaldoCS.sh;;
+4)./logsFedora.sh;;
 5)
 esac
 done

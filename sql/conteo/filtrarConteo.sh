@@ -13,12 +13,12 @@ longitud2="-56.1542466"
 archivoConteo="${1}"
 if ! [[ -f "${archivoConteo}" ]]; then
 	echo 'Archivo de conteo no especificado o no existente'
-	exit
+	exit 1
 fi
 outputFiltrado="${2}"
 if [[ -z "${outputFiltrado}" ]]; then
 	echo 'Archivo de output no especificado.'
-	exit
+	exit 1
 fi
 
 # $8 es el campo de la latitud y $9 es el campo de la longitud
@@ -30,6 +30,11 @@ awk -F','\
 	-v longitud2="${longitud2}"\
 	'$8 < latitud1 && $8 > latitud2 && $9 > longitud1 && $9 < longitud2'\
 	"${archivoConteo}" > .tmp
+
+if [[ $? != 0 ]]; then
+	echo 'Error al filtrar el archivo de conteo.'
+	exit 1
+fi
 
 cant_lineas=$( cat .tmp | wc -l )
 cant_lineas_orig=$( cat "${archivoConteo}" | wc -l )
@@ -46,7 +51,7 @@ echo "Sacando campos innecesarios, puede tardar unos segundos."
 awk -F','\
 	-v OFS=','\
 	'{print $3, $4, $8, $9, $10}'\
-	.tmp >> "${outputFiltrado}"
+	.tmp > "${outputFiltrado}"
 
 rm .tmp
 echo "Listo."

@@ -97,7 +97,6 @@ LOAD DATA INFILE '/var/lib/mysql/conteoFiltrado.csv'
 INTO TABLE conteo_dataset
 FIELDS TERMINATED BY ','
 LINES TERMINATED BY '\n'
-IGNORE 1 ROWS
 (fecha, hora_time, latitud, longitud, vehiculos_hora_carril);
 
 CREATE TABLE IF NOT EXISTS Conteo (

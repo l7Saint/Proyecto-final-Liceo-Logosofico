@@ -17,7 +17,7 @@ read -p "Dominio del servidor/Direccion IP: " host
 
 #ssh-copy-id instala la llave publica en el servidor
 ssh-copy-id -i ~/.ssh/id_rsa.pub ${user}@${host}
-if [[ "$?" == 0 ]] then;
+if [[ "$?" == 0 ]]; then
 	echo "Llave publica y privada creadas correctamente e instaladas."
 	rm ~/.ssh/id_rsa.pub
 else
