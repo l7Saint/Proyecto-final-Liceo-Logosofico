@@ -34,6 +34,6 @@ if (!$id) {
 
 error_log("====================================================");
 error_log("Default admin created: {$email}");
-error_log("Password: {$password}");
+error_log("Password: [redacted]");
 error_log("CHANGE THIS PASSWORD IMMEDIATELY.");
 error_log("====================================================");

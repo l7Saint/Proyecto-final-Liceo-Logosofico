@@ -188,8 +188,8 @@ class UsuarioHandler {
 				$usuario->apellido,
 				$usuario->email,
 				$usuario->contrasena_hash,
-				$usuario->inactivo,
-				$usuario->es_admin,
+				(int)$usuario->inactivo,
+				(int)$usuario->es_admin,
 			]);
 			if($success){
 				return $this->db->lastInsertId();
