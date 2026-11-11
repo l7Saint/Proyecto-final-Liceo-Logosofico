@@ -35,16 +35,18 @@ class HorarioHandler {
 	}
 
 	/**
-	 * Obtiene un horario por su numero_hora
+	 * Obtiene un horario por su numero_hora y dia_semana
 	 *
 	 * @param int $numero_hora El numero_hora del horario a buscar
+	 * @param int $dia_semana El dia_semana del horario a buscar
 	 * @return Horario|false Retorna un objeto Horario si se encuentra, false si no
 	 * @throws Exception Si ocurre un error en la base de datos
 	 */
-	public function obtenerPorNumeroHora($numero_hora){
+	public function obtenerPorNumeroHora($numero_hora, $dia_semana){
 		try {
 			$this->stmt_obtenerPorNumeroHora->execute([
-				$numero_hora
+				$numero_hora,
+				$dia_semana
 			]);
 			$fetch = $this->stmt_obtenerPorNumeroHora->fetch(PDO::FETCH_ASSOC);
 			return ($fetch === false) ? false : $this->fetchToHorario($fetch);
@@ -89,9 +91,9 @@ class HorarioHandler {
 	public function actualizarHorario($horario){
 		try {
 			$success = $this->stmt_actualizarHorario->execute([
-				$horario->dia_semana,
 				$horario->horario,
 				$horario->numero_hora,
+				$horario->dia_semana,
 			]);
 			if($success){
 				return true;
@@ -157,9 +159,9 @@ class HorarioHandler {
 		$this->db = $db;
 		try {
 			$this->stmt_obtenerTodos = $this->db->prepare("SELECT * FROM Horario ORDER BY numero_hora;");
-			$this->stmt_obtenerPorNumeroHora = $this->db->prepare("SELECT * FROM Horario WHERE numero_hora = ?;");
+			$this->stmt_obtenerPorNumeroHora = $this->db->prepare("SELECT * FROM Horario WHERE numero_hora = ? AND dia_semana = ?;");
 			$this->stmt_crearHorario = $this->db->prepare("INSERT INTO Horario (numero_hora, dia_semana, horario) VALUES (?,?,?);");
-			$this->stmt_actualizarHorario = $this->db->prepare("UPDATE Horario SET dia_semana = ?, horario = ? WHERE numero_hora = ?;");
+			$this->stmt_actualizarHorario = $this->db->prepare("UPDATE Horario SET horario = ? WHERE numero_hora = ? AND dia_semana = ?;");
 			$this->stmt_eliminarHorario = $this->db->prepare("DELETE FROM Horario WHERE numero_hora = ? AND dia_semana = ?;");
 		} catch (PDOException $e){
 			throw new Exception("Error en HorarioHandler.prepare");
