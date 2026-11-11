@@ -57,7 +57,7 @@ class PredictorEstacionamiento {
 		while($fetch = $this->stmt_obtenerConteoCuadra->fetch(PDO::FETCH_ASSOC))
 			$datos[] = $fetch;
 
-		$normalizado = ['distancia' => [],'muestras' => [],'vehiculos' => []];
+		$normalizado = ['distancia' => [],'muestras' => [],'trafico' => []];
 		for($i = 0; $i < sizeof($datos); $i++){
 			$normalizado['distancia'][$i] = Normalizar::exponente_dNegativo(
 				x: $datos[$i]['distancia'],
@@ -99,7 +99,7 @@ class PredictorEstacionamiento {
 		$this->stmt_obtenerReporteCuadraHora->execute([
 			$hora,$id_cuadra]);
 		$this->stmt_obtenerReporteCuadraAhora->execute([
-			$hora,$dia_semana,$id_cuadra]);
+			$dia_semana,$hora,$id_cuadra]);
 		$datos = [];
 		$datos['dia'] = $this->stmt_obtenerReporteCuadraDia->fetch(PDO::FETCH_ASSOC);
 		$datos['hora'] = $this->stmt_obtenerReporteCuadraHora->fetch(PDO::FETCH_ASSOC);
@@ -143,7 +143,7 @@ class PredictorEstacionamiento {
 		$this->stmt_obtenerEstacionarCuadraId->execute([$id_cuadra]);
 		$this->stmt_obtenerEstacionarCuadraCantidad->execute();
 		$ratio_cuadra = $this->stmt_obtenerEstacionarCuadraId->fetch(PDO::FETCH_ASSOC)['ratio'];
-		$cant_estacionamientos = $this->stmt_obtenerEstacionarCuadraId->fetch(PDO::FETCH_ASSOC)['cantidad'];
+		$cant_estacionamientos = $this->stmt_obtenerEstacionarCuadraCantidad->fetch(PDO::FETCH_ASSOC)['cantidad'] ?? 0;
 
 		if($cant_estacionamientos == 0)
 			return [0, 0];
