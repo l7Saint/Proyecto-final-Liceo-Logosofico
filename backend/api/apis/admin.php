@@ -26,7 +26,7 @@ $adminApi->addEndpoint(new Endpoint(
 	name: "crear",
 	method: "POST",
 	parameters: ['nombre', 'apellido', 'email', 'contrasena'],
-	run: function (array $data, array $handlers, Closure $endLog): array {
+	run: function (array $data, array $handlers, Closure $endLog): void {
 		$usrhnd = $handlers['usuario'];
 		try {
 			$existingUser = $usrhnd->obtenerPorEmail($data['email']);
@@ -43,8 +43,8 @@ $adminApi->addEndpoint(new Endpoint(
 				$data['apellido'], //$apellido
 				$data['email'], //$email
 				password_hash($data['contrasena'], PASSWORD_DEFAULT), //$contrasena_hash
-				$data['inactivo'], //$inactivo
-				$data['es_admin'], //$es_admin
+				$data['inactivo'] ?? false, //$inactivo
+				$data['es_admin'] ?? false, //$es_admin
 				null //$fecha_registro
 			);
 			$newId = $usrhnd->crearUsuarioAdmin($usuario);
@@ -63,6 +63,7 @@ $adminApi->addEndpoint(new Endpoint(
 				);
 			}
 		} catch(Throwable $e){
+			if ($e instanceof GenericRuntimeException) { throw $e; }
 			$message = $e->getMessage();
 			($endLog)('error', "Unexpected error, message: $message.");
 			throw new GenericRuntimeException(
@@ -78,7 +79,7 @@ $adminApi->addEndpoint(new Endpoint(
 	name: "obtener",
 	method: "GET",
 	parameters: [],
-	run: function (array $data, array $handlers, Closure $endLog): array {
+	run: function (array $data, array $handlers, Closure $endLog): void {
 		$usrhnd = $handlers['usuario'];
 		try {
 			$usuarios = $usrhnd->obtenerTodos();
@@ -99,6 +100,7 @@ $adminApi->addEndpoint(new Endpoint(
 				'usuarios' => $resultado
 			]);
 		} catch(Throwable $e){
+			if ($e instanceof GenericRuntimeException) { throw $e; }
 			$message = $e->getMessage();
 			($endLog)('error', "Unexpected error, message: $message.");
 			throw new GenericRuntimeException(
@@ -114,7 +116,7 @@ $adminApi->addEndpoint(new Endpoint(
 	name: "modificar",
 	method: "PUT",
 	parameters: ['id'],
-	run: function (array $data, array $handlers, Closure $endLog): array {
+	run: function (array $data, array $handlers, Closure $endLog): void {
 		$usrhnd = $handlers['usuario'];
 		try {
 			$usuario = $usrhnd->obtenerPorId($data['id']);
@@ -157,6 +159,7 @@ $adminApi->addEndpoint(new Endpoint(
 				);
 			}
 		} catch(Throwable $e){
+			if ($e instanceof GenericRuntimeException) { throw $e; }
 			$message = $e->getMessage();
 			($endLog)('error', "Unexpected error, message: $message.");
 			throw new GenericRuntimeException(
@@ -172,12 +175,12 @@ $adminApi->addEndpoint(new Endpoint(
 	name: "eliminar",
 	method: "DELETE",
 	parameters: ['id'],
-	run: function (array $data, array $handlers, Closure $endLog): array {
+	run: function (array $data, array $handlers, Closure $endLog): void {
 		$usrhnd = $handlers['usuario'];
 		try {
 			//no permitir que un admin se elimine a si mismo
 			$self_id = checkSession($handlers['sesion'])->id_usuario;
-			if($self_id === $data['id']){
+			if((int)$self_id === (int)$data['id']){
 				throw new GenericRuntimeException(
 					httpCode: 400,
 					message: 'Cant delete your own user',
@@ -200,6 +203,7 @@ $adminApi->addEndpoint(new Endpoint(
 				);
 			}
 		} catch(Throwable $e){
+			if ($e instanceof GenericRuntimeException) { throw $e; }
 			$message = $e->getMessage();
 			($endLog)('error', "Unexpected error, message: $message.");
 			throw new GenericRuntimeException(

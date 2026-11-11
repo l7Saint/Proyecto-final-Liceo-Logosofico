@@ -3,8 +3,8 @@ require_once __DIR__ . '/../functions.php';
 function verificarAdministrador($usrhnd, $seshnd){
 	$sesion = checkSession($seshnd);
 	if($sesion === false){
-		return false;
 		elog('error', "Unauthorized in verificarAdministrador. Sesion is false");
+		return false;
 	}
 	$user = $usrhnd->obtenerPorId($sesion->id_usuario);
 	if(!$user)
@@ -89,7 +89,7 @@ function startSession($usuario, $seshnd){
 		error_log("api.startSession: no se pudo crear la sesión para user_id ".$usuario->id);
 		throw new Exception("No se pudo iniciar la sesión.");
 	}
-	error_log("Session Started for user_id: ".$usuario->id." ; ip address: ".$_SERVER['REMOTE_ADDR']);
+	error_log("Session Started for user_id: ".$usuario->id." ; ip address: ".($_SERVER['REMOTE_ADDR'] ?? 'desconocida'));
 	return $token;
 }
 

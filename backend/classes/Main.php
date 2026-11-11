@@ -26,15 +26,13 @@ class Main {
 			$data = [];
 		$apiName = $request[0] ?? '';
 		try {
-			$responseBody = $api->runEndpoint($endpName, $method, $data);
-			echo json_encode($responseBody);
+			$api->runEndpoint($endpName, $method, $data);
 			#elog('debug', "Successful main");
 		} catch (GenericRuntimeException $e) {
 			#elog('debug', "GenericRuntimeException: " . $e->getMessage());
 			http_response_code($e->httpCode);
 			if($e->getResponse !== null)
-				$responseBody = ($e->getResponse)();
-			echo json_encode($responseBody);
+				echo json_encode(($e->getResponse)());
 			return;
 		} catch (InvalidEndpointException $e) {
 			http_response_code(404);
