@@ -9,6 +9,7 @@ import { HorarioApi } from './api/horario.js';
 import { TieneApi } from './api/tiene.js';
 import { VehiculoApi } from './api/vehiculo.js';
 import { EstacionarApi } from './api/estacionar.js';
+import { EstadisticasApi } from './api/estadisticas.js';
 
 /**
  * Central client for the Urbanaut backend.
@@ -70,6 +71,8 @@ export class UrbanautClient extends EventTarget {
     this.vehiculo = new VehiculoApi(this);
     /** @type {EstacionarApi} */
     this.estacionar = new EstacionarApi(this);
+    /** @type {EstadisticasApi} */
+    this.estadisticas = new EstadisticasApi(this);
   }
 
   /** @returns {string} the resolved API prefix */
@@ -172,6 +175,7 @@ export {
   TieneApi,
   VehiculoApi,
   EstacionarApi,
+  EstadisticasApi,
   UrbanautError,
   HttpError,
   NetworkError,
