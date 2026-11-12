@@ -2,3 +2,9 @@ pasarparaxampp.sh
 sql/importcsv/conteoFiltrado.csv
 src/tests
 testProbabilidad.sh
+AUDIT.md
+CONTEXT.md
+FIXES.md
+GUIDELINES.md
+GUIDELINES_PROMPT.md
+

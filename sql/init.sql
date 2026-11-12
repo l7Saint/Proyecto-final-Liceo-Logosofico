@@ -130,7 +130,7 @@ INTO TABLE Cuadra
 FIELDS TERMINATED BY ','
 LINES TERMINATED BY '\n'
 IGNORE 1 ROWS
-(numero_puerta_inicial,numero_puerta_final,calle,latitud,longitud);
+(numero_puerta_inicial,numero_puerta_final,calle,latitud,longitud,largo_metros);
 
 /* Importar Horarios */
 LOAD DATA INFILE '/var/lib/mysql/horario.csv'
