@@ -14,7 +14,7 @@
  * functions are attached to `window` at the bottom of the file.
  */
 
-import UrbanautClient from '/urbanaut-js-client/src/urbanaut.js';
+import UrbanautClient from '/assets/js/urbanaut-js-client/src/urbanaut.js';
 
 const BACKEND_URL = 'http://127.0.0.1:30000';
 const LEGACY_TOKEN_KEY = 'urbanaut_token';
