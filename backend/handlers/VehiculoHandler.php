@@ -22,7 +22,7 @@ class VehiculoHandler {
 	 * @throws Exception Si ocurre un error en la base de datos
 	 * @throws InvalidArgumentException Si $id no es de tipo int
 	 */
-	public function obtenerPorIdVehiculo($id){
+	public function obtenerPorIdVehiculo($id): Vehiculo|false{
 		if (!is_int($id)) {
 			throw new InvalidArgumentException("El parámetro \$id debe ser de tipo int.");
 		}
@@ -44,7 +44,7 @@ class VehiculoHandler {
 	 * @throws Exception Si ocurre un error en la base de datos
 	 * @throws InvalidArgumentException Si $id_usuario no es de tipo int
 	 */
-	public function obtenerPorIdUsuario($id_usuario){
+	public function obtenerPorIdUsuario($id_usuario): array{
 		if (!is_int($id_usuario)) {
 			throw new InvalidArgumentException("El parámetro \$id_usuario debe ser de tipo int.");
 		}
@@ -67,7 +67,7 @@ class VehiculoHandler {
 	 * @return Vehiculo[] (vacío si no hay filas)
 	 * @throws Exception Si ocurre un error en la base de datos
 	 */
-	public function obtenerTodos(){
+	public function obtenerTodos(): array{
 		try {
 			$this->stmt_obtenerTodos->execute();
 			$out = [];
@@ -89,7 +89,7 @@ class VehiculoHandler {
 	 * @throws Exception Si ocurre un error en la base de datos
 	 * @throws InvalidArgumentException Si $vehiculo no es instancia de Vehiculo
 	 */
-	public function crearVehiculo($vehiculo){
+	public function crearVehiculo($vehiculo): int|false{
 		if (!$vehiculo instanceof Vehiculo) {
 			throw new InvalidArgumentException("El parámetro \$vehiculo debe ser una instancia de Vehiculo.");
 		}
@@ -117,7 +117,7 @@ class VehiculoHandler {
 	 * @throws Exception Si ocurre un error en la base de datos
 	 * @throws InvalidArgumentException Si $id no es de tipo int o $vehiculo no es instancia de Vehiculo
 	 */
-	public function modificarVehiculo($id, $vehiculo){
+	public function modificarVehiculo($id, $vehiculo): bool{
 		if (!is_int($id)) {
 			throw new InvalidArgumentException("El parámetro \$id debe ser de tipo int.");
 		}
@@ -148,7 +148,7 @@ class VehiculoHandler {
 	 * @throws Exception Si ocurre un error en la base de datos
 	 * @throws InvalidArgumentException Si $id no es de tipo int
 	 */
-	public function eliminarVehiculo($id){
+	public function eliminarVehiculo($id): bool{
 		if (!is_int($id)) {
 			throw new InvalidArgumentException("El parámetro \$id debe ser de tipo int.");
 		}
@@ -168,7 +168,7 @@ class VehiculoHandler {
 	 * @return Vehiculo
 	 * @private
 	 */
-	private function fetchToVehiculo($fetch){
+	private function fetchToVehiculo($fetch): Vehiculo{
 		return new Vehiculo(
 			$fetch['id'],
 			$fetch['id_usuario'],

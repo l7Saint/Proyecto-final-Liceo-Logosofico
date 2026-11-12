@@ -11,7 +11,7 @@ class Usuario {
 		public ?string $fecha_registro,
 	) {}
 
-	public function __toString(){
+	public function __toString(): string {
 		return "
 id: $this->id
 nombre: $this->nombre

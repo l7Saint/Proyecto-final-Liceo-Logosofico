@@ -19,7 +19,7 @@ class HorarioHandler {
 	 * @return Horario[] Un arreglo de objetos Horario
 	 * @throws Exception Si ocurre un error en la base de datos
 	 */
-	public function obtenerTodos(){
+	public function obtenerTodos(): array{
 		try {
 			$this->stmt_obtenerTodos->execute();
 			$rows = $this->stmt_obtenerTodos->fetchAll(PDO::FETCH_ASSOC);
@@ -42,7 +42,7 @@ class HorarioHandler {
 	 * @return Horario|false Retorna un objeto Horario si se encuentra, false si no
 	 * @throws Exception Si ocurre un error en la base de datos
 	 */
-	public function obtenerPorNumeroHora($numero_hora, $dia_semana){
+	public function obtenerPorNumeroHora($numero_hora, $dia_semana): Horario|false{
 		try {
 			$this->stmt_obtenerPorNumeroHora->execute([
 				$numero_hora,
@@ -63,7 +63,7 @@ class HorarioHandler {
 	 * @return int|false Retorna el numero_hora del horario creado, false en caso de fallo
 	 * @throws Exception Si ocurre un error en la base de datos
 	 */
-	public function crearHorario($horario){
+	public function crearHorario($horario): int|false{
 		try {
 			$success = $this->stmt_crearHorario->execute([
 				$horario->numero_hora,
@@ -88,7 +88,7 @@ class HorarioHandler {
 	 * @return true|false true en caso de actualizacion exitosa, false en caso de fallo
 	 * @throws Exception Si ocurre un error en la base de datos
 	 */
-	public function actualizarHorario($horario){
+	public function actualizarHorario($horario): bool{
 		try {
 			$success = $this->stmt_actualizarHorario->execute([
 				$horario->horario,
@@ -113,7 +113,7 @@ class HorarioHandler {
 	 * @return true|false true en caso de eliminacion exitosa, false en caso de fallo
 	 * @throws Exception Si ocurre un error en la base de datos
 	 */
-	public function eliminarHorario($numero_hora, $dia_semana){
+	public function eliminarHorario($numero_hora, $dia_semana): bool{
 		try {
 			$success = $this->stmt_eliminarHorario->execute([
 				$numero_hora,
@@ -137,7 +137,7 @@ class HorarioHandler {
 	 * @return Horario Un nuevo objeto Horario poblado con los datos del arreglo
 	 * @private Metodo auxiliar usado internamente por la clase
 	 */
-	private function fetchToHorario($fetch){
+	private function fetchToHorario($fetch): Horario{
 		return new Horario(
 			$fetch['numero_hora'],
 			$fetch['dia_semana'],

@@ -21,7 +21,7 @@ class TieneHandler {
 	 * @return array[] Un arreglo de arreglos asociativos con los datos de Tiene
 	 * @throws Exception Si ocurre un error en la base de datos
 	 */
-	public function obtenerTodos(){
+	public function obtenerTodos(): array{
 		try {
 			$this->stmt_obtenerTodos->execute();
 			return $this->stmt_obtenerTodos->fetchAll(PDO::FETCH_ASSOC);
@@ -38,7 +38,7 @@ class TieneHandler {
 	 * @return array[] Un arreglo de arreglos asociativos con los datos de Tiene
 	 * @throws Exception Si ocurre un error en la base de datos
 	 */
-	public function obtenerPorIDUsuario($id_usuario){
+	public function obtenerPorIDUsuario($id_usuario): array{
 		try {
 			$this->stmt_obtenerPorIDUsuario->execute([
 				$id_usuario
@@ -58,7 +58,7 @@ class TieneHandler {
 	 * @return array[] Un arreglo de arreglos asociativos con los datos de Tiene
 	 * @throws Exception Si ocurre un error en la base de datos
 	 */
-	public function obtenerPorIDU_DS($id_usuario, $dia_semana){
+	public function obtenerPorIDU_DS($id_usuario, $dia_semana): array{
 		try {
 			$this->stmt_obtenerPorIDU_DS->execute([
 				$id_usuario,
@@ -78,7 +78,7 @@ class TieneHandler {
 	 * @return array[] Un arreglo de arreglos asociativos con los datos de Tiene
 	 * @throws Exception Si ocurre un error en la base de datos
 	 */
-	public function obtenerPorNumeroHora($numero_hora){
+	public function obtenerPorNumeroHora($numero_hora): array{
 		try {
 			$this->stmt_obtenerPorNumeroHora->execute([
 				$numero_hora
@@ -97,7 +97,7 @@ class TieneHandler {
 	 * @return array[] Un arreglo de arreglos asociativos con los datos de Tiene
 	 * @throws Exception Si ocurre un error en la base de datos
 	 */
-	public function obtenerPorDiaSemana($dia_semana){
+	public function obtenerPorDiaSemana($dia_semana): array{
 		try {
 			$this->stmt_obtenerPorDiaSemana->execute([
 				$dia_semana
@@ -117,7 +117,7 @@ class TieneHandler {
 	 * @return array[] Un arreglo de arreglos asociativos con los datos de Tiene
 	 * @throws Exception Si ocurre un error en la base de datos
 	 */
-	public function obtenerPorNH_DS($numero_hora, $dia_semana){
+	public function obtenerPorNH_DS($numero_hora, $dia_semana): array{
 		try {
 			$this->stmt_obtenerPorNH_DS->execute([
 				$numero_hora,
@@ -139,7 +139,7 @@ class TieneHandler {
 	 * @return true|false true en caso de insercion exitosa, false en caso de fallo
 	 * @throws Exception Si ocurre un error en la base de datos
 	 */
-	public function asignarHorario($id_usuario, $numero_hora, $dia_semana){
+	public function asignarHorario($id_usuario, $numero_hora, $dia_semana): bool{
 		try {
 			$success = $this->stmt_asignarHorario->execute([
 				$id_usuario,
@@ -166,7 +166,7 @@ class TieneHandler {
 	 * @return true|false true en caso de eliminacion exitosa, false en caso de fallo
 	 * @throws Exception Si ocurre un error en la base de datos
 	 */
-	public function desasignarHorario($id_usuario, $numero_hora, $dia_semana){
+	public function desasignarHorario($id_usuario, $numero_hora, $dia_semana): bool{
 		try {
 			$success = $this->stmt_desasignarHorario->execute([
 				$id_usuario,

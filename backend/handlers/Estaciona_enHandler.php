@@ -21,7 +21,7 @@ class Estaciona_enHandler {
 	 * @throws Exception Si ocurre un error en la base de datos
 	 * @throws InvalidArgumentException Si $id no es int
 	 */
-	public function obtenerPorId($id){
+	public function obtenerPorId($id): Estacionamiento|false{
 		if (!is_int($id)) {
 			throw new InvalidArgumentException("El parámetro \$id debe ser de tipo int.");
 		}
@@ -41,7 +41,7 @@ class Estaciona_enHandler {
 	 * @return Estacionamiento[] (vacío si no hay filas)
 	 * @throws Exception Si ocurre un error en la base de datos
 	 */
-	public function obtenerTodos(){
+	public function obtenerTodos(): array{
 		try {
 			$this->stmt_obtenerTodos->execute();
 			$out = [];
@@ -63,7 +63,7 @@ class Estaciona_enHandler {
 	 * @throws Exception Si ocurre un error en la base de datos
 	 * @throws InvalidArgumentException Si $estacionamiento no es instancia de Estacionamiento
 	 */
-	public function crearEstacionamiento($estacionamiento){
+	public function crearEstacionamiento($estacionamiento): int|false{
 		if (!$estacionamiento instanceof Estacionamiento) {
 			throw new InvalidArgumentException("El parámetro \$estacionamiento debe ser una instancia de Estacionamiento.");
 		}
@@ -92,7 +92,7 @@ class Estaciona_enHandler {
 	 * @throws Exception Si ocurre un error en la base de datos
 	 * @throws InvalidArgumentException Si $id no es int o $estacionamiento no es instancia de Estacionamiento
 	 */
-	public function actualizarEstacionamiento($id, $estacionamiento){
+	public function actualizarEstacionamiento($id, $estacionamiento): bool{
 		if (!is_int($id)) {
 			throw new InvalidArgumentException("El parámetro \$id debe ser de tipo int.");
 		}
@@ -124,7 +124,7 @@ class Estaciona_enHandler {
 	 * @throws Exception Si ocurre un error en la base de datos
 	 * @throws InvalidArgumentException Si $id no es int
 	 */
-	public function eliminarEstacionamiento($id){
+	public function eliminarEstacionamiento($id): bool{
 		if (!is_int($id)) {
 			throw new InvalidArgumentException("El parámetro \$id debe ser de tipo int.");
 		}
@@ -144,7 +144,7 @@ class Estaciona_enHandler {
 	 * @return Estacionamiento
 	 * @private
 	 */
-	private function fetchToEstacionamiento($fetch){
+	private function fetchToEstacionamiento($fetch): Estacionamiento{
 		return new Estacionamiento(
 			$fetch['id'],
 			$fetch['id_usuario'],

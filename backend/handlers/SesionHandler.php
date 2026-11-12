@@ -20,7 +20,7 @@ class SesionHandler {
 	 * @return string|false Retorna el token generado en caso de éxito, false en caso de fallo
 	 * @throws Exception Si ocurre un error en la base de datos
 	 */
-	public function crearSesion($id_usuario){
+	public function crearSesion($id_usuario): string|false{
 		try {
 			$token = $this->generarToken();
 			$success = $this->stmt_crearSesion->execute([
@@ -45,7 +45,7 @@ class SesionHandler {
 	 * @return Sesion|false Retorna un objeto Sesion si se encuentra, false si no se encuentra
 	 * @throws Exception Si ocurre un error en la base de datos
 	 */
-	public function obtenerPorToken($token){
+	public function obtenerPorToken($token): Sesion|false{
 		try {
 			$this->stmt_obtenerPorToken->execute([$token]);
 			$fetch = $this->stmt_obtenerPorToken->fetch(PDO::FETCH_ASSOC);
@@ -63,7 +63,7 @@ class SesionHandler {
 	 * @return Sesion[] Retorna un arreglo de objetos Sesion (vacío si no hay sesiones)
 	 * @throws Exception Si ocurre un error en la base de datos
 	 */
-	public function obtenerPorUsuario($id_usuario){
+	public function obtenerPorUsuario($id_usuario): array{
 		try {
 			$this->stmt_obtenerPorUsuario->execute([$id_usuario]);
 			$sesiones = [];
@@ -84,7 +84,7 @@ class SesionHandler {
 	 * @return true|false true en caso de eliminación exitosa, false en caso de fallo
 	 * @throws Exception Si ocurre un error en la base de datos
 	 */
-	public function eliminarSesion($token){
+	public function eliminarSesion($token): bool{
 		try {
 			$success = $this->stmt_eliminarSesion->execute([$token]);
 			if($success){
@@ -106,7 +106,7 @@ class SesionHandler {
 	 * @return int|false Retorna el número de sesiones eliminadas, false en caso de fallo
 	 * @throws Exception Si ocurre un error en la base de datos
 	 */
-	public function eliminarSesionesPorUsuario($id_usuario){
+	public function eliminarSesionesPorUsuario($id_usuario): int|false{
 		try {
 			$success = $this->stmt_eliminarSesionesPorUsuario->execute([$id_usuario]);
 			if($success){
@@ -126,7 +126,7 @@ class SesionHandler {
 	 * @return string Un token único y seguro para usar como clave de sesión
 	 * @private Este es un método auxiliar usado internamente por la clase
 	 */
-	private function generarToken(){
+	private function generarToken(): string{
 		return bin2hex(random_bytes(32));
 	}
 
@@ -137,7 +137,7 @@ class SesionHandler {
 	 * @return Sesion Retorna un nuevo objeto Sesion poblado con los datos del arreglo
 	 * @private Este es un método auxiliar usado internamente por la clase
 	 */
-	private function fetchToSesion($fetch){
+	private function fetchToSesion($fetch): Sesion{
 		$s = new Sesion(
 			$fetch['token'],
 			$fetch['id_usuario'],

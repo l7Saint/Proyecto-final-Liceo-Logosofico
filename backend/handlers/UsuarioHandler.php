@@ -22,7 +22,7 @@ class UsuarioHandler {
 	 * @return Usuario|false Retorna un objeto Usuario si se encuentra, false si no se encuentra
 	 * @throws Exception Si ocurre un error en la base de datos
 	 */
-	public function obtenerPorId($id){
+	public function obtenerPorId($id): Usuario|false{
 		try {
 			$this->stmt_obtenerPorId->execute([
 				$id
@@ -42,7 +42,7 @@ class UsuarioHandler {
 	 * @return int|false Retorna el ID del usuario recién creado en caso de éxito, false en caso de fallo
 	 * @throws Exception Si ocurre un error en la base de datos
 	 */
-	public function crearUsuario($usuario){
+	public function crearUsuario($usuario): int|false{
 		try {
 			$success = $this->stmt_crearUsuario->execute([
 				$usuario->nombre,
@@ -68,7 +68,7 @@ class UsuarioHandler {
 	 * @return true|false true en caso de eliminacion exitosa, false en caso de fallo
 	 * @throws Exception Si ocurre un error en la base de datos
 	 */
-	public function eliminarUsuario($id){
+	public function eliminarUsuario($id): bool{
 		try {
 			$success = $this->stmt_eliminarUsuario->execute([
 				$id
@@ -90,7 +90,7 @@ class UsuarioHandler {
 	 * @return Usuario[] Retorna un arreglo de objetos Usuario (vacío si no hay usuarios)
 	 * @throws Exception Si ocurre un error en la base de datos
 	 */
-	public function obtenerTodos(){
+	public function obtenerTodos(): array{
 		try {
 			$this->stmt_obtenerTodos->execute();
 			$usuarios = [];
@@ -112,7 +112,7 @@ class UsuarioHandler {
 	 * @return true|false true en caso de modificacion exitosa, false en caso de fallo
 	 * @throws Exception Si ocurre un error en la base de datos
 	 */
-	public function modificarUsuario($id, $usuario){
+	public function modificarUsuario($id, $usuario): bool{
 		try {
 			$success = $this->stmt_actualizarUsuario->execute([
 				$usuario->nombre,
@@ -141,7 +141,7 @@ class UsuarioHandler {
 	 * @return Usuario Retorna un nuevo objeto Usuario poblado con los datos del arreglo
 	 * @private Este es un método auxiliar usado internamente por la clase
 	 */
-	private function fetchToUsuario($fetch){
+	private function fetchToUsuario($fetch): Usuario{
 		$u = new Usuario(
 			$fetch['id'],
 			$fetch['nombre'],
@@ -162,7 +162,7 @@ class UsuarioHandler {
 	 * @return Usuario|false Retorna un objeto Usuario si se encuentra, false si no se encuentra
 	 * @throws Exception Si ocurre un error en la base de datos
 	 */
-	public function obtenerPorEmail($email){
+	public function obtenerPorEmail($email): Usuario|false{
 		try {
 			$this->stmt_obtenerPorEmail->execute([$email]);
 			$fetch = $this->stmt_obtenerPorEmail->fetch(PDO::FETCH_ASSOC);
@@ -181,7 +181,7 @@ class UsuarioHandler {
 	* @return int|false
 	* @throws Exception
 	*/
-	public function crearUsuarioAdmin($usuario){
+	public function crearUsuarioAdmin($usuario): int|false{
 		try {
 			$success = $this->stmt_crearUsuarioAdmin->execute([
 				$usuario->nombre,

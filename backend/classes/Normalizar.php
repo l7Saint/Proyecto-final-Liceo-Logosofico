@@ -45,7 +45,7 @@ class Normalizar {
 		return (float) ($valores[$lo] + $frac * ($valores[$hi] - $valores[$lo]));
 
 	}
-	public static function obtenerPercentil(array $valores, float $valor){
+	public static function obtenerPercentil(array $valores, float $valor): float{
 		$cantidad = count($valores);
 		if($cantidad === 0)
 			throw new InvalidArgumentException('El arreglo no puede estar vacio');

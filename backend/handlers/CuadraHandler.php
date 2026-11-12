@@ -22,7 +22,7 @@ class CuadraHandler {
 	 * @throws Exception
 	 * @throws InvalidArgumentException Si $id no es int
 	 */
-	public function obtenerPorId($id){
+	public function obtenerPorId($id): Cuadra|false{
 		if (!is_int($id)) {
 			throw new InvalidArgumentException("El parámetro \$id debe ser de tipo int.");
 		}
@@ -45,7 +45,7 @@ class CuadraHandler {
 	 * @throws Exception
 	 * @throws InvalidArgumentException Si $num_puerta no es int o si $calle no es string
 	 */
-	public function obtenerPorPuerta(string $calle, int $num_puerta){
+	public function obtenerPorPuerta(string $calle, int $num_puerta): Cuadra|false{
 		try {
 			$this->stmt_obtenerPorPuerta->execute([$calle, $num_puerta]);
 			$fetch = $this->stmt_obtenerPorPuerta->fetch(PDO::FETCH_ASSOC);
@@ -62,7 +62,7 @@ class CuadraHandler {
 	 * @return Cuadra[] (vacío si no hay filas)
 	 * @throws Exception
 	 */
-	public function obtenerTodos(){
+	public function obtenerTodos(): array{
 		try {
 			$this->stmt_obtenerTodos->execute();
 			$out = [];
@@ -84,7 +84,7 @@ class CuadraHandler {
 	 * @throws Exception
 	 * @throws InvalidArgumentException Si $cuadra no es instancia de Cuadra
 	 */
-	public function crearCuadra($cuadra){
+	public function crearCuadra($cuadra): int|false{
 		if (!$cuadra instanceof Cuadra) {
 			throw new InvalidArgumentException("El parámetro \$cuadra debe ser una instancia de Cuadra.");
 		}
@@ -112,7 +112,7 @@ class CuadraHandler {
 	 * @throws Exception
 	 * @throws InvalidArgumentException Si $id no es int o $cuadra no es instancia de Cuadra
 	 */
-	public function actualizarCuadra($id, $cuadra){
+	public function actualizarCuadra($id, $cuadra): bool{
 		if (!is_int($id)) {
 			throw new InvalidArgumentException("El parámetro \$id debe ser de tipo int.");
 		}
@@ -143,7 +143,7 @@ class CuadraHandler {
 	 * @throws Exception
 	 * @throws InvalidArgumentException Si $id no es int
 	 */
-	public function eliminarCuadra($id){
+	public function eliminarCuadra($id): bool{
 		if (!is_int($id)) {
 			throw new InvalidArgumentException("El parámetro \$id debe ser de tipo int.");
 		}
@@ -163,7 +163,7 @@ class CuadraHandler {
 	 * @return Cuadra
 	 * @private
 	 */
-	private function fetchToCuadra($fetch){
+	private function fetchToCuadra($fetch): Cuadra{
 		return new Cuadra(
 			(int) $fetch['id'],
 			$fetch['numero_puerta_inicial'] !== null ? (int) $fetch['numero_puerta_inicial'] : null,
