@@ -42,7 +42,7 @@ class HorarioHandler {
 	 * @return Horario|false Retorna un objeto Horario si se encuentra, false si no
 	 * @throws Exception Si ocurre un error en la base de datos
 	 */
-	public function obtenerPorNumeroHora($numero_hora, $dia_semana): Horario|false{
+	public function obtenerPorNumeroHora(int $numero_hora, string $dia_semana): Horario|false{
 		try {
 			$this->stmt_obtenerPorNumeroHora->execute([
 				$numero_hora,
@@ -63,7 +63,7 @@ class HorarioHandler {
 	 * @return int|false Retorna el numero_hora del horario creado, false en caso de fallo
 	 * @throws Exception Si ocurre un error en la base de datos
 	 */
-	public function crearHorario($horario): int|false{
+	public function crearHorario(Horario $horario): int|false{
 		try {
 			$success = $this->stmt_crearHorario->execute([
 				$horario->numero_hora,
@@ -88,7 +88,7 @@ class HorarioHandler {
 	 * @return true|false true en caso de actualizacion exitosa, false en caso de fallo
 	 * @throws Exception Si ocurre un error en la base de datos
 	 */
-	public function actualizarHorario($horario): bool{
+	public function actualizarHorario(Horario $horario): bool{
 		try {
 			$success = $this->stmt_actualizarHorario->execute([
 				$horario->horario,
@@ -113,7 +113,7 @@ class HorarioHandler {
 	 * @return true|false true en caso de eliminacion exitosa, false en caso de fallo
 	 * @throws Exception Si ocurre un error en la base de datos
 	 */
-	public function eliminarHorario($numero_hora, $dia_semana): bool{
+	public function eliminarHorario(int $numero_hora, string $dia_semana): bool{
 		try {
 			$success = $this->stmt_eliminarHorario->execute([
 				$numero_hora,
@@ -137,7 +137,7 @@ class HorarioHandler {
 	 * @return Horario Un nuevo objeto Horario poblado con los datos del arreglo
 	 * @private Metodo auxiliar usado internamente por la clase
 	 */
-	private function fetchToHorario($fetch): Horario{
+	private function fetchToHorario(array $fetch): Horario{
 		return new Horario(
 			$fetch['numero_hora'],
 			$fetch['dia_semana'],
@@ -149,13 +149,9 @@ class HorarioHandler {
 	 * Constructor - Inicializa el manejador con una conexion a la base de datos y prepara las sentencias
 	 *
 	 * @param PDO $db Un objeto PDO valido de conexion a la base de datos
-	 * @throws InvalidArgumentException Si el $db proporcionado no es una instancia de PDO
 	 * @throws Exception Si ocurre un error al preparar las sentencias SQL
 	 */
-	public function __construct($db){
-		if (!$db instanceof PDO) {
-			throw new InvalidArgumentException("Instancia invalida de PDO.");
-		}
+	public function __construct(PDO $db){
 		$this->db = $db;
 		try {
 			$this->stmt_obtenerTodos = $this->db->prepare("SELECT * FROM Horario ORDER BY numero_hora;");

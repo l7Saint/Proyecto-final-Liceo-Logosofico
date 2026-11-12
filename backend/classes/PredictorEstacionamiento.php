@@ -174,9 +174,6 @@ class PredictorEstacionamiento {
 	public function __construct (
 		private PDO $db,
 	){
-		if (!$db instanceof PDO) {
-			throw new InvalidArgumentException("Instancia invalida de PDO.");
-		}
 		try {
 			$this->stmt_obtenerConteoCuadra = $this->db->prepare('
 				SELECT 

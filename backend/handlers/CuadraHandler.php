@@ -20,12 +20,8 @@ class CuadraHandler {
 	 * @param int $id El ID de la Cuadra a buscar
 	 * @return Cuadra|false
 	 * @throws Exception
-	 * @throws InvalidArgumentException Si $id no es int
 	 */
-	public function obtenerPorId($id): Cuadra|false{
-		if (!is_int($id)) {
-			throw new InvalidArgumentException("El parámetro \$id debe ser de tipo int.");
-		}
+	public function obtenerPorId(int $id): Cuadra|false{
 		try {
 			$this->stmt_obtenerPorId->execute([$id]);
 			$fetch = $this->stmt_obtenerPorId->fetch(PDO::FETCH_ASSOC);
@@ -43,7 +39,6 @@ class CuadraHandler {
 	 * @param string $calle El nombre de la calle
 	 * @return Cuadra|false
 	 * @throws Exception
-	 * @throws InvalidArgumentException Si $num_puerta no es int o si $calle no es string
 	 */
 	public function obtenerPorPuerta(string $calle, int $num_puerta): Cuadra|false{
 		try {
@@ -82,12 +77,8 @@ class CuadraHandler {
 	 * @param Cuadra $cuadra
 	 * @return int|false
 	 * @throws Exception
-	 * @throws InvalidArgumentException Si $cuadra no es instancia de Cuadra
 	 */
-	public function crearCuadra($cuadra): int|false{
-		if (!$cuadra instanceof Cuadra) {
-			throw new InvalidArgumentException("El parámetro \$cuadra debe ser una instancia de Cuadra.");
-		}
+	public function crearCuadra(Cuadra $cuadra): int|false{
 		try {
 			$success = $this->stmt_crearCuadra->execute([
 				$cuadra->numero_puerta_inicial,
@@ -110,15 +101,8 @@ class CuadraHandler {
 	 * @param Cuadra $cuadra
 	 * @return true|false
 	 * @throws Exception
-	 * @throws InvalidArgumentException Si $id no es int o $cuadra no es instancia de Cuadra
 	 */
-	public function actualizarCuadra($id, $cuadra): bool{
-		if (!is_int($id)) {
-			throw new InvalidArgumentException("El parámetro \$id debe ser de tipo int.");
-		}
-		if (!$cuadra instanceof Cuadra) {
-			throw new InvalidArgumentException("El parámetro \$cuadra debe ser una instancia de Cuadra.");
-		}
+	public function actualizarCuadra(int $id, Cuadra $cuadra): bool{
 		try {
 			$success = $this->stmt_actualizarCuadra->execute([
 				$cuadra->numero_puerta_inicial,
@@ -141,12 +125,8 @@ class CuadraHandler {
 	 * @param int $id El ID de la Cuadra a eliminar
 	 * @return true|false
 	 * @throws Exception
-	 * @throws InvalidArgumentException Si $id no es int
 	 */
-	public function eliminarCuadra($id): bool{
-		if (!is_int($id)) {
-			throw new InvalidArgumentException("El parámetro \$id debe ser de tipo int.");
-		}
+	public function eliminarCuadra(int $id): bool{
 		try {
 			$success = $this->stmt_eliminarCuadra->execute([$id]);
 			return $success ? true : false;
@@ -163,7 +143,7 @@ class CuadraHandler {
 	 * @return Cuadra
 	 * @private
 	 */
-	private function fetchToCuadra($fetch): Cuadra{
+	private function fetchToCuadra(array $fetch): Cuadra{
 		return new Cuadra(
 			(int) $fetch['id'],
 			$fetch['numero_puerta_inicial'] !== null ? (int) $fetch['numero_puerta_inicial'] : null,
@@ -178,13 +158,9 @@ class CuadraHandler {
 	 * Constructor — prepara todas las sentencias SQL
 	 *
 	 * @param PDO $db
-	 * @throws InvalidArgumentException Si $db no es PDO
 	 * @throws Exception Si falla la preparación
 	 */
-	public function __construct($db){
-		if (!$db instanceof PDO) {
-			throw new InvalidArgumentException("Instancia invalida de PDO.");
-		}
+	public function __construct(PDO $db){
 		$this->db = $db;
 		try {
 			$this->stmt_obtenerPorPuerta  = $this->db->prepare('SELECT * FROM Cuadra WHERE calle = ? AND ? BETWEEN numero_puerta_inicial AND numero_puerta_final LIMIT 1;');

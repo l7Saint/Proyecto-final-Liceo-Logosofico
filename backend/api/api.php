@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/../functions.php';
-function verificarAdministrador($usrhnd, $seshnd): int {
+function verificarAdministrador(UsuarioHandler $usrhnd, SesionHandler $seshnd): int {
 	$sesion = checkSession($seshnd);
 	if($sesion === false){
 		elog('error', "Unauthorized in verificarAdministrador. Sesion is false");
@@ -83,7 +83,7 @@ function getBearerToken(): ?string {
  * @return string el token generado
  * @throws Exception si no se puede crear la sesión
  */
-function startSession($usuario, $seshnd): string {
+function startSession(Usuario $usuario, SesionHandler $seshnd): string {
 	$token = $seshnd->crearSesion($usuario->id);
 	if($token === false){
 		error_log("api.startSession: no se pudo crear la sesión para user_id ".$usuario->id);
@@ -99,7 +99,7 @@ function startSession($usuario, $seshnd): string {
  *
  * @param SesionHandler $seshnd
  */
-function destroySession($seshnd): void {
+function destroySession(SesionHandler $seshnd): void {
 	$token = getBearerToken();
 	if($token === null){
 		return;
@@ -117,7 +117,7 @@ function destroySession($seshnd): void {
  * @param SesionHandler $seshnd
  * @return Sesion|false el objeto Sesion si es válido, false si no
  */
-function checkSession($seshnd): Sesion|false {
+function checkSession(SesionHandler $seshnd): Sesion|false {
 	$token = getBearerToken();
 	if($token === null){
 		error_log("api.checkSession: no Bearer token.");

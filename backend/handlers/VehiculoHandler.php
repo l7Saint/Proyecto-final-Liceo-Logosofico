@@ -20,12 +20,8 @@ class VehiculoHandler {
 	 * @param int $id El ID del Vehiculo a buscar
 	 * @return Vehiculo|false
 	 * @throws Exception Si ocurre un error en la base de datos
-	 * @throws InvalidArgumentException Si $id no es de tipo int
 	 */
-	public function obtenerPorIdVehiculo($id): Vehiculo|false{
-		if (!is_int($id)) {
-			throw new InvalidArgumentException("El parámetro \$id debe ser de tipo int.");
-		}
+	public function obtenerPorIdVehiculo(int $id): Vehiculo|false{
 		try {
 			$this->stmt_obtenerPorIdVehiculo->execute([$id]);
 			$fetch = $this->stmt_obtenerPorIdVehiculo->fetch(PDO::FETCH_ASSOC);
@@ -42,12 +38,8 @@ class VehiculoHandler {
 	 * @param int $id_usuario El ID del Usuario propietario
 	 * @return Vehiculo[] (vacío si no hay filas)
 	 * @throws Exception Si ocurre un error en la base de datos
-	 * @throws InvalidArgumentException Si $id_usuario no es de tipo int
 	 */
-	public function obtenerPorIdUsuario($id_usuario): array{
-		if (!is_int($id_usuario)) {
-			throw new InvalidArgumentException("El parámetro \$id_usuario debe ser de tipo int.");
-		}
+	public function obtenerPorIdUsuario(int $id_usuario): array{
 		try {
 			$this->stmt_obtenerPorIdUsuario->execute([$id_usuario]);
 			$out = [];
@@ -87,12 +79,8 @@ class VehiculoHandler {
 	 * @param Vehiculo $vehiculo El Vehiculo con los datos a insertar
 	 * @return int|false El ID del Vehiculo creado, o false si falla
 	 * @throws Exception Si ocurre un error en la base de datos
-	 * @throws InvalidArgumentException Si $vehiculo no es instancia de Vehiculo
 	 */
-	public function crearVehiculo($vehiculo): int|false{
-		if (!$vehiculo instanceof Vehiculo) {
-			throw new InvalidArgumentException("El parámetro \$vehiculo debe ser una instancia de Vehiculo.");
-		}
+	public function crearVehiculo(Vehiculo $vehiculo): int|false{
 		try {
 			$success = $this->stmt_crearVehiculo->execute([
 				$vehiculo->id_usuario,
@@ -115,15 +103,8 @@ class VehiculoHandler {
 	 * @param Vehiculo $vehiculo El Vehiculo con los datos actualizados
 	 * @return true|false
 	 * @throws Exception Si ocurre un error en la base de datos
-	 * @throws InvalidArgumentException Si $id no es de tipo int o $vehiculo no es instancia de Vehiculo
 	 */
-	public function modificarVehiculo($id, $vehiculo): bool{
-		if (!is_int($id)) {
-			throw new InvalidArgumentException("El parámetro \$id debe ser de tipo int.");
-		}
-		if (!$vehiculo instanceof Vehiculo) {
-			throw new InvalidArgumentException("El parámetro \$vehiculo debe ser una instancia de Vehiculo.");
-		}
+	public function modificarVehiculo(int $id, Vehiculo $vehiculo): bool{
 		try {
 			$success = $this->stmt_actualizarVehiculo->execute([
 				$vehiculo->id_usuario,
@@ -146,12 +127,8 @@ class VehiculoHandler {
 	 * @param int $id El ID del Vehiculo a eliminar
 	 * @return true|false
 	 * @throws Exception Si ocurre un error en la base de datos
-	 * @throws InvalidArgumentException Si $id no es de tipo int
 	 */
-	public function eliminarVehiculo($id): bool{
-		if (!is_int($id)) {
-			throw new InvalidArgumentException("El parámetro \$id debe ser de tipo int.");
-		}
+	public function eliminarVehiculo(int $id): bool{
 		try {
 			$success = $this->stmt_eliminarVehiculo->execute([$id]);
 			return $success ? true : false;
@@ -168,7 +145,7 @@ class VehiculoHandler {
 	 * @return Vehiculo
 	 * @private
 	 */
-	private function fetchToVehiculo($fetch): Vehiculo{
+	private function fetchToVehiculo(array $fetch): Vehiculo{
 		return new Vehiculo(
 			$fetch['id'],
 			$fetch['id_usuario'],
@@ -183,13 +160,9 @@ class VehiculoHandler {
 	 * Constructor — prepara todas las sentencias SQL
 	 *
 	 * @param PDO $db
-	 * @throws InvalidArgumentException Si $db no es PDO
 	 * @throws Exception Si falla la preparación
 	 */
-	public function __construct($db){
-		if (!$db instanceof PDO) {
-			throw new InvalidArgumentException("Instancia invalida de PDO.");
-		}
+	public function __construct(PDO $db){
 		$this->db = $db;
 		try {
 			$this->stmt_obtenerPorIdVehiculo = $this->db->prepare('SELECT * FROM Vehiculo WHERE id = ?;');

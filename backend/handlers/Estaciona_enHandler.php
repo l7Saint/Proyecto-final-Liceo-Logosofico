@@ -19,12 +19,8 @@ class Estaciona_enHandler {
 	 * @param int $id El ID del estacionamiento a buscar
 	 * @return Estacionamiento|false
 	 * @throws Exception Si ocurre un error en la base de datos
-	 * @throws InvalidArgumentException Si $id no es int
 	 */
-	public function obtenerPorId($id): Estacionamiento|false{
-		if (!is_int($id)) {
-			throw new InvalidArgumentException("El parámetro \$id debe ser de tipo int.");
-		}
+	public function obtenerPorId(int $id): Estacionamiento|false{
 		try {
 			$this->stmt_obtenerPorId->execute([$id]);
 			$fetch = $this->stmt_obtenerPorId->fetch(PDO::FETCH_ASSOC);
@@ -61,12 +57,8 @@ class Estaciona_enHandler {
 	 * @param Estacionamiento $estacionamiento
 	 * @return int|false
 	 * @throws Exception Si ocurre un error en la base de datos
-	 * @throws InvalidArgumentException Si $estacionamiento no es instancia de Estacionamiento
 	 */
-	public function crearEstacionamiento($estacionamiento): int|false{
-		if (!$estacionamiento instanceof Estacionamiento) {
-			throw new InvalidArgumentException("El parámetro \$estacionamiento debe ser una instancia de Estacionamiento.");
-		}
+	public function crearEstacionamiento(Estacionamiento $estacionamiento): int|false{
 		try {
 			$success = $this->stmt_crearEstacionamiento->execute([
 				$estacionamiento->id_usuario,
@@ -90,15 +82,8 @@ class Estaciona_enHandler {
 	 * @param Estacionamiento $estacionamiento
 	 * @return true|false
 	 * @throws Exception Si ocurre un error en la base de datos
-	 * @throws InvalidArgumentException Si $id no es int o $estacionamiento no es instancia de Estacionamiento
 	 */
-	public function actualizarEstacionamiento($id, $estacionamiento): bool{
-		if (!is_int($id)) {
-			throw new InvalidArgumentException("El parámetro \$id debe ser de tipo int.");
-		}
-		if (!$estacionamiento instanceof Estacionamiento) {
-			throw new InvalidArgumentException("El parámetro \$estacionamiento debe ser una instancia de Estacionamiento.");
-		}
+	public function actualizarEstacionamiento(int $id, Estacionamiento $estacionamiento): bool{
 		try {
 			$success = $this->stmt_actualizarEstacionamiento->execute([
 				$estacionamiento->id_usuario,
@@ -122,12 +107,8 @@ class Estaciona_enHandler {
 	 * @param int $id El ID del estacionamiento a eliminar
 	 * @return true|false
 	 * @throws Exception Si ocurre un error en la base de datos
-	 * @throws InvalidArgumentException Si $id no es int
 	 */
-	public function eliminarEstacionamiento($id): bool{
-		if (!is_int($id)) {
-			throw new InvalidArgumentException("El parámetro \$id debe ser de tipo int.");
-		}
+	public function eliminarEstacionamiento(int $id): bool{
 		try {
 			$success = $this->stmt_eliminarEstacionamiento->execute([$id]);
 			return $success ? true : false;
@@ -144,7 +125,7 @@ class Estaciona_enHandler {
 	 * @return Estacionamiento
 	 * @private
 	 */
-	private function fetchToEstacionamiento($fetch): Estacionamiento{
+	private function fetchToEstacionamiento(array $fetch): Estacionamiento{
 		return new Estacionamiento(
 			$fetch['id'],
 			$fetch['id_usuario'],
@@ -160,13 +141,9 @@ class Estaciona_enHandler {
 	 * Constructor — prepara todas las sentencias SQL
 	 *
 	 * @param PDO $db
-	 * @throws InvalidArgumentException Si $db no es PDO
 	 * @throws Exception Si falla la preparación
 	 */
-	public function __construct($db){
-		if (!$db instanceof PDO) {
-			throw new InvalidArgumentException("Instancia invalida de PDO.");
-		}
+	public function __construct(PDO $db){
 		$this->db = $db;
 		try {
 			$this->stmt_obtenerPorId             = $this->db->prepare('SELECT * FROM Estaciona_en WHERE id = ?;');
