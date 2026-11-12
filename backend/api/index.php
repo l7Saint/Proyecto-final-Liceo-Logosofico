@@ -1,6 +1,6 @@
 <?php
-require_once '../classes/Main.php';
-require_once '../functions.php';
+require_once __DIR__ . '/../classes/Main.php';
+require_once __DIR__ . '/../functions.php';
 
 //error handling ini
 ini_set('display_errors', 0);

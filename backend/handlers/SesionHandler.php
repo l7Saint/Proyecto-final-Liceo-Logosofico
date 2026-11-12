@@ -1,5 +1,5 @@
 <?php
-require_once "../models/Sesion.php";
+require_once __DIR__ . "/../models/Sesion.php";
 
 /**
  * Clase SesionHandler

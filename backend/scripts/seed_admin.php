@@ -1,6 +1,6 @@
 <?php
-require_once '/var/www/html/config/conexion.php';
-require_once '/var/www/html/handlers/UsuarioHandler.php';
+require_once __DIR__ . '/../config/conexion.php';
+require_once __DIR__ . '/../handlers/UsuarioHandler.php';
 require_once __DIR__ . '/../models/Usuario.php';
 
 $email    = getenv('ADMIN_EMAIL')    ?: 'admin@example.com';
