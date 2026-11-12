@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../functions.php';
 require_once __DIR__ . '/Api.php';
 class BadMainException extends LogicException {}
 class Main {
@@ -58,10 +59,7 @@ class Main {
 			return;
 		} catch (Throwable $e) {
 			http_response_code(500);
-			$msg = $e->getMessage();
-			$line = $e->getLine();
-			$file = $e->getFile();
-			elog('error', "In {$file}:{$line} | Error: {$msg}");
+			logException($e, 'main');
 			return;
 		}
 	}

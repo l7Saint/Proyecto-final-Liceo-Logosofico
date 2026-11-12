@@ -46,10 +46,7 @@ try {
 		require_once __DIR__ . '/' . $file;
 	}
 } catch (Throwable $e) {
-	$message = $e->getMessage();
-	$file = $e->getFile();
-	$line = $e->getLine();
-	elog('error', "Error while importing, message: $message location: $file:$line");
+	logException($e, 'import');
 	die();
 }
 try {
@@ -63,10 +60,7 @@ try {
 	);
 	#elog('debug', "After Run, End");
 } catch (Throwable $e) {
-	$message = $e->getMessage();
-	$file = $e->getFile();
-	$line = $e->getLine();
-	elog('error', "Error while executing main, message: $message location: $file:$line");
+	logException($e, 'main.run');
 	http_response_code(500);
 	echo json_encode([
 		'error' => 'internal_error',
