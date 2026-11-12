@@ -37,8 +37,16 @@ $estacionarApi->addEndpoint(new Endpoint(
 		$esthnd = $handlers['estacionamiento'];
 		try {
 			$est = $esthnd->obtenerPorId($data['id_est']);
+			if($est === false || !is_object($est))
+				throw new GenericRuntimeException(
+					httpCode: 404,
+					message: 'El estacionamiento no existe.',
+					getResponse: null
+				);
 			$est->hora_fin = $now->format('H:i:s');
 			$esthnd->actualizarEstacionamiento($data['id_est'], $est);
+		} catch (GenericRuntimeException $e) {
+			throw $e;
 		} catch (Throwable $e) {
 			($endLog)('error', "Unexpected error.");
 			throw new GenericRuntimeException(
@@ -60,17 +68,17 @@ $estacionarApi->addEndpoint(new Endpoint(
 		$ch = curl_init();
 		$latitud = $data['latitud'];
 		$longitud = $data['longitud'];
-		curl_setopt($ch, CURLOPT_URL, "https://nominatim.openstreetmap.org/reverse?lat=${latitud}&lon=${longitud}&format=json&zoom=18");
+		curl_setopt($ch, CURLOPT_URL, "https://nominatim.openstreetmap.org/reverse?lat={$latitud}&lon={$longitud}&format=json&zoom=18");
 		curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36');
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-		$response = json_decode(curl_exec($ch), true);
+		$body = curl_exec($ch);
+		$response = json_decode($body, true);
 		if($response === null){
-			$response = curl_exec($ch);
 			$errno    = curl_errno($ch);
 			$error    = curl_error($ch);
 			$status   = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-			($endLog)('error', "Curl failed. | response: ${response} | errno: ${errno} | error: ${error} | status: ${status} |");
+			($endLog)('error', "Curl failed. | response: {$body} | errno: {$errno} | error: {$error} | status: {$status} |");
 			curl_close($ch);
 			throw new GenericRuntimeException(
 				httpCode: 500,
@@ -79,8 +87,8 @@ $estacionarApi->addEndpoint(new Endpoint(
 			);
 		}
 
-		if(is_null(response['address']['road']) ||
-		   is_null(response['address']['house_number']))
+		if(is_null($response['address']['road']) ||
+		   is_null($response['address']['house_number']))
 			throw new GenericRuntimeException(
 				httpCode: 404,
 				message: 'No se pudo determinar la cuadra',
@@ -108,7 +116,14 @@ $estacionarApi->addEndpoint(new Endpoint(
 			);
 		try {
 			$now = new DateTime('now', new DateTimeZone('-03:00'));
-			$id_usuario = checkSession($handlers['sesion'])->id_usuario;
+			$sesion = checkSession($handlers['sesion']);
+			if($sesion === false)
+				throw new GenericRuntimeException(
+					httpCode: 401,
+					message: 'Unauthorized',
+					getResponse: null
+				);
+			$id_usuario = $sesion->id_usuario;
 			$id_est = $esthnd->crearEstacionamiento(
 				new Estacionamiento(
 					null,
@@ -123,6 +138,8 @@ $estacionarApi->addEndpoint(new Endpoint(
 				'success' => true,
 				'id_est' => $id_est
 			]);
+		} catch (GenericRuntimeException $e) {
+			throw $e;
 		} catch (Throwable $e) {
 			($endLog)('error', "Unexpected error.");
 			throw new GenericRuntimeException(

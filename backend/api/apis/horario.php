@@ -29,7 +29,7 @@ $horarioApi->addEndpoint(new Endpoint(
 	method: "POST",
 	parameters: ['numero_hora', 'dia_semana', 'horario'],
 	run: function (array $data, array $handlers, Closure $endLog): void {
-		$horhnd = handlers['horario'];
+		$horhnd = $handlers['horario'];
 		$horario = new Horario(
 			$data["numero_hora"],
 			$data["dia_semana"],
@@ -38,7 +38,7 @@ $horarioApi->addEndpoint(new Endpoint(
 		try {
 			$horhnd->crearHorario($horario);
 			echo(json_encode( [
-			    'success' => true
+				'success' => true
 			]));
 		} catch(Throwable $e) {
 			$message = $e->getMessage();
@@ -57,7 +57,7 @@ $horarioApi->addEndpoint(new Endpoint(
 	method: "GET",
 	parameters: [],
 	run: function (array $data, array $handlers, Closure $endLog): void {
-		$horhnd = handlers['horario'];
+		$horhnd = $handlers['horario'];
 		try {
 			$horarios = $horhnd->obtenerTodos();
 			echo(json_encode( [
@@ -81,11 +81,11 @@ $horarioApi->addEndpoint(new Endpoint(
 	method: "DELETE",
 	parameters: ['numero_hora', 'dia_semana'],
 	run: function (array $data, array $handlers, Closure $endLog): void {
-		$horhnd = handlers['horario'];
+		$horhnd = $handlers['horario'];
 		try {
-			$horhnd->elminarHorario($numero_hora, $dia_semana);
+			$horhnd->eliminarHorario($data["numero_hora"], $data["dia_semana"]);
 			echo(json_encode( [
-			    'success' => true
+				'success' => true
 			]));
 		} catch(Throwable $e) {
 			$message = $e->getMessage();

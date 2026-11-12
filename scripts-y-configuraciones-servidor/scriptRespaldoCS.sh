@@ -41,7 +41,11 @@ if [[ -d "$directorio" ]]; then
 
 	tar -cjvf "$archivoTAR" "$directorio"
 
-	loggear "Respaldo creado: $archivoTAR"
+	if [[ $? == 0 ]]; then
+		loggear "Respaldo creado: $archivoTAR"
+	else
+		loggear "Error al crear el respaldo: $archivoTAR"
+	fi
 
 else
 
@@ -70,7 +74,12 @@ if [[ -d "$directorio" ]]; then
 
 	loggear "Enviando respaldo a $nombreUser@$ip"
 
-	scp "$archivoTAR" $nombreUser@$ip:/home/$nombreUser
+	if [[ -z "$nombreUser" || -z "$ip" ]]; then
+		loggear "Usuario o IP no especificados, no se envía el respaldo"
+		return 1
+	fi
+
+	scp "$archivoTAR" "$nombreUser@$ip:/home/$nombreUser"
 	if [[ $? != 0 ]]; then
 		loggear "Algo paso mal enviando el respaldo"
 	else
@@ -129,7 +138,7 @@ mkdir -p "$carpetaRespaldo"
 
 archivoTAR="$carpetaRespaldo/db_data_$fechaActual.tar.gz"
 
-volumen=$(docker volume ls -q | grep -E 'urbanaut_db_data')
+volumen=$(docker volume ls -q | grep -x 'urbanaut_db_data' | head -n 1)
 
     if [[ -z "$volumen" ]]; then
         loggear "No se encontró el volumen db_data"
@@ -156,12 +165,17 @@ loggear "Iniciando respaldo del volumen $volumen"
     fi
 
 
-    if docker compose start -d; then
+    if docker compose start; then
         loggear "Contenedores iniciados nuevamente"
     else
         loggear "Error al iniciar los contenedores nuevamente"
     fi
 }
+
+if [[ "$1" == "respaldolocal" ]]; then
+	respaldolocal "$2"
+	exit
+fi
 
 while [[ $opcionUser != 5 ]];do
 menuOpciones

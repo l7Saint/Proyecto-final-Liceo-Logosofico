@@ -623,7 +623,7 @@
             let mejor = null;
             let mejorScore = -Infinity;
             for (const r of resultados) {
-              if (r.latitud == null || r.longitud == null) continue;
+              if ((r.latitud ?? null) === null || (r.longitud ?? null) === null) continue;
               const score = (r.puntaje ?? 0) * (r.confianza ?? 0);
               if (score > mejorScore) {
                 mejorScore = score;

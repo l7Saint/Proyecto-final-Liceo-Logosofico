@@ -71,7 +71,7 @@ CREATE TABLE IF NOT EXISTS Estaciona_en (
 	hora_fin TIME,
 	FOREIGN KEY (id_vehiculo) REFERENCES Vehiculo(id),
 	FOREIGN KEY (id_cuadra) REFERENCES Cuadra(id),
-	CHECK (hora_fin IS NULL OR hora_fin > hora_inicio)
+	CHECK (hora_fin IS NULL OR hora_fin >= hora_inicio)
 );
 
 CREATE TABLE IF NOT EXISTS Sesion (
@@ -97,7 +97,6 @@ LOAD DATA INFILE '/var/lib/mysql/conteoFiltrado.csv'
 INTO TABLE conteo_dataset
 FIELDS TERMINATED BY ','
 LINES TERMINATED BY '\n'
-IGNORE 1 ROWS
 (fecha, hora_time, latitud, longitud, vehiculos_hora_carril);
 
 CREATE TABLE IF NOT EXISTS Conteo (
@@ -131,7 +130,7 @@ INTO TABLE Cuadra
 FIELDS TERMINATED BY ','
 LINES TERMINATED BY '\n'
 IGNORE 1 ROWS
-(numero_puerta_inicial,numero_puerta_final,calle,latitud,longitud);
+(numero_puerta_inicial,numero_puerta_final,calle,latitud,longitud,largo_metros);
 
 /* Importar Horarios */
 LOAD DATA INFILE '/var/lib/mysql/horario.csv'

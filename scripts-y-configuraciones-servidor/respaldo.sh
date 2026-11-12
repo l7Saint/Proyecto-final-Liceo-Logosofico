@@ -32,8 +32,20 @@ main(){
 	backupname="${fecha}_${backupname}"
 	loggear "${backupname}"
 
-	loggear $(tar -jcvf "/tmp/${backupname}.tar.bz2" "${dir}")
-	loggear $(rsync -aiv -e "ssh -i ${sshkey}" "/tmp/${backupname}.tar.bz2" ${user}@${host}) 
+	tar_salida=$(tar -jcvf "/tmp/${backupname}.tar.bz2" "${dir}")
+	tar_estado=$?
+	if [[ ${tar_estado} == 0 ]]; then
+		loggear "${tar_salida}"
+	else
+		loggear "Error al crear el respaldo con tar (estado ${tar_estado}): ${tar_salida}"
+	fi
+	rsync_salida=$(rsync -aiv -e "ssh -i ${sshkey}" "/tmp/${backupname}.tar.bz2" ${user}@${host})
+	rsync_estado=$?
+	if [[ ${rsync_estado} == 0 ]]; then
+		loggear "${rsync_salida}"
+	else
+		loggear "Error al enviar el respaldo con rsync (estado ${rsync_estado}): ${rsync_salida}"
+	fi
 }
 
-main $@
+main "$@"

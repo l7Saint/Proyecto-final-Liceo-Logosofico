@@ -97,6 +97,140 @@
 	margin: 0;
 	font-size: 12px;
 }
+.mensaje-error {
+	color: #a3243b;
+	background:
+	rgba(255, 235, 238, 0.85);
+	border:
+	1px solid
+	rgba(199, 62, 90, 0.35);
+	border-radius: 12px;
+	padding: 9px 12px;
+	font-size: 12px;
+	margin-bottom: 13px;
+}
+.ranking-contenedor {
+	background:
+	rgba(255, 255, 255, 0.55);
+	border-radius: 18px;
+	padding: 13px 15px 12px;
+	border:
+	1px solid
+	rgba(255, 255, 255, 0.8);
+	box-shadow:
+	0 7px 18px
+	rgba(0, 40, 70, 0.10);
+	margin-bottom: 13px;
+}
+.ranking-contenedor h2 {
+	color: #123d69;
+	font-size: 18px;
+	margin-bottom: 8px;
+	text-align: center;
+}
+.ranking {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+.ranking li {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+.posicion {
+	flex: 0 0 22px;
+	width: 22px;
+	height: 22px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 50%;
+	background: #238bff;
+	color: white;
+	font-size: 12px;
+	font-weight: 800;
+}
+.datos {
+	flex: 1 1 auto;
+	min-width: 0;
+}
+.calle {
+	color: #123d69;
+	font-size: 13px;
+	font-weight: 700;
+	margin: 0 0 4px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.ultima {
+	color: #7d93a9;
+	font-weight: 500;
+	font-size: 11px;
+}
+.barra {
+	height: 7px;
+	border-radius: 999px;
+	background:
+	rgba(18, 61, 105, 0.12);
+	overflow: hidden;
+}
+.barra-fill {
+	display: block;
+	height: 100%;
+	border-radius: 999px;
+	background:
+	linear-gradient(90deg, #238bff, #4fb2ff);
+}
+.veces {
+	flex: 0 0 auto;
+	color: #123d69;
+	font-size: 16px;
+	font-weight: 800;
+	text-align: right;
+	line-height: 1.1;
+}
+.veces small {
+	display: block;
+	color: #58738e;
+	font-size: 10px;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.4px;
+}
+.empty-state {
+	color: #58738e;
+	font-size: 13px;
+	text-align: center;
+	margin: 0;
+	padding: 8px 4px;
+}
+.empty-state i {
+	display: block;
+	font-size: 26px;
+	color: #238bff;
+	margin-bottom: 4px;
+}
+.empty-state a {
+	color: #238bff;
+	font-weight: 700;
+	text-decoration: none;
+}
+.empty-state a:hover {
+	text-decoration: underline;
+}
+/* `hidden` es un atributo, pero varios de estos contenedores usan
+   display:flex/grid, que lo anula: se fuerza explícitamente. */
+.ranking[hidden],
+.empty-state[hidden],
+.mensaje-error[hidden],
+.grafico-contenedor[hidden] {
+	display: none !important;
+}
 .botones {
 	display: flex;
 	justify-content: center;

@@ -6,7 +6,7 @@ services:
     container_name: urbanaut_frontend
     environment:
       #variables por si el backend esta en otro server
-      BACKEND_HOST: 192.168.21.200 
+      BACKEND_HOST: 127.0.0.1
       BACKEND_PORT: 30000
     ports:
       - "80:80"

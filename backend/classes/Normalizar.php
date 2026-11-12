@@ -23,6 +23,8 @@ class Normalizar {
 		return $x/$k;}
 	public static function mediana(array $valores) : float {
 		$cantidad = count($valores);
+		if($cantidad === 0)
+			throw new InvalidArgumentException('El arreglo no puede estar vacio');
 		sort($valores, SORT_NUMERIC);
 		$indice_medio = intdiv($cantidad, 2);
 		return ($cantidad % 2 === 1)
@@ -43,11 +45,13 @@ class Normalizar {
 		return (float) ($valores[$lo] + $frac * ($valores[$hi] - $valores[$lo]));
 
 	}
-	public static function obtenerPercentil(array $valores, float $valor){
+	public static function obtenerPercentil(array $valores, float $valor): float{
 		$cantidad = count($valores);
+		if($cantidad === 0)
+			throw new InvalidArgumentException('El arreglo no puede estar vacio');
 		sort($valores, SORT_NUMERIC);
 		for($i = 0; $i < $cantidad; $i++){
-			if($valores[$i] === $valor)
+			if((float) $valores[$i] === $valor)
 				break;
 		}
 		if($i === $cantidad && $valor !== $valores[$cantidad-1])

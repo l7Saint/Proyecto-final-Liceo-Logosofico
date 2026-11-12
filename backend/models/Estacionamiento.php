@@ -7,6 +7,6 @@ class Estacionamiento {
 		public ?int $id_cuadra,
 		public ?string $fecha,
 		public ?string $hora_inicio,
-		public ?float $hora_fin,
+		public ?string $hora_fin,
 	) {}
 }

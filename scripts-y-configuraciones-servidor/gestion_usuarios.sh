@@ -72,7 +72,7 @@ imprimirLista(){
 existe(){
 	archivo="${1}"
 	nombre="${2}"
-	cat "${archivo}" | grep -qe "^${nombre}"
+	grep -qe "^${nombre}:" "${archivo}"
 	return $?
 }
 
@@ -100,9 +100,9 @@ ingresarSiNo(){
 
 ejecutarComando(){
 	cmd="${1}"
-	if ! error=$(${cmd} 2>&1); then
+	if error=$(${cmd} 2>&1); estadoComando=$?; [[ ${estadoComando} -ne 0 ]]; then
 		echo "Hubo un error inesperado ejecutando el comando. No se realizo ninguna accion." 
-		echo "Codigo de error del comando: $?"
+		echo "Codigo de error del comando: ${estadoComando}"
 		echo "Mensaje de error de comando: ${error}"
 		echo "Comando ejecutado:"
 		echo "${cmd}"
@@ -174,13 +174,13 @@ useraddEjecutar() {
 	cmd+="--shell ${e_terminalUsuario} "
 	cmd+="${e_argumentogrupoPrincipalUsuario}"
 	cmd+="${e_argumentogruposSecundariosUsuario}"
-	cmd+="${e_fechaExpiracionUsuario}"
+	cmd+="${e_argumentofechaExpiracionUsuario}"
 	cmd+="${e_argumentocontrasenaUsuario}"
 	cmd+="${e_nombreUsuario}"
 
-	if ! error=$(${cmd} 2>&1); then
+	if error=$(${cmd} 2>&1); estadoComando=$?; [[ ${estadoComando} -ne 0 ]]; then
 		echo "Hubo un error inesperado creando el usuario. No se creo ningun usuario." 
-		echo "Codigo de error de useradd: $?"
+		echo "Codigo de error de useradd: ${estadoComando}"
 		echo "Mensaje de error de useradd: ${error}"
 		echo "Comando ejecutado:"
 		echo "${cmd}"
@@ -217,7 +217,9 @@ anadirUsuario(){
 	ingresarInput 'grupo principal del usuario' 'confirmar' "${nombreUsuario}"
 	grupoPrincipalUsuario="${returnv}"
 	if [[ "${grupoPrincipalUsuario}" != "${nombreUsuario}" ]]; then
-		argumentogrupoPrincipalUsuario="--gid ${grupoPrincipalUsuario}"
+		argumentogrupoPrincipalUsuario="--gid ${grupoPrincipalUsuario} "
+	else
+		unset argumentogrupoPrincipalUsuario
 	fi
 
 	ingresarInput 'grupos secundarios del usuario' 'confirmar' 'VACIO'
@@ -277,11 +279,10 @@ modificarUsuario(){
 				ingresarInput 'grupos secundarios a añadir (formato: grupo1,grupo2,grupo3)' 'confirmar' 'obligatorio'
 				ejecutarComando "usermod --append --groups ${returnv} ${nombreUsuario}";;
 			6)
-				ingresarinput 'nuevo grupo principal' 'confirmar' 'obligatorio'
-				ejecutarcomando "usermod --gid ${returnv} ${nombreUsuario}";;
+				ingresarInput 'nuevo grupo principal' 'confirmar' 'obligatorio'
+				ejecutarComando "usermod --gid ${returnv} ${nombreUsuario}";;
 			7)
-				ingresarSiNo "Esta SEGURO de BLOQUEAR al usuario ${nombreUsuario}? (Se puede revertir)"
-				if ! $?; then
+				if ingresarSiNo "Esta SEGURO de BLOQUEAR al usuario ${nombreUsuario}? (Se puede revertir)"; then
 					ejecutarComando "usermod --lock ${nombreUsuario}"
 				else
 					echo "No se hizo ningun cambio."
@@ -289,8 +290,7 @@ modificarUsuario(){
 					read
 				fi;;
 			8)
-				ingresarSiNo "Esta SEGURO de DESBLOQUEAR al usuario ${nombreUsuario}? (Se puede revertir)"
-				if ! $?; then
+				if ingresarSiNo "Esta SEGURO de DESBLOQUEAR al usuario ${nombreUsuario}? (Se puede revertir)"; then
 					ejecutarComando "usermod --unlock ${nombreUsuario}"
 				else
 					echo "No se hizo ningun cambio."
@@ -308,7 +308,7 @@ eliminarUsuario(){
 	ingresarInput 'usuario a ELIMINAR' 'confirmar' 'obligatorio'
 	nombreUsuario="${returnv}"
 
-	if $(ingresarSiNo "Esta completamente seguro de eliminar al usuario ${nombreUsuario}?"); then
+	if ingresarSiNo "Esta completamente seguro de eliminar al usuario ${nombreUsuario}?"; then
 		ejecutarComando "userdel ${nombreUsuario}"	
 	else
 		echo "No se hizo ningun cambio."
@@ -345,9 +345,9 @@ groupaddEjecutar(){
 	cmd+="${e_argumentousuarioInicialesGrupo} "
 	cmd+="${e_nombreGrupo}"
 
-	if ! error=$(${cmd} 2>&1); then
+	if error=$(${cmd} 2>&1); estadoComando=$?; [[ ${estadoComando} -ne 0 ]]; then
 		echo "Hubo un error inesperado creando el grupo. No se creo ningun grupo." 
-		echo "Codigo de error de groupadd: $?"
+		echo "Codigo de error de groupadd: ${estadoComando}"
 		echo "Mensaje de error de groupadd: ${error}"
 		echo "Comando ejecutado:"
 		echo "${cmd}"
@@ -388,9 +388,9 @@ anadirGrupo(){
 eliminarGrupo(){
 	ingresarInput 'gid/nombre del grupo a eliminar' 'confirmar' 'obligatorio'
 	cmd="groupdel ${returnv}"
-	if ! error=$(${cmd} 2>&1); then
+	if error=$(${cmd} 2>&1); estadoComando=$?; [[ ${estadoComando} -ne 0 ]]; then
 		echo "Hubo un error inesperado eliminando el grupo. No se elimino ningun grupo." 
-		echo "Codigo de error de groupdel: $?"
+		echo "Codigo de error de groupdel: ${estadoComando}"
 		echo "Mensaje de error de groupdel: ${error}"
 		echo "Comando ejecutado:"
 		echo "${cmd}"

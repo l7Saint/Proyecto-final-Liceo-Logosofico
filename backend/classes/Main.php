@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../functions.php';
 require_once __DIR__ . '/Api.php';
 class BadMainException extends LogicException {}
 class Main {
@@ -26,15 +27,13 @@ class Main {
 			$data = [];
 		$apiName = $request[0] ?? '';
 		try {
-			$responseBody = $api->runEndpoint($endpName, $method, $data);
-			echo json_encode($responseBody);
+			$api->runEndpoint($endpName, $method, $data);
 			#elog('debug', "Successful main");
 		} catch (GenericRuntimeException $e) {
 			#elog('debug', "GenericRuntimeException: " . $e->getMessage());
 			http_response_code($e->httpCode);
 			if($e->getResponse !== null)
-				$responseBody = ($e->getResponse)();
-			echo json_encode($responseBody);
+				echo json_encode(($e->getResponse)());
 			return;
 		} catch (InvalidEndpointException $e) {
 			http_response_code(404);
@@ -60,10 +59,7 @@ class Main {
 			return;
 		} catch (Throwable $e) {
 			http_response_code(500);
-			$msg = $e->getMessage();
-			$line = $e->getLine();
-			$file = $e->getFile();
-			elog('error', "In {$file}:{$line} | Error: {$msg}");
+			logException($e, 'main');
 			return;
 		}
 	}

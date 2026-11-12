@@ -66,19 +66,13 @@ class Api {
 		} catch (GenericRuntimeException $e) {
 			//500 error code es irrecuperable
 			if($e->httpCode === 500){
-				$msg = $e->getMessage();
-				$file = $e->getFile();
-				$line = $e->getLine();
-				elog('error', "Error en api.{$this->name}.{$endp->name}: {$msg} \nIn {$file}:{$line}");
+				logException($e, "api.{$this->name}.{$endp->name}");
 				http_response_code($e->httpCode);
 			} else {
 				throw $e;
 			}
 		} catch (Throwable $e) {
-			$msg  = $e->getMessage();
-			$file = $e->getFile();
-			$line = $e->getLine();
-			elog('error', "Error en api.{$this->name}.{$endp->name}: {$msg} \nIn {$file}:{$line}");
+			logException($e, "api.{$this->name}.{$endp->name}");
 			http_response_code(500);
 		}
 	}
