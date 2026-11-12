@@ -130,7 +130,7 @@ $adminApi->addEndpoint(new Endpoint(
 
 			if(isset($data['email']) && $data['email'] !== $usuario->email){
 				$existingUser = $usrhnd->obtenerPorEmail($data['email']);
-				if($existingUser !== false && $existingUser->id != $data['id']){
+				if($existingUser !== false && (int)$existingUser->id !== (int)$data['id']){
 					throw new GenericRuntimeException(
 						httpCode: 409,
 						message: "Email already registered.",

@@ -20,7 +20,7 @@ class PredictorEstacionamiento {
 		$reporte = $this->normalizar_reporteCuadra($id_cuadra, $hora, $dia_semana);
 		$cuadra = $this->normalizar_estacionarCuadra($id_cuadra);
 
-		if($cuadra[1] == 0) { //si la confianza de la cuadra es 0
+		if((float)$cuadra[1] === 0.0) { //si la confianza de la cuadra es 0
 			$PESO_CONTEO = 1/2;
 			$PESO_REPORTE = 1/2;
 			$PESO_CUADRA = 0;
@@ -145,7 +145,7 @@ class PredictorEstacionamiento {
 		$ratio_cuadra = $this->stmt_obtenerEstacionarCuadraId->fetch(PDO::FETCH_ASSOC)['ratio'];
 		$cant_estacionamientos = $this->stmt_obtenerEstacionarCuadraCantidad->fetch(PDO::FETCH_ASSOC)['cantidad'] ?? 0;
 
-		if($cant_estacionamientos == 0)
+		if((int)$cant_estacionamientos === 0)
 			return [0, 0];
 
 		$datos = [];

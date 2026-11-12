@@ -224,7 +224,7 @@ $url     = 'http://' . $backend . ':' . $port;
       // Keep the legacy key in sync so the rest of the app finds the session.
       mirrorLegacyToken(data.token);
 
-      if (data.usuario && data.usuario.es_admin == 1) {
+      if (data.usuario && data.usuario.es_admin === 1) {
         window.location.href = '../administrador/';
       }
       // Non-admin flow: preserves current behavior (no redirect). Add one here
