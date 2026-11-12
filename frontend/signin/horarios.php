@@ -95,51 +95,6 @@ $url     = 'http://' . $backend . ':' . $port;
 				<div id="contenedormiercoles" class="contenedor-dia"></div>
 				<div id="contenedorjueves" class="contenedor-dia"></div>
 				<div id="contenedorviernes" class="contenedor-dia"></div>
-				<!-- EVENTO ESPECIAL -->
-				<div class="evento-especial">
-					<div
-						class="evento-cabecera"
-						onclick="mostrarInfoEvento()">
-						<div class="evento-icono">
-							<i class="bi bi-star-fill"></i>
-						</div>
-						<div class="evento-texto">
-							<span class="evento-titulo">
-								Evento especial
-							</span>
-							<span class="evento-descripcion-corta">
-								Eventos extracurriculares del liceo
-							</span>
-						</div>
-						<label
-							class="switch"
-							onclick="event.stopPropagation()">
-							<input
-								type="checkbox"
-								id="eventoEspecial">
-							<span class="slider"></span>
-						</label>
-					</div>
-					<div id="infoEvento" class="evento-info">
-						<strong>
-							¿Qué significa?
-						</strong>
-						<br>
-						Esta opción indica que formás parte de
-						los <strong>eventos extracurriculares
-						del liceo</strong> que se realizan
-						los sábados.
-						<br><br>
-						Si seleccionás esta opción, Urbanaut
-						registrará que participás de estos
-						eventos.
-						<br><br>
-						Cuando el administrador lo decida,
-						podrá habilitar la información de los
-						<strong>sábados en las estadísticas</strong>
-						de Urbanaut.
-					</div>
-				</div>
 				<!-- MENSAJE -->
 				<p class="mensaje-horarios">
 					<i class="bi bi-info-circle"></i>
@@ -226,12 +181,6 @@ $url     = 'http://' . $backend . ':' . $port;
 			}
 			return cargaHorarios;
 		}
-
-		function mostrarInfoEvento() {
-			const info = document.getElementById('infoEvento');
-			info.classList.toggle('mostrar');
-		}
-		window.mostrarInfoEvento = mostrarInfoEvento;
 
 		function generarLiHorarioHora(dia, registro) {
 			const inputId = `${dia}${registro.numero_hora}`;
