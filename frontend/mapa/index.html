@@ -529,6 +529,7 @@
             }
 
           } else {
+		  try{
             obtenerUbicacion();
             estadoGPS.textContent = "Buscando tu ubicación...";
 
@@ -574,7 +575,7 @@
             console.error("Error en probabilidad:", err);
             estadoGPS.textContent =
               "No se pudo calcular el mejor lugar. Intentá de nuevo.";
-          }
+	  }}
         });
 
       /* OCUPAR ESPACIO */
