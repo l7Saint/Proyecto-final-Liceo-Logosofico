@@ -7,7 +7,7 @@ body {
 	min-height: 100vh;
 	overflow: hidden;
 	font-family: "Segoe UI", Arial, sans-serif;
-	background: url("../imagenes/imagen2.jpg") center center / cover
+	background: url("../img/imagen2.jpg") center center / cover
 	no-repeat fixed;
 	display: flex;
 	align-items: center;
@@ -35,10 +35,10 @@ body::before {
 	padding: 15px;
 }
 .card-urbanaut {
-	width: 560px;
+	width: 500px;
 	max-width: 100%;
-	max-height: calc(100vh - 30px);
-	padding: 18px 50px 15px;
+	max-height: 95vh;
+	padding: 25px 40px;
 	border-radius: 30px;
 	background: linear-gradient(
 		135deg,
@@ -53,7 +53,8 @@ body::before {
 	backdrop-filter: blur(22px);
 	-webkit-backdrop-filter: blur(22px);
 	animation: aparecer 0.8s ease;
-	overflow: hidden;
+	overflow-y: auto;
+	gap: 20px;
 }
 @keyframes aparecer {
 	from {
@@ -90,5 +91,9 @@ h1 {
 	text-align: center;
 	color: #58738e;
 	font-size: 15px;
-	margin-bottom: 13px;
+	margin-top: 20px;    
+	margin-bottom: 30px;
+	max-width: 320px;
+	margin-left: auto;
+	margin-right: auto;
 }

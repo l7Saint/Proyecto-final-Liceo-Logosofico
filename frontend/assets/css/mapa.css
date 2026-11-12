@@ -2,12 +2,53 @@
 	width: 100%;
 	height: 58vh;
 	min-height: 350px;
-	border:
-	5px solid
-	#1b3237;
+	border: 2px solid rgba(255, 255, 255, 0.8);
 	border-radius: 18px;
 	overflow: hidden;
+	box-shadow: 0 10px 30px rgba(0, 40, 70, 0.15);
 }
+.titulo {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 12px; 
+    margin-bottom: 15px;
+}
+.titulo i {
+    color: #238bff; 
+    font-size: 38px;
+    filter: drop-shadow(0 4px 6px rgba(35, 139, 255, 0.2));
+}
+
+.titulo h1 {
+    color: #123d69 !important; 
+    font-size: 38px !important;
+    font-weight: 750 !important;
+    text-align: center !important;
+    letter-spacing: -1.5px !important;
+    margin-bottom: 0 !important;
+}
+p.subtitulo {
+    color: #58738e !important; 
+    font-size: 15px !important;
+    text-align: center !important;
+    line-height: 1.5 !important;
+    margin-bottom: 15px !important;
+}
+p#estadoGPS {
+    color: #58738e !important; 
+    background: rgba(255, 255, 255, 0.6) !important; 
+    border: 1px solid rgba(35, 139, 255, 0.2) !important;
+    padding: 12px 15px !important;
+    border-radius: 12px !important;
+    font-size: 14px !important;
+    text-align: center !important;
+    margin-bottom: 20px !important;
+    font-weight: 600 !important;
+    display: block !important;
+}
+
 /* BOTONES */
 .botones-mapa {
 	display: flex;
@@ -23,52 +64,59 @@
 	align-items: center;
 	justify-content: center;
 	gap: 7px;
-	padding: 10px 16px;
-	border-radius: 12px;
-	color: white;
+	padding: 12px 20px;
+	border-radius: 14px;
 	text-decoration: none;
-	font-size: 13px;
+	font-size: 15px;
 	font-weight: 700;
 	border: none;
 	cursor: pointer;
 	transition: 0.25s;
 }
 .volver {
-	background: #1b3237;
+	background: rgba(255, 255, 255, 0.6);
+	color: #1879c9;
+	border: 1px solid rgba(35, 139, 255, 0.25);
 }
 .volver:hover {
 	background: #238bff;
 	color: white;
 	transform: translateY(-2px);
 }
+.btn-mapa{
+	color: white;
+	box-shadow: 0 5px 15px rgba(30, 145, 220, 0.2);
+
+}
 .btn-mapa:hover {
 	transform: translateY(-2px);
 	color: white;
+	box-shadow: 0 8px 20px rgba(30, 145, 220, 0.3);
 }
 /* LIBERAR */
 .liberar {
-	background: #198754;
+	 background: linear-gradient(100deg, #198754, #20c997);
 }
 .liberar:hover {
 	background: #146c43;
 }
 /* OCUPAR */
 .ocupar {
-	background: #dc3545;
+	background: linear-gradient(100deg, #dc3545, #f76b7b);
 }
 .ocupar:hover {
 	background: #b02a37;
 }
 /* BUSCAR ESPACIO */
 .buscar {
-	background: #238bff;
+	background: linear-gradient(100deg, #238bff, #19b7c9);
 }
 .buscar:hover {
 	background: #0866c6;
 }
 /* ESTACIONAMIENTO PRIVADO */
 .privado {
-	background: #7657d9;
+	background: linear-gradient(100deg, #7657d9, #9d85f2);
 }
 .privado:hover {
 	background: #5a3db5;

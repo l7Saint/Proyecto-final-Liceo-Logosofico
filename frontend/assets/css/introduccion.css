@@ -1,9 +1,59 @@
+
+.card-urbanaut {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        gap: 0 !important;
+        padding: 0 !important;
+        width: min(95%, 950px) !important;
+        max-height: none !important;
+}
+
+
+.bienvenida {
+        display: flex !important;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start !important;
+        padding: 50px 40px !important;
+        text-align: left !important;
+}
+
+
+.bienvenida .logo {
+        justify-content: flex-start !important;
+        margin-bottom: 20px !important;
+}
+
+.bienvenida h1 {
+        text-align: left !important;
+        font-size: 42px !important;
+        margin-bottom: 15px !important;
+}
+
+.bienvenida .subtitulo {
+        text-align: left !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        max-width: 100% !important;
+        margin-top: 0 !important;
+        margin-bottom: 40px !important;
+}
+
+
+.visual {
+        min-height: 100% !important;
+        padding: 40px !important;
+        background: transparent !important;
+}
+
 .botones {
 	display: flex;
 	flex-direction: column;
 	gap: 12px;
 	width: 100%;
 	max-width: 340px;
+	margin-top: 0 !important;
+	align-self: flex-start;
 }
 .btn-empezar {
 	width: 100%;
@@ -53,14 +103,13 @@
 	color: #123d69;
 	transform: translateY(-2px);
 }
-PARTE DERECHA
 .visual {
 	position: relative;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	min-height: 520px;
-	padding: 40px;
+	min-height: 420px;
+	padding: 20px;
 	background: linear-gradient(
 	160deg,
 	rgba(35, 139, 255, 0.1),
@@ -129,14 +178,13 @@ PARTE DERECHA
 	color: #718aa0;
 }
 .card-ubicacion {
-	top: 65px;
+	top: 20px;
 	right: 20px;
 }
 .card-rapido {
-	bottom: 65px;
+	bottom: 20px;
 	left: 20px;
 }
-TABLET Y CELULAR
 @media (max-width: 750px) {
 	body {
 		background-attachment: scroll;
@@ -182,12 +230,16 @@ TABLET Y CELULAR
 		font-size: 60px;
 	}
 	.card-ubicacion {
-		top: 30px;
-		right: 20px;
+		top: 10px;
+		right: 10px;
+		transform: scale(0.85);
+		transform-origin: top right;
 	}
 	.card-rapido {
-		bottom: 30px;
-		left: 20px;
+		bottom: 10px;
+		left: 10px;
+		transform: scale(0.85);
+		transform-origin: bottom left;
 	}
 }
 @media (max-width: 430px) {

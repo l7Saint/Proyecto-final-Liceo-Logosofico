@@ -40,6 +40,7 @@ $backendHost = rtrim(getenv('BACKEND_HOST') ?: '', '/');
 $backendPort = getenv('BACKEND_PORT') ?: '';
 $urbanautUrl = 'http://' . $backendHost . ':' . $backendPort . '/api';
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -58,7 +59,7 @@ $urbanautUrl = 'http://' . $backendHost . ':' . $backendPort . '/api';
 		<img src="../imagenes/logoNuevo2.png" alt="Logo Urbanaut">
 	</div>
 	<div class="titulo">
-		<i class="bi bi-car-front-fill"></i>
+		
 		<h1>
 			Tus Autos
 		</h1>
