@@ -197,46 +197,46 @@ $usuarioApi->addEndpoint(new Endpoint(
 ));
 
 $usuarioApi->addEndpoint(new Endpoint(
-    name: "modificar",
-    method: "PUT",
-    parameters: ['nombre', 'email', 'apellido'],
-    run: function (array $data, array $handlers, Closure $endLog): void {
-        $usuariohnd = $handlers['usuario'];
-        $sesion = checkSession($handlers['sesion']);
-        
-        if ($sesion === false) {
-            throw new GenericRuntimeException(
-                httpCode: 401,
-                message: "Unauthorized",
-                getResponse: null
-            );
-        }
+	name: "modificar",
+	method: "PUT",
+	parameters: ['nombre', 'email', 'apellido'],
+	run: function (array $data, array $handlers, Closure $endLog): void {
+		$usuariohnd = $handlers['usuario'];
+		$sesion = checkSession($handlers['sesion']);
+		
+		if ($sesion === false) {
+			throw new GenericRuntimeException(
+				httpCode: 401,
+				message: "Unauthorized",
+				getResponse: null
+			);
+		}
 
-        $id = (int) $sesion->id_usuario;
-        
-        try {
-            $u = $usuariohnd->obtenerPorId($id);
-            if (!$u) throw new Exception("Usuario no encontrado");
+		$id = (int) $sesion->id_usuario;
+		
+		try {
+			$u = $usuariohnd->obtenerPorId($id);
+			if (!$u) throw new Exception("Usuario no encontrado");
 
-            $u->nombre = $data['nombre'];
-            $u->apellido = $data['apellido'];
-            $u->email = $data['email'];
+			$u->nombre = $data['nombre'];
+			$u->apellido = $data['apellido'];
+			$u->email = $data['email'];
 
-            $ok = $usuariohnd->modificarUsuario($id, $u);
-            
-            if ($ok) {
-                echo json_encode(['success' => true]);
-            } else {
-                throw new Exception("No se pudo modificar");
-            }
-        } catch (Throwable $e) {
-            throw new GenericRuntimeException(
-                httpCode: 500,
-                message: $e->getMessage(),
-                getResponse: null
-            );
-        }
-    }
+			$ok = $usuariohnd->modificarUsuario($id, $u);
+			
+			if ($ok) {
+				echo json_encode(['success' => true]);
+			} else {
+				throw new Exception("No se pudo modificar");
+			}
+		} catch (Throwable $e) {
+			throw new GenericRuntimeException(
+				httpCode: 500,
+				message: $e->getMessage(),
+				getResponse: null
+			);
+		}
+	}
 ));
 
 //elog('debug', "Before addApi");

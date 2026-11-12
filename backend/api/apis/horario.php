@@ -38,7 +38,7 @@ $horarioApi->addEndpoint(new Endpoint(
 		try {
 			$horhnd->crearHorario($horario);
 			echo(json_encode( [
-			    'success' => true
+				'success' => true
 			]));
 		} catch(Throwable $e) {
 			$message = $e->getMessage();
@@ -85,7 +85,7 @@ $horarioApi->addEndpoint(new Endpoint(
 		try {
 			$horhnd->eliminarHorario($data["numero_hora"], $data["dia_semana"]);
 			echo(json_encode( [
-			    'success' => true
+				'success' => true
 			]));
 		} catch(Throwable $e) {
 			$message = $e->getMessage();
