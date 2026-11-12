@@ -162,107 +162,110 @@ $url     = 'http://' . $backend . ':' . $port;
 		elsewhere in your deployment, adjust the import URL below.
 -->
 <script type="module">
-	import UrbanautClient from '/urbanaut-js-client/src/urbanaut.js';
+import UrbanautClient from '/assets/js/urbanaut-js-client/src/urbanaut.js';
 
-	// Backend origin injected from PHP env vars (no trailing slash).
-	const BACKEND_URL = <?= json_encode($url) ?>;
+// Backend origin injected from PHP env vars (no trailing slash).
+const BACKEND_URL = <?= json_encode($url) ?>;
 
-	// The JS client stores the token under `urbanaut.token`; the rest of the app
-	// (admin panel, map) reads `urbanaut_token`. Mirror on every login so both
-	// keys stay in sync and the other pages keep working unchanged.
-	const LEGACY_TOKEN_KEY = 'urbanaut_token';
+// The JS client stores the token under `urbanaut.token`; the rest of the app
+// (admin panel, map) reads `urbanaut_token`. Mirror on every login so both
+// keys stay in sync and the other pages keep working unchanged.
+const LEGACY_TOKEN_KEY = 'urbanaut_token';
 
-	const api = new UrbanautClient({ baseUrl: BACKEND_URL + '/api' });
+const api = new UrbanautClient({ baseUrl: BACKEND_URL + '/api' });
 
-	function mirrorLegacyToken(token) {
-		if (token) localStorage.setItem(LEGACY_TOKEN_KEY, token);
-		else       localStorage.removeItem(LEGACY_TOKEN_KEY);
+function mirrorLegacyToken(token) {
+	if (token) localStorage.setItem(LEGACY_TOKEN_KEY, token);
+	else       localStorage.removeItem(LEGACY_TOKEN_KEY);
+}
+
+// If the user already has a session (either key), keep the legacy one in sync.
+if (api.isAuthenticated) mirrorLegacyToken(api.token);
+
+function obtenerDatos() {
+	const email      = document.getElementById("email").value.trim();
+	const contrasena = document.getElementById("password").value;
+	return { email, contrasena };
+}
+
+function validarDatos() {
+	const datos = obtenerDatos();
+
+	if (datos.email === "" || datos.contrasena === "") {
+		alert("Por favor, completá el correo electrónico y la contraseña.");
+		return null;
 	}
 
-	// If the user already has a session (either key), keep the legacy one in sync.
-	if (api.isAuthenticated) mirrorLegacyToken(api.token);
-
-	function obtenerDatos() {
-		const email      = document.getElementById("email").value.trim();
-		const contrasena = document.getElementById("password").value;
-		return { email, contrasena };
+	const formatoEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+	if (!formatoEmail.test(datos.email)) {
+		alert("Ingresá un correo electrónico válido.");
+		return null;
 	}
 
-	function validarDatos() {
-		const datos = obtenerDatos();
+	return datos;
+}
 
-		if (datos.email === "" || datos.contrasena === "") {
-			alert("Por favor, completá el correo electrónico y la contraseña.");
-			return null;
+async function iniciarSesion(event) {
+	if (event) event.preventDefault();
+
+	const datos = validarDatos();
+	if (!datos) return;
+
+	try {
+		// POST /api/usuario/login — the client persists token + user for us.
+		const data = await api.usuario.login(datos);
+
+		if (!data || !data.token) {
+			console.error("Login OK pero no vino token en la respuesta.", data);
+			alert("Error de sesión: el servidor no devolvió un token.");
+			return;
 		}
 
-		const formatoEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-		if (!formatoEmail.test(datos.email)) {
-			alert("Ingresá un correo electrónico válido.");
-			return null;
+		// Keep the legacy key in sync so the rest of the app finds the session.
+		mirrorLegacyToken(data.token);
+
+		// Admins go to the panel, regular users go to the actions menu. Both
+		// branches must navigate away: without it a successful login leaves the
+		// user on this page with no feedback, so the button looks dead.
+		if (data.usuario && data.usuario.es_admin === 1) {
+			window.location.href = '../administrador/';
+		} else {
+			window.location.href = '../inicio/index.html';
 		}
 
-		return datos;
-	}
+	} catch (err) {
+		console.error("Error al iniciar sesión:", err);
 
-	async function iniciarSesion(event) {
-		if (event) event.preventDefault();
+		if (err?.name === 'ValidationError') {
+			alert("Faltan datos o hay datos incorrectos.");
+			return;
+		}
 
-		const datos = validarDatos();
-		if (!datos) return;
+		if (err?.name === 'NetworkError') {
+			alert("No se pudo conectar con el servidor.");
+			return;
+		}
 
-		try {
-			// POST /api/usuario/login — the client persists token + user for us.
-			const data = await api.usuario.login(datos);
-
-			if (!data || !data.token) {
-				console.error("Login OK pero no vino token en la respuesta.", data);
-				alert("Error de sesión: el servidor no devolvió un token.");
-				return;
-			}
-
-			// Keep the legacy key in sync so the rest of the app finds the session.
-			mirrorLegacyToken(data.token);
-
-			if (data.usuario && data.usuario.es_admin === 1) {
-				window.location.href = '../administrador/';
-			}
-			// Non-admin flow: preserves current behavior (no redirect). Add one here
-			// (e.g. `else window.location.href = '../inicio/';`) if needed.
-
-		} catch (err) {
-			console.error("Error al iniciar sesión:", err);
-
-			if (err?.name === 'ValidationError') {
-				alert("Faltan datos o hay datos incorrectos.");
-				return;
-			}
-
-			if (err?.name === 'NetworkError') {
-				alert("No se pudo conectar con el servidor.");
-				return;
-			}
-
-			// HttpError
-			switch (err?.status) {
-				case 400:
-					alert("Faltan datos o hay datos incorrectos.");
-					break;
-				case 401:
-					alert("Email o contraseña incorrectos.");
-					break;
-				case 500:
-					alert("Error interno del servidor.");
-					break;
-				default:
-					alert("Ocurrió un error inesperado.");
-			}
+		// HttpError
+		switch (err?.status) {
+		case 400:
+			alert("Faltan datos o hay datos incorrectos.");
+			break;
+		case 401:
+			alert("Email o contraseña incorrectos.");
+			break;
+		case 500:
+			alert("Error interno del servidor.");
+			break;
+		default:
+			alert("Ocurrió un error inesperado.");
 		}
 	}
+}
 
-	document
-		.getElementById("formLogin")
-		.addEventListener("submit", iniciarSesion);
+document
+.getElementById("formLogin")
+.addEventListener("submit", iniciarSesion);
 </script>
 </body>
 </html>
