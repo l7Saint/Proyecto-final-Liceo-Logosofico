@@ -20,7 +20,7 @@ class PredictorEstacionamiento {
 		$reporte = $this->normalizar_reporteCuadra($id_cuadra, $hora, $dia_semana);
 		$cuadra = $this->normalizar_estacionarCuadra($id_cuadra);
 
-		if($cuadra[1] == 0) { //si la confianza de la cuadra es 0
+		if((float)$cuadra[1] === 0.0) { //si la confianza de la cuadra es 0
 			$PESO_CONTEO = 1/2;
 			$PESO_REPORTE = 1/2;
 			$PESO_CUADRA = 0;
@@ -57,7 +57,7 @@ class PredictorEstacionamiento {
 		while($fetch = $this->stmt_obtenerConteoCuadra->fetch(PDO::FETCH_ASSOC))
 			$datos[] = $fetch;
 
-		$normalizado = ['distancia' => [],'muestras' => [],'vehiculos' => []];
+		$normalizado = ['distancia' => [],'muestras' => [],'trafico' => []];
 		for($i = 0; $i < sizeof($datos); $i++){
 			$normalizado['distancia'][$i] = Normalizar::exponente_dNegativo(
 				x: $datos[$i]['distancia'],
@@ -99,7 +99,7 @@ class PredictorEstacionamiento {
 		$this->stmt_obtenerReporteCuadraHora->execute([
 			$hora,$id_cuadra]);
 		$this->stmt_obtenerReporteCuadraAhora->execute([
-			$hora,$dia_semana,$id_cuadra]);
+			$dia_semana,$hora,$id_cuadra]);
 		$datos = [];
 		$datos['dia'] = $this->stmt_obtenerReporteCuadraDia->fetch(PDO::FETCH_ASSOC);
 		$datos['hora'] = $this->stmt_obtenerReporteCuadraHora->fetch(PDO::FETCH_ASSOC);
@@ -143,9 +143,9 @@ class PredictorEstacionamiento {
 		$this->stmt_obtenerEstacionarCuadraId->execute([$id_cuadra]);
 		$this->stmt_obtenerEstacionarCuadraCantidad->execute();
 		$ratio_cuadra = $this->stmt_obtenerEstacionarCuadraId->fetch(PDO::FETCH_ASSOC)['ratio'];
-		$cant_estacionamientos = $this->stmt_obtenerEstacionarCuadraId->fetch(PDO::FETCH_ASSOC)['cantidad'];
+		$cant_estacionamientos = $this->stmt_obtenerEstacionarCuadraCantidad->fetch(PDO::FETCH_ASSOC)['cantidad'] ?? 0;
 
-		if($cant_estacionamientos == 0)
+		if((int)$cant_estacionamientos === 0)
 			return [0, 0];
 
 		$datos = [];
@@ -174,9 +174,6 @@ class PredictorEstacionamiento {
 	public function __construct (
 		private PDO $db,
 	){
-		if (!$db instanceof PDO) {
-			throw new InvalidArgumentException("Instancia invalida de PDO.");
-		}
 		try {
 			$this->stmt_obtenerConteoCuadra = $this->db->prepare('
 				SELECT 

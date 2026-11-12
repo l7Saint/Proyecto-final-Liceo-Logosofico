@@ -19,7 +19,7 @@ class HorarioHandler {
 	 * @return Horario[] Un arreglo de objetos Horario
 	 * @throws Exception Si ocurre un error en la base de datos
 	 */
-	public function obtenerTodos(){
+	public function obtenerTodos(): array{
 		try {
 			$this->stmt_obtenerTodos->execute();
 			$rows = $this->stmt_obtenerTodos->fetchAll(PDO::FETCH_ASSOC);
@@ -35,16 +35,18 @@ class HorarioHandler {
 	}
 
 	/**
-	 * Obtiene un horario por su numero_hora
+	 * Obtiene un horario por su numero_hora y dia_semana
 	 *
 	 * @param int $numero_hora El numero_hora del horario a buscar
+	 * @param int $dia_semana El dia_semana del horario a buscar
 	 * @return Horario|false Retorna un objeto Horario si se encuentra, false si no
 	 * @throws Exception Si ocurre un error en la base de datos
 	 */
-	public function obtenerPorNumeroHora($numero_hora){
+	public function obtenerPorNumeroHora(int $numero_hora, string $dia_semana): Horario|false{
 		try {
 			$this->stmt_obtenerPorNumeroHora->execute([
-				$numero_hora
+				$numero_hora,
+				$dia_semana
 			]);
 			$fetch = $this->stmt_obtenerPorNumeroHora->fetch(PDO::FETCH_ASSOC);
 			return ($fetch === false) ? false : $this->fetchToHorario($fetch);
@@ -61,7 +63,7 @@ class HorarioHandler {
 	 * @return int|false Retorna el numero_hora del horario creado, false en caso de fallo
 	 * @throws Exception Si ocurre un error en la base de datos
 	 */
-	public function crearHorario($horario){
+	public function crearHorario(Horario $horario): int|false{
 		try {
 			$success = $this->stmt_crearHorario->execute([
 				$horario->numero_hora,
@@ -86,12 +88,12 @@ class HorarioHandler {
 	 * @return true|false true en caso de actualizacion exitosa, false en caso de fallo
 	 * @throws Exception Si ocurre un error en la base de datos
 	 */
-	public function actualizarHorario($horario){
+	public function actualizarHorario(Horario $horario): bool{
 		try {
 			$success = $this->stmt_actualizarHorario->execute([
-				$horario->dia_semana,
 				$horario->horario,
 				$horario->numero_hora,
+				$horario->dia_semana,
 			]);
 			if($success){
 				return true;
@@ -111,7 +113,7 @@ class HorarioHandler {
 	 * @return true|false true en caso de eliminacion exitosa, false en caso de fallo
 	 * @throws Exception Si ocurre un error en la base de datos
 	 */
-	public function eliminarHorario($numero_hora, $dia_semana){
+	public function eliminarHorario(int $numero_hora, string $dia_semana): bool{
 		try {
 			$success = $this->stmt_eliminarHorario->execute([
 				$numero_hora,
@@ -135,7 +137,7 @@ class HorarioHandler {
 	 * @return Horario Un nuevo objeto Horario poblado con los datos del arreglo
 	 * @private Metodo auxiliar usado internamente por la clase
 	 */
-	private function fetchToHorario($fetch){
+	private function fetchToHorario(array $fetch): Horario{
 		return new Horario(
 			$fetch['numero_hora'],
 			$fetch['dia_semana'],
@@ -147,19 +149,15 @@ class HorarioHandler {
 	 * Constructor - Inicializa el manejador con una conexion a la base de datos y prepara las sentencias
 	 *
 	 * @param PDO $db Un objeto PDO valido de conexion a la base de datos
-	 * @throws InvalidArgumentException Si el $db proporcionado no es una instancia de PDO
 	 * @throws Exception Si ocurre un error al preparar las sentencias SQL
 	 */
-	public function __construct($db){
-		if (!$db instanceof PDO) {
-			throw new InvalidArgumentException("Instancia invalida de PDO.");
-		}
+	public function __construct(PDO $db){
 		$this->db = $db;
 		try {
 			$this->stmt_obtenerTodos = $this->db->prepare("SELECT * FROM Horario ORDER BY numero_hora;");
-			$this->stmt_obtenerPorNumeroHora = $this->db->prepare("SELECT * FROM Horario WHERE numero_hora = ?;");
+			$this->stmt_obtenerPorNumeroHora = $this->db->prepare("SELECT * FROM Horario WHERE numero_hora = ? AND dia_semana = ?;");
 			$this->stmt_crearHorario = $this->db->prepare("INSERT INTO Horario (numero_hora, dia_semana, horario) VALUES (?,?,?);");
-			$this->stmt_actualizarHorario = $this->db->prepare("UPDATE Horario SET dia_semana = ?, horario = ? WHERE numero_hora = ?;");
+			$this->stmt_actualizarHorario = $this->db->prepare("UPDATE Horario SET horario = ? WHERE numero_hora = ? AND dia_semana = ?;");
 			$this->stmt_eliminarHorario = $this->db->prepare("DELETE FROM Horario WHERE numero_hora = ? AND dia_semana = ?;");
 		} catch (PDOException $e){
 			throw new Exception("Error en HorarioHandler.prepare");

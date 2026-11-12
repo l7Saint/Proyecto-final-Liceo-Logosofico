@@ -6,7 +6,10 @@ $url     = 'http://' . $backend . ':' . $port;
 $apiKey = '';
 $apiSecret = '';
 if (isset($_GET['marca_id'])) {
-	$url = 'https://carapi.app/api/models/v2?make_id=' . $_GET['marca_id'];
+	$marcaId = filter_input(INPUT_GET, 'marca_id', FILTER_VALIDATE_INT);
+}
+if (isset($marcaId) && $marcaId !== false && $marcaId !== null) {
+	$url = 'https://carapi.app/api/models/v2?make_id=' . $marcaId;
 } else {
 	$url = 'https://carapi.app/api/makes/v2';
 }

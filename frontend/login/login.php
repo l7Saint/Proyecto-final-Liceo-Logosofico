@@ -8,260 +8,264 @@ $url     = 'http://' . $backend . ':' . $port;
 
 <head>
 
-    <meta charset="UTF-8">
+		<meta charset="UTF-8">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0">
+		<meta
+				name="viewport"
+				content="width=device-width, initial-scale=1.0">
 
-    <title>Urbanaut | Iniciar Sesión</title>
+		<title>Urbanaut | Iniciar Sesión</title>
 
-    <!-- Bootstrap -->
-    <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
-        rel="stylesheet">
+		<!-- Bootstrap -->
+		<link
+				href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
+				rel="stylesheet">
 
-    <!-- Bootstrap Icons -->
-    <link
-        rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+		<!-- Bootstrap Icons -->
+		<link
+				rel="stylesheet"
+				href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
 
-    <link
-        rel="stylesheet"
-        href="/assets/css/style.css">
+		<link
+				rel="stylesheet"
+				href="/assets/css/style.css">
 
-    <link
-        rel="stylesheet"
-        href="/assets/css/login.css">
+		<link
+				rel="stylesheet"
+				href="/assets/css/login.css">
 </head>
 
 <body>
 
-    <main class="contenedor">
+		<main class="contenedor">
 
-        <section class="card-urbanaut">
+				<section class="card-urbanaut">
 
-            <!-- LOGO -->
+						<!-- LOGO -->
 
-            <div class="logo">
+						<div class="logo">
 
-                <img
-                    src="../imagenes/logoNuevo2.png"
-                    alt="Logo Urbanaut">
+								<img
+										src="../imagenes/logoNuevo2.png"
+										alt="Logo Urbanaut">
 
-            </div>
+						</div>
 
-            <!-- TÍTULO -->
+						<!-- TÍTULO -->
 
-            <h1>
-                Iniciar Sesión
-            </h1>
+						<h1>
+								Iniciar Sesión
+						</h1>
 
-            <p class="subtitulo">
-                Ingresá a tu cuenta de Urbanaut.
-            </p>
+						<p class="subtitulo">
+								Ingresá a tu cuenta de Urbanaut.
+						</p>
 
-            <!-- FORMULARIO -->
+						<!-- FORMULARIO -->
 
-            <form
-                id="formLogin"
-                >
+						<form
+								id="formLogin"
+								method="post"
+								>
 
-                <!-- MAIL -->
+								<!-- MAIL -->
 
-                <div class="campo">
+								<div class="campo">
 
-                    <label for="email">
-                        Correo electrónico
-                    </label>
+										<label for="email">
+												Correo electrónico
+										</label>
 
-                    <div class="input-contenedor">
+										<div class="input-contenedor">
 
-                        <i class="bi bi-envelope-fill"></i>
+												<i class="bi bi-envelope-fill"></i>
 
-                        <input
-                            type="email"
-                            id="email"
-                            name="email"
-                            placeholder="Ingresá tu correo"
-                            required>
+												<input
+														type="email"
+														id="email"
+														name="email"
+														placeholder="Ingresá tu correo"
+														required>
 
-                    </div>
+										</div>
 
-                </div>
+								</div>
 
-                <!-- CONTRASEÑA -->
+								<!-- CONTRASEÑA -->
 
-                <div class="campo">
+								<div class="campo">
 
-                    <label for="password">
-                        Contraseña
-                    </label>
+										<label for="password">
+												Contraseña
+										</label>
 
-                    <div class="input-contenedor">
+										<div class="input-contenedor">
 
-                        <i class="bi bi-lock-fill"></i>
+												<i class="bi bi-lock-fill"></i>
 
-                        <input
-                            type="password"
-                            id="password"
-                            name="password"
-                            placeholder="Ingresá tu contraseña"
-                            required>
+												<input
+														type="password"
+														id="password"
+														name="password"
+														placeholder="Ingresá tu contraseña"
+														required>
 
-                    </div>
+										</div>
 
-                </div>
+								</div>
 
-                <!-- LOGIN -->
+								<!-- LOGIN -->
 
-                <button
-                    type="submit"
-                    class="btn-login">
-                    Iniciar sesión
-                </button>
+								<button
+										type="submit"
+										class="btn-login">
+										Iniciar sesión
+								</button>
 
-            </form>
+						</form>
 
-            <!-- RECUPERAR CUENTA -->
+						<!-- RECUPERAR CUENTA -->
 
-            <a
-                href="recuperar.php"
-                class="recuperar">
+						<a
+								href="recuperar.php"
+								class="recuperar">
 
-                ¿Olvidaste tu contraseña?
+								¿Olvidaste tu contraseña?
 
-            </a>
+						</a>
 
-            <!-- ADMINISTRADOR -->
+						<!-- ADMINISTRADOR -->
 
-            <div class="admin-seccion">
+						<div class="admin-seccion">
 
-            </div>
+						</div>
 
-            <!-- VOLVER -->
+						<!-- VOLVER -->
 
-            <a
-                href="../introduccion/index.html"
-                class="volver">
+						<a
+								href="../introduccion/index.html"
+								class="volver">
 
-                <i class="bi bi-arrow-left"></i>
+								<i class="bi bi-arrow-left"></i>
 
-                Volver
+								Volver
 
-            </a>
+						</a>
 
-        </section>
+				</section>
 
-    </main>
+		</main>
 
 <!--
-    Loads the Urbanaut JS client. The `/urbanaut-js-client/` folder must be reachable
-    from the frontend web root (Apache serves from `frontend/`). If the client lives
-    elsewhere in your deployment, adjust the import URL below.
+		Loads the Urbanaut JS client. The `/urbanaut-js-client/` folder must be reachable
+		from the frontend web root (Apache serves from `frontend/`). If the client lives
+		elsewhere in your deployment, adjust the import URL below.
 -->
 <script type="module">
-  import UrbanautClient from '/urbanaut-js-client/src/urbanaut.js';
+import UrbanautClient from '/assets/js/urbanaut-js-client/src/urbanaut.js';
 
-  // Backend origin injected from PHP env vars (no trailing slash).
-  const BACKEND_URL = <?= json_encode($url) ?>;
+// Backend origin injected from PHP env vars (no trailing slash).
+const BACKEND_URL = <?= json_encode($url) ?>;
 
-  // The JS client stores the token under `urbanaut.token`; the rest of the app
-  // (admin panel, map) reads `urbanaut_token`. Mirror on every login so both
-  // keys stay in sync and the other pages keep working unchanged.
-  const LEGACY_TOKEN_KEY = 'urbanaut_token';
+// The JS client stores the token under `urbanaut.token`; the rest of the app
+// (admin panel, map) reads `urbanaut_token`. Mirror on every login so both
+// keys stay in sync and the other pages keep working unchanged.
+const LEGACY_TOKEN_KEY = 'urbanaut_token';
 
-  const api = new UrbanautClient({ baseUrl: BACKEND_URL + '/api' });
+const api = new UrbanautClient({ baseUrl: BACKEND_URL + '/api' });
 
-  function mirrorLegacyToken(token) {
-    if (token) localStorage.setItem(LEGACY_TOKEN_KEY, token);
-    else       localStorage.removeItem(LEGACY_TOKEN_KEY);
-  }
+function mirrorLegacyToken(token) {
+	if (token) localStorage.setItem(LEGACY_TOKEN_KEY, token);
+	else       localStorage.removeItem(LEGACY_TOKEN_KEY);
+}
 
-  // If the user already has a session (either key), keep the legacy one in sync.
-  if (api.isAuthenticated) mirrorLegacyToken(api.token);
+// If the user already has a session (either key), keep the legacy one in sync.
+if (api.isAuthenticated) mirrorLegacyToken(api.token);
 
-  function obtenerDatos() {
-    const email      = document.getElementById("email").value.trim();
-    const contrasena = document.getElementById("password").value.trim();
-    return { email, contrasena };
-  }
+function obtenerDatos() {
+	const email      = document.getElementById("email").value.trim();
+	const contrasena = document.getElementById("password").value;
+	return { email, contrasena };
+}
 
-  function validarDatos() {
-    const datos = obtenerDatos();
+function validarDatos() {
+	const datos = obtenerDatos();
 
-    if (datos.email === "" || datos.contrasena === "") {
-      alert("Por favor, completá el correo electrónico y la contraseña.");
-      return null;
-    }
+	if (datos.email === "" || datos.contrasena === "") {
+		alert("Por favor, completá el correo electrónico y la contraseña.");
+		return null;
+	}
 
-    const formatoEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!formatoEmail.test(datos.email)) {
-      alert("Ingresá un correo electrónico válido.");
-      return null;
-    }
+	const formatoEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+	if (!formatoEmail.test(datos.email)) {
+		alert("Ingresá un correo electrónico válido.");
+		return null;
+	}
 
-    return datos;
-  }
+	return datos;
+}
 
-  async function iniciarSesion(event) {
-    if (event) event.preventDefault();
+async function iniciarSesion(event) {
+	if (event) event.preventDefault();
 
-    const datos = validarDatos();
-    if (!datos) return;
+	const datos = validarDatos();
+	if (!datos) return;
 
-    try {
-      // POST /api/usuario/login — the client persists token + user for us.
-      const data = await api.usuario.login(datos);
+	try {
+		// POST /api/usuario/login — the client persists token + user for us.
+		const data = await api.usuario.login(datos);
 
-      if (!data || !data.token) {
-        console.error("Login OK pero no vino token en la respuesta.", data);
-        alert("Error de sesión: el servidor no devolvió un token.");
-        return;
-      }
+		if (!data || !data.token) {
+			console.error("Login OK pero no vino token en la respuesta.", data);
+			alert("Error de sesión: el servidor no devolvió un token.");
+			return;
+		}
 
-      // Keep the legacy key in sync so the rest of the app finds the session.
-      mirrorLegacyToken(data.token);
+		// Keep the legacy key in sync so the rest of the app finds the session.
+		mirrorLegacyToken(data.token);
 
-      if (data.usuario && data.usuario.es_admin == 1) {
-        window.location.href = '../administrador/';
-      }
-      // Non-admin flow: preserves current behavior (no redirect). Add one here
-      // (e.g. `else window.location.href = '../inicio/';`) if needed.
+		// Admins go to the panel, regular users go to the actions menu. Both
+		// branches must navigate away: without it a successful login leaves the
+		// user on this page with no feedback, so the button looks dead.
+		if (data.usuario && data.usuario.es_admin === 1) {
+			window.location.href = '../administrador/';
+		} else {
+			window.location.href = '../inicio/index.html';
+		}
 
-    } catch (err) {
-      console.error("Error al iniciar sesión:", err);
+	} catch (err) {
+		console.error("Error al iniciar sesión:", err);
 
-      if (err?.name === 'ValidationError') {
-        alert("Faltan datos o hay datos incorrectos.");
-        return;
-      }
+		if (err?.name === 'ValidationError') {
+			alert("Faltan datos o hay datos incorrectos.");
+			return;
+		}
 
-      if (err?.name === 'NetworkError') {
-        alert("No se pudo conectar con el servidor.");
-        return;
-      }
+		if (err?.name === 'NetworkError') {
+			alert("No se pudo conectar con el servidor.");
+			return;
+		}
 
-      // HttpError
-      switch (err?.status) {
-        case 400:
-          alert("Faltan datos o hay datos incorrectos.");
-          break;
-        case 401:
-          alert("Email o contraseña incorrectos.");
-          break;
-        case 500:
-          alert("Error interno del servidor.");
-          break;
-        default:
-          alert("Ocurrió un error inesperado.");
-      }
-    }
-  }
+		// HttpError
+		switch (err?.status) {
+		case 400:
+			alert("Faltan datos o hay datos incorrectos.");
+			break;
+		case 401:
+			alert("Email o contraseña incorrectos.");
+			break;
+		case 500:
+			alert("Error interno del servidor.");
+			break;
+		default:
+			alert("Ocurrió un error inesperado.");
+		}
+	}
+}
 
-  document
-    .getElementById("formLogin")
-    .addEventListener("submit", iniciarSesion);
+document
+.getElementById("formLogin")
+.addEventListener("submit", iniciarSesion);
 </script>
 </body>
 </html>

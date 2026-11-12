@@ -1,16 +1,16 @@
 <?php
 require_once __DIR__ . '/../functions.php';
-function verificarAdministrador($usrhnd, $seshnd){
+function verificarAdministrador(UsuarioHandler $usrhnd, SesionHandler $seshnd): int {
 	$sesion = checkSession($seshnd);
 	if($sesion === false){
-		return false;
 		elog('error', "Unauthorized in verificarAdministrador. Sesion is false");
+		return 0;
 	}
 	$user = $usrhnd->obtenerPorId($sesion->id_usuario);
 	if(!$user)
-		return false;
+		return 0;
 	//error_log("Call a api.verificarAdministrador: $user->es_admin");
-	return $user->es_admin;
+	return (int) $user->es_admin;
 }
 
 /* ============================================================
@@ -26,7 +26,7 @@ function verificarAdministrador($usrhnd, $seshnd){
    Este helper prueba todas las fuentes conocidas en orden y
    devuelve el token limpio, o null si no hay ninguno.
    ============================================================ */
-function getBearerToken(){
+function getBearerToken(): ?string {
 	$header = '';
 
 	// 1) Caso normal (mod_php)
@@ -83,13 +83,13 @@ function getBearerToken(){
  * @return string el token generado
  * @throws Exception si no se puede crear la sesión
  */
-function startSession($usuario, $seshnd){
+function startSession(Usuario $usuario, SesionHandler $seshnd): string {
 	$token = $seshnd->crearSesion($usuario->id);
 	if($token === false){
 		error_log("api.startSession: no se pudo crear la sesión para user_id ".$usuario->id);
 		throw new Exception("No se pudo iniciar la sesión.");
 	}
-	error_log("Session Started for user_id: ".$usuario->id." ; ip address: ".$_SERVER['REMOTE_ADDR']);
+	error_log("Session Started for user_id: ".$usuario->id." ; ip address: ".($_SERVER['REMOTE_ADDR'] ?? 'desconocida'));
 	return $token;
 }
 
@@ -99,7 +99,7 @@ function startSession($usuario, $seshnd){
  *
  * @param SesionHandler $seshnd
  */
-function destroySession($seshnd){
+function destroySession(SesionHandler $seshnd): void {
 	$token = getBearerToken();
 	if($token === null){
 		return;
@@ -117,7 +117,7 @@ function destroySession($seshnd){
  * @param SesionHandler $seshnd
  * @return Sesion|false el objeto Sesion si es válido, false si no
  */
-function checkSession($seshnd){
+function checkSession(SesionHandler $seshnd): Sesion|false {
 	$token = getBearerToken();
 	if($token === null){
 		error_log("api.checkSession: no Bearer token.");

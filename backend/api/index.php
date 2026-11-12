@@ -1,6 +1,6 @@
 <?php
-require_once '../classes/Main.php';
-require_once '../functions.php';
+require_once __DIR__ . '/../classes/Main.php';
+require_once __DIR__ . '/../functions.php';
 
 //error handling ini
 ini_set('display_errors', 0);
@@ -8,13 +8,21 @@ ini_set('display_startup_errors', 0);
 error_reporting(E_ALL);
 
 // -- CORS --
-$origin = $_SERVER['HTTP_ORIGIN'] ?? '*';
+// Lista blanca de orígenes permitidos: solo estos pueden enviar credenciales.
+$originsPermitidos = [
+	'http://192.168.21.200',
+	'http://localhost',
+	'http://127.0.0.1'
+];
+$origin = $_SERVER['HTTP_ORIGIN'] ?? '';
 
 header('Content-Type: application/json');
-header("Access-Control-Allow-Origin: $origin");
+if (in_array($origin, $originsPermitidos, true)) {
+	header("Access-Control-Allow-Origin: $origin");
+	header("Access-Control-Allow-Credentials: true");
+}
 header("Vary: Origin");
 header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
-header("Access-Control-Allow-Credentials: true");
 header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
 header("Access-Control-Max-Age: 86400");
 
@@ -26,8 +34,8 @@ $request = array_values(array_filter(explode('/', $uri))); // ["foo", "bar"]
 
 // Respond to preflight and stop
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-    http_response_code(204);
-    exit;
+	http_response_code(204);
+	exit;
 }
 
 try {
@@ -38,10 +46,7 @@ try {
 		require_once __DIR__ . '/' . $file;
 	}
 } catch (Throwable $e) {
-	$message = $e->getMessage();
-	$file = $e->getFile();
-	$line = $e->getLine();
-	elog('error', "Error while importing, message: $message location: $file:$line");
+	logException($e, 'import');
 	die();
 }
 try {
@@ -55,8 +60,10 @@ try {
 	);
 	#elog('debug', "After Run, End");
 } catch (Throwable $e) {
-	$message = $e->getMessage();
-	$file = $e->getFile();
-	$line = $e->getLine();
-	elog('error', "Error while executing main, message: $message location: $file:$line");
+	logException($e, 'main.run');
+	http_response_code(500);
+	echo json_encode([
+		'error' => 'internal_error',
+		'message' => 'Internal server error.'
+	]);
 }

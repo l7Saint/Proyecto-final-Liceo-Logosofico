@@ -68,10 +68,6 @@
 	.botones {
 		grid-template-columns: 1fr;
 	}
-	.btn-ayuda {
-		grid-column: auto;
-		width: 100%;
-	}
 	.btn-cerrar {
 		grid-column: auto;
 		width: 100%;

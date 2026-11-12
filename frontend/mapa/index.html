@@ -6,41 +6,44 @@
     <title>Urbanaut | Mapa</title>
     <!-- Bootstrap -->
     <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
-        rel="stylesheet">
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
 
     <!-- Bootstrap Icons -->
     <link
-        rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"
+    />
 
     <!-- Leaflet -->
-    <link
-        rel="stylesheet"
-        href="https://unpkg.com/leaflet/dist/leaflet.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 
-    <script
-        src="https://unpkg.com/leaflet/dist/leaflet.js">
-    </script>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
-    <link
-        rel="stylesheet"
-        href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/style.css" />
 
+    <link rel="stylesheet" href="/assets/css/mapa.css" />
     <link
-        rel="stylesheet"
-        href="/assets/css/mapa.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.css">
-</head>
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"
+    />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.css"
+    />
+  </head>
 
   <body>
     <main class="contenedor">
       <section class="card-urbanaut">
         <div class="titulo">
-	<i class="bi bi-geo-alt-fill"></i>
+          <i class="bi bi-geo-alt-fill"></i>
           <h1>Mapa</h1>
         </div>
 
@@ -524,9 +527,53 @@
             if (marcadorUsuario) {
               marcadorUsuario.openPopup();
             }
+
           } else {
             obtenerUbicacion();
             estadoGPS.textContent = "Buscando tu ubicación...";
+
+            let mejor = null;
+            let mejorScore = -Infinity;
+            for (const r of resultados) {
+              if ((r.latitud ?? null) === null || (r.longitud ?? null) === null) continue;
+              const score = (r.puntaje ?? 0) * (r.confianza ?? 0);
+              if (score > mejorScore) {
+                mejorScore = score;
+                mejor = r;
+              }
+            }
+
+            if (!mejor) {
+              estadoGPS.textContent =
+                "No se pudieron obtener coordenadas de las cuadras.";
+              return;
+            }
+
+            if (marcadorMejorLugar) {
+              mapa.removeLayer(marcadorMejorLugar);
+            }
+            marcadorMejorLugar = L.marker(
+              [mejor.latitud, mejor.longitud],
+              { title: "Mejor lugar para estacionar" },
+            ).addTo(mapa);
+
+            marcadorMejorLugar
+              .bindPopup(
+                "<b>Mejor lugar para estacionar</b><br>" +
+                  "Cuadra #" + mejor.cuadra_id + "<br>" +
+                  "Puntaje: " + Number(mejor.puntaje).toFixed(2) + "<br>" +
+                  "Confianza: " + Number(mejor.confianza).toFixed(2) + "<br>" +
+                  "Score: " + mejorScore.toFixed(2),
+              )
+              .openPopup();
+
+            mapa.setView([mejor.latitud, mejor.longitud], 18);
+            estadoGPS.textContent =
+              "Mejor lugar: cuadra " + mejor.cuadra_id + ".";
+          } catch (err) {
+            console.error("Error en probabilidad:", err);
+            estadoGPS.textContent =
+              "No se pudo calcular el mejor lugar. Intentá de nuevo.";
           }
         });
 

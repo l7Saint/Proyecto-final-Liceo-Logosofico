@@ -31,7 +31,7 @@ $usuarioApi->addEndpoint(new Endpoint(
 				$usuario === false ||
 				!password_verify($data['contrasena'], $usuario->contrasena_hash)
 			){
-				($endLog)('debug', "Failed login to user id=$usuario->id.");
+				($endLog)('debug', "Failed login to email={$data['email']}.");
 				throw new GenericRuntimeException(
 					httpCode: 401,
 					message: "Invalid email or password.",
@@ -52,6 +52,7 @@ $usuarioApi->addEndpoint(new Endpoint(
 				]
 			]));
 		} catch (Throwable $e) {
+			if ($e instanceof GenericRuntimeException) { throw $e; }
 			$message = $e->getMessage();
 			($endLog)('error', "Unexpected error.");
 			throw new GenericRuntimeException(
@@ -79,7 +80,7 @@ $usuarioApi->addEndpoint(new Endpoint(
 		}
 		$usuario = $handlers['usuario']->obtenerPorId($sesion->id_usuario);
 		if($usuario === false){
-			destroySession($seshnd);
+			destroySession($handlers['sesion']);
 			throw new GenericRuntimeException(
 				httpCode: 401,
 				message: "Unauthorized",
@@ -139,6 +140,7 @@ $usuarioApi->addEndpoint(new Endpoint(
 		try{
 			$existingUser = $usrhnd->obtenerPorEmail($data['email']);
 		} catch(Throwable $e){
+			if ($e instanceof GenericRuntimeException) { throw $e; }
 			$message = $e->getMessage();
 			($endLog)('error', "Unexpected error, obtenerPorEmail failed with the following error: $message");
 			throw new GenericRuntimeException(
@@ -180,8 +182,11 @@ $usuarioApi->addEndpoint(new Endpoint(
 				);
 			}
 		}catch(Throwable $e){
+			if ($e instanceof GenericRuntimeException) { throw $e; }
 			$message = $e->getMessage();
-			$dataM = implode(", ", $data);
+			$dataSinContrasena = $data;
+			unset($dataSinContrasena['contrasena']);
+			$dataM = implode(", ", $dataSinContrasena);
 			($endLog)('error', "Unexpected error creating new user, data: $dataM\nmessage: $message.");
 			throw new GenericRuntimeException(
 				httpCode: 500,
@@ -193,46 +198,46 @@ $usuarioApi->addEndpoint(new Endpoint(
 ));
 
 $usuarioApi->addEndpoint(new Endpoint(
-    name: "modificar",
-    method: "PUT",
-    parameters: ['nombre', 'email', 'apellido'],
-    run: function (array $data, array $handlers, Closure $endLog): void {
-        $usuariohnd = $handlers['usuario'];
-        $sesion = checkSession($handlers['sesion']);
-        
-        if ($sesion === false) {
-            throw new GenericRuntimeException(
-                httpCode: 401,
-                message: "Unauthorized",
-                getResponse: null
-            );
-        }
+	name: "modificar",
+	method: "PUT",
+	parameters: ['nombre', 'email', 'apellido'],
+	run: function (array $data, array $handlers, Closure $endLog): void {
+		$usuariohnd = $handlers['usuario'];
+		$sesion = checkSession($handlers['sesion']);
+		
+		if ($sesion === false) {
+			throw new GenericRuntimeException(
+				httpCode: 401,
+				message: "Unauthorized",
+				getResponse: null
+			);
+		}
 
-        $id = (int) $sesion->id_usuario;
-        
-        try {
-            $u = $usuariohnd->obtenerPorId($id);
-            if (!$u) throw new Exception("Usuario no encontrado");
+		$id = (int) $sesion->id_usuario;
+		
+		try {
+			$u = $usuariohnd->obtenerPorId($id);
+			if (!$u) throw new Exception("Usuario no encontrado");
 
-            $u->nombre = $data['nombre'];
-            $u->apellido = $data['apellido'];
-            $u->email = $data['email'];
+			$u->nombre = $data['nombre'];
+			$u->apellido = $data['apellido'];
+			$u->email = $data['email'];
 
-            $ok = $usuariohnd->modificarUsuario($id, $u);
-            
-            if ($ok) {
-                echo json_encode(['success' => true]);
-            } else {
-                throw new Exception("No se pudo modificar");
-            }
-        } catch (Throwable $e) {
-            throw new GenericRuntimeException(
-                httpCode: 500,
-                message: $e->getMessage(),
-                getResponse: null
-            );
-        }
-    }
+			$ok = $usuariohnd->modificarUsuario($id, $u);
+			
+			if ($ok) {
+				echo json_encode(['success' => true]);
+			} else {
+				throw new Exception("No se pudo modificar");
+			}
+		} catch (Throwable $e) {
+			throw new GenericRuntimeException(
+				httpCode: 500,
+				message: $e->getMessage(),
+				getResponse: null
+			);
+		}
+	}
 ));
 
 $usuarioApi->addEndpoint(new Endpoint(
