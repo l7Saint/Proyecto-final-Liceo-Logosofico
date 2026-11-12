@@ -11,7 +11,8 @@ $usuarioApi = new Api(
 	name: "usuario",
 	handlers: [
 		'usuario' => new UsuarioHandler($conexion),
-		'sesion' => new SesionHandler($conexion)
+		'sesion' => new SesionHandler($conexion),
+		'conexion' => $conexion
 	],
 	prerun: null
 );
@@ -230,6 +231,45 @@ $usuarioApi->addEndpoint(new Endpoint(
                 message: $e->getMessage(),
                 getResponse: null
             );
+        }
+    }
+));
+
+$usuarioApi->addEndpoint(new Endpoint(
+    name: "eliminar",
+    method: "DELETE",
+    parameters: [],
+    run: function (array $data, array $handlers, Closure $endLog): void {
+        $usuariohnd = $handlers['usuario'];
+        $sesion = checkSession($handlers['sesion']);
+
+        if ($sesion === false) {
+            throw new GenericRuntimeException(401, "Unauthorized", null);
+        }
+
+        $id = (int) $sesion->id_usuario;
+        $db = $handlers['conexion']; 
+
+        try {
+            
+            $stmtVehiculos = $db->prepare("DELETE FROM Vehiculo WHERE id_usuario = ?;");
+            $stmtVehiculos->execute([$id]);
+
+            
+            $stmtHorarios = $db->prepare("DELETE FROM Tiene WHERE id_usuario = ?;");
+            $stmtHorarios->execute([$id]);
+
+            
+            destroySession($handlers['sesion']);
+            $ok = $usuariohnd->eliminarUsuario($id);
+
+            if ($ok) {
+                echo json_encode(['success' => true]);
+            } else {
+                throw new Exception("No se pudo eliminar el usuario");
+            }
+        } catch (Throwable $e) {
+            throw new GenericRuntimeException(500, $e->getMessage(), null);
         }
     }
 ));

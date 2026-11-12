@@ -1125,9 +1125,39 @@ $url     = 'http://' . $backend . ':' . $port;
             }
         };
 
-        window.eliminarCuenta = () => {
-            alert('Eliminar cuenta no disponible aún.');
-        };
+                window.eliminarCuenta = async function () {
+            if (!confirm('¿Estás seguro que querés eliminar tu cuenta? Esta acción borrará todos tus datos y no se puede deshacer.')) {
+                return;
+            }
+
+            const boton = document.querySelector('.btn-confirmar-eliminar');
+            if (boton) {
+                boton.disabled = true;
+                boton.textContent = 'Eliminando...';
+            }
+
+            try {
+                
+                await api.usuario.eliminar();
+
+                
+                api.clearSession();
+                localStorage.removeItem('urbanaut_token');
+
+               
+                alert('Tu cuenta ha sido eliminada correctamente.');
+                window.location.href = '../introduccion/index.html';
+
+            } catch (error) {
+                console.error('Error al eliminar cuenta:', error);
+                alert('Hubo un error al eliminar tu cuenta. Intentá de nuevo.');
+
+                if (boton) {
+                    boton.disabled = false;
+                    boton.textContent = 'Eliminar cuenta';
+                }
+            }
+};
     </script>
 </body>
 </html>
