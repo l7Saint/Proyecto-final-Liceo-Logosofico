@@ -8,7 +8,7 @@ require_once __DIR__ . '/../../api/api.php';
 /*
  * API de estadisticas del usuario.
  *
- * Expone un unico endpoint que devuelve los agregados del historial de
+ * Expone un unico endpoint que devuelve los agregados de los registros de
  * estacionamientos del usuario autenticado: total de veces que estaciono,
  * cuadras distintas, veces en el mes en curso y el ranking de cuadras donde
  * mas estaciono.

@@ -123,7 +123,7 @@ class Estaciona_enHandler {
 	/**
 	 * Cuenta los estacionamientos registrados por un usuario
 	 *
-	 * Devuelve los agregados de todo el historial del usuario: cantidad total,
+	 * Devuelve los agregados de todos los registros del usuario: cantidad total,
 	 * cantidad de cuadras distintas y cantidad de estacionamientos del mes en
 	 * curso, mas las fechas del primero y del ultimo registro.
 	 *
@@ -225,7 +225,7 @@ class Estaciona_enHandler {
 			$this->stmt_crearEstacionamiento     = $this->db->prepare('INSERT INTO Estaciona_en (id_usuario, id_vehiculo, id_cuadra, fecha, hora_inicio, hora_fin) VALUES (?,?,?,?,?,?);');
 			$this->stmt_actualizarEstacionamiento= $this->db->prepare('UPDATE Estaciona_en SET id_usuario = ?, id_vehiculo = ?, id_cuadra = ?, fecha = ?, hora_inicio = ?, hora_fin = ? WHERE id = ?;');
 			$this->stmt_eliminarEstacionamiento  = $this->db->prepare('DELETE FROM Estaciona_en WHERE id = ?;');
-			// Agregados del historial del usuario. Sin GROUP BY, MySQL devuelve
+			// Agregados de los registros del usuario. Sin GROUP BY, MySQL devuelve
 			// siempre una fila (con ceros y NULLs si no hay registros).
 			$this->stmt_contarPorUsuario = $this->db->prepare("
 				SELECT
