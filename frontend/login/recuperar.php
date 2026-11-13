@@ -43,8 +43,7 @@
 			<h1>Recuperar Contraseña</h1>
 
 			<p class="subtitulo">
-				Estamos mejorando esta sección para ofrecerte
-				una mejor experiencia.
+				Esta sección no está disponible por el momento.
 			</p>
 
 			<!-- AVISO -->
@@ -52,8 +51,7 @@
 			<div class="aviso">
 				<strong>Atención:</strong>
 				Estamos trabajando para mejorar tu experiencia.
-				Por ahora esta sección no está disponible.
-				Podes contactanos para resolver el problema.
+				Si necesitás ayuda, podés contactanos para resolver el problema.
 			</div>
 
 			<!-- CONTACTO CON EL EQUIPO -->
@@ -109,7 +107,7 @@
 			</p>
 
 			<div class="correo">
-				craft.solutions@gmail.com
+				craft.solutions.uy@gmail.com
 			</div>
 
 			<br>
