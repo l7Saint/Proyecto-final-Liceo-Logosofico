@@ -71,6 +71,7 @@ CREATE TABLE IF NOT EXISTS Estaciona_en (
 	hora_fin TIME,
 	FOREIGN KEY (id_vehiculo) REFERENCES Vehiculo(id),
 	FOREIGN KEY (id_cuadra) REFERENCES Cuadra(id),
+	FOREIGN KEY (id_usuario) REFERENCES Usuario(id),
 	CHECK (hora_fin IS NULL OR hora_fin >= hora_inicio)
 );
 
