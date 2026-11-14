@@ -316,6 +316,14 @@
         }
 
 
+        .email:hover {
+
+            color: #1683e9;
+
+            text-decoration: underline;
+        }
+
+
         /* EQUIPO */
 
         .info-completa {
@@ -561,6 +569,12 @@
         }
 
 
+        #modalContacto .pregunta:last-child {
+
+            margin-bottom: 0;
+        }
+
+
         .pregunta strong {
 
             display: block;
@@ -782,36 +796,39 @@
                 </div>
 
 
-                <!-- ACERCA DE -->
+                <!-- CONTACTAR AL EQUIPO -->
 
                 <div class="info-card">
 
                     <div class="info-titulo">
 
-                        <i class="bi bi-app-indicator"></i>
+                        <i class="bi bi-chat"></i>
 
-                        Acerca de Urbanaut
+                        Comunicate con nosotros
 
                     </div>
 
 
                     <p>
 
-                        Aplicación para organizar y consultar
-                        tus estacionamientos.
+                        Conectá con nuestro equipo y encontrá el
+                        apoyo que necesitás para disfrutar de una
+                        mejor experiencia en Urbanaut.
 
                     </p>
 
 
-                    <a
-                        href="mailto:craft.solutions@gmail.com"
-                        class="email">
+                    <button
+                        type="button"
+                        class="btn-preguntas"
+                        data-bs-toggle="modal"
+                        data-bs-target="#modalContacto">
 
                         <i class="bi bi-envelope-fill"></i>
 
-                        craft.solutions@gmail.com
+                        Contactar al equipo
 
-                    </a>
+                    </button>
 
                 </div>
 
@@ -1005,6 +1022,92 @@
                             Está disponible en la sección
                             "Manual" de esta página.
                         </p>
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="modal-footer">
+
+                    <button
+                        type="button"
+                        class="btn btn-sm btn-secondary"
+                        data-bs-dismiss="modal">
+
+                        Cerrar
+
+                    </button>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- MODAL CONTACTAR AL EQUIPO -->
+
+    <div
+        class="modal fade"
+        id="modalContacto"
+        tabindex="-1"
+        aria-hidden="true">
+
+        <div class="modal-dialog modal-dialog-centered">
+
+            <div class="modal-content">
+
+
+                <div class="modal-header">
+
+                    <h2 class="modal-title">
+
+                        <i class="bi bi-envelope-fill"></i>
+
+                        Contactar al equipo
+
+                    </h2>
+
+
+                    <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Cerrar">
+                    </button>
+
+                </div>
+
+
+                <div class="modal-body">
+
+
+                    <div class="pregunta">
+
+                        <strong>
+                            ¿Tenés alguna consulta o estás teniendo
+                            problemas con la aplicación?
+                        </strong>
+
+                        <p>
+                            Presiona el correo electrónico debajo
+                            de este texto.
+                        </p>
+
+                        <a
+                            href="https://mail.google.com/mail/?view=cm&fs=1&to=craft.solutions.uy@gmail.com"
+                            class="email">
+
+                            <i class="bi bi-envelope-fill"></i>
+
+                            craft.solutions.uy@gmail.com
+
+                        </a>
 
                     </div>
 
